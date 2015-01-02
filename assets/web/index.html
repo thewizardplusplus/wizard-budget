@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset = "utf-8" />
+		<meta
+			name = "viewport"
+			content = "initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+		<link rel = "stylesheet" href = "ratchet/css/ratchet.min.css" />
+		<link
+			rel = "stylesheet"
+			href = "ratchet/css/ratchet-theme-android.min.css" />
+		<link
+			rel = "stylesheet"
+			href = "font-awesome/css/font-awesome.min.css" />
+		<link rel = "stylesheet" href = "styles/main.css" />
+
+		<script src = "scripts/jquery.min.js"></script>
+		<script src = "ratchet/js/ratchet.min.js"></script>
+		<script src = "scripts/main.js"></script>
+
+		<title>Wizard Budget</title>
+	</head>
+	<body>
+		<header class = "bar bar-nav">
+			<img class = "pull-left" src = "images/logo.svg" alt = "Logo" />
+			<a class = "icon pull-right" href = "authors.html">
+				<i class = "fa fa-info-circle fa-lg"></i>
+			</a>
+			<h1 class = "title">Wizard Budget</h1>
+		</header>
+
+		<div class = "content">
+			<form class = "content-padded" action = "#">
+				<input
+					class = "amount-editor"
+					type = "tel"
+					placeholder = "Amount" />
+				<input
+					class = "comment-editor"
+					type = "text"
+					placeholder = "Comment" />
+				<button
+					class = "btn btn-positive btn-block add-spending-button">
+					<i class = "fa fa-plus"></i>
+					Add spending
+				</button>
+				<button
+					class = "btn btn-negative btn-block remove-last-spending-button">
+					<i class = "fa fa-undo"></i>
+					Remove last spending
+				</button>
+				<button
+					class = "btn btn-primary btn-block backup-button">
+					<i class = "fa fa-archive"></i>
+					Backup
+				</button>
+			</form>
+
+			<p class = "content-padded">
+				Spendings sum: <span class = "spendings-sum-view">
+					0.0
+				</span> <i class = "fa fa-ruble"></i>.
+			</p>
+
+			<ul class = "table-view spending-list"></ul>
+		</div>
+	</body>
+</html>

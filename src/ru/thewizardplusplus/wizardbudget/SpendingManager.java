@@ -1,0 +1,235 @@
+package ru.thewizardplusplus.wizardbudget;
+
+import java.text.*;
+import java.util.*;
+import java.io.*;
+
+import org.json.*;
+import org.xmlpull.v1.*;
+
+import android.content.*;
+import android.database.sqlite.*;
+import android.database.*;
+import android.os.*;
+import android.util.*;
+import android.webkit.*;
+
+public class SpendingManager {
+	public SpendingManager(Context context) {
+		this.context = context;
+	}
+
+	@JavascriptInterface
+	public String getSpendingsSum() {
+		SQLiteDatabase database = getDatabase();
+		Cursor cursor = database.query(
+			"spendings",
+			new String[]{"ROUND(SUM(amount), 2)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		double spendings_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			spendings_sum = cursor.getDouble(0);
+		}
+
+		database.close();
+		return String.valueOf(spendings_sum);
+	}
+
+	@JavascriptInterface
+	public String getAllSpendings() {
+		SQLiteDatabase database = getDatabase();
+		Cursor start_timestamp_cursor = database.query(
+			"spendings",
+			new String[]{"MIN(timestamp)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		long start_timestamp = 0;
+		boolean moved = start_timestamp_cursor.moveToFirst();
+		if (moved) {
+			start_timestamp = resetTimestampToDayBegin(
+				start_timestamp_cursor.getLong(0)
+			);
+		}
+
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"timestamp", "amount", "comment"},
+			null,
+			null,
+			null,
+			null,
+			"timestamp DESC"
+		);
+
+		JSONArray spendings = new JSONArray();
+		moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			try {
+				JSONObject spending = new JSONObject();
+				spending.put(
+					"date",
+					formatDateAsMine(
+						spendings_cursor.getLong(0),
+						start_timestamp
+					)
+				);
+				spending.put("amount", spendings_cursor.getDouble(1));
+				spending.put("comment", spendings_cursor.getString(2));
+
+				spendings.put(spending);
+			} catch (JSONException exception) {}
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return spendings.toString();
+	}
+
+	@JavascriptInterface
+	public void addSpending(double amount, String comment) {
+		ContentValues values = new ContentValues();
+		values.put("timestamp", System.currentTimeMillis() / 1000L);
+		values.put("amount", amount);
+		values.put("comment", comment);
+
+		SQLiteDatabase database = getDatabase();
+		database.insert("spendings", null, values);
+		database.close();
+	}
+
+	@JavascriptInterface
+	public void removeLastSpending() {
+		SQLiteDatabase database = getDatabase();
+		database.delete(
+			"spendings",
+			"timestamp = (SELECT MAX(timestamp) FROM spendings)",
+			null
+		);
+		database.close();
+	}
+
+	@JavascriptInterface
+	public void backup() {
+		SQLiteDatabase database = getDatabase();
+		Cursor cursor = database.query(
+			"spendings",
+			new String[]{"timestamp", "amount", "comment"},
+			null,
+			null,
+			null,
+			null,
+			"timestamp"
+		);
+
+		try {
+			File directory = new File(
+				Environment.getExternalStorageDirectory(),
+				BACKUPS_DIRECTORY
+			);
+			directory.mkdirs();
+
+			Date current_date = new Date();
+			SimpleDateFormat file_suffix_format = new SimpleDateFormat(
+				"yyyy-MM-dd-HH-mm-ss",
+				Locale.US
+			);
+			String file_suffix = file_suffix_format.format(current_date);
+
+			File file = new File(
+				directory,
+				"database_dump_" + file_suffix + ".xml"
+			);
+			FileWriter writter = new FileWriter(file);
+			try {
+				XmlSerializer serializer = Xml.newSerializer();
+				serializer.setOutput(writter);
+				serializer.setFeature(
+					"http://xmlpull.org/v1/doc/features.html#indent-output",
+					true
+				);
+				/*serializer.setProperty(
+					"http://xmlpull.org/v1/doc/properties.html"
+						+ "#serializer-indentation",
+					"\t"
+				);*/
+				serializer.startDocument("utf-8", true);
+				serializer.startTag("", "spendings");
+
+				SimpleDateFormat date_format = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss",
+					Locale.US
+				);
+				boolean moved = cursor.moveToFirst();
+				while (moved) {
+					serializer.startTag("", "spending");
+
+					Date date = new Date(cursor.getLong(0) * 1000L);
+					String formatted_date = date_format.format(date);
+					serializer.attribute("", "date", formatted_date);
+
+					serializer.attribute(
+						"",
+						"amount",
+						String.valueOf(cursor.getDouble(1))
+					);
+					serializer.attribute("", "comment", cursor.getString(2));
+					serializer.endTag("", "spending");
+
+					moved = cursor.moveToNext();
+				}
+
+				serializer.endTag("", "spendings");
+				serializer.endDocument();
+			} finally {
+				writter.close();
+			}
+		} catch (IOException exception) {}
+
+		database.close();
+	}
+
+	private static final long DAYS_IN_MY_YEAR = 300;
+	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
+
+	private Context context;
+
+	private SQLiteDatabase getDatabase() {
+		DatabaseHelper database_helper = new DatabaseHelper(context);
+		return database_helper.getWritableDatabase();
+	}
+
+	private String formatDateAsMine(long timestamp, long start_timestamp) {
+		timestamp = resetTimestampToDayBegin(timestamp);
+
+		long days = (timestamp - start_timestamp) / (24 * 60 * 60);
+		long day = days % DAYS_IN_MY_YEAR + 1;
+		long year = days / DAYS_IN_MY_YEAR + 1;
+
+		return
+			(day < 10 ? "0" : "") + String.valueOf(day) + "."
+			+ (year < 10 ? "0" : "") + String.valueOf(year) + ".";
+	}
+
+	private long resetTimestampToDayBegin(long timestamp) {
+		Calendar time = Calendar.getInstance();
+		time.setTimeInMillis(timestamp * 1000L);
+		time.set(Calendar.HOUR_OF_DAY, 0);
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+
+		return time.getTimeInMillis() / 1000L;
+	}
+}
