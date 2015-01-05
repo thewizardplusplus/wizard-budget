@@ -67,7 +67,7 @@ public class SpendingManager {
 
 		Cursor spendings_cursor = database.query(
 			"spendings",
-			new String[]{"timestamp", "amount", "comment"},
+			new String[]{"_id", "timestamp", "amount", "comment"},
 			null,
 			null,
 			null,
@@ -80,15 +80,16 @@ public class SpendingManager {
 		while (moved) {
 			try {
 				JSONObject spending = new JSONObject();
+				spending.put("id", spendings_cursor.getDouble(0));
 				spending.put(
 					"date",
 					formatDateAsMine(
-						spendings_cursor.getLong(0),
+						spendings_cursor.getLong(1),
 						start_timestamp
 					)
 				);
-				spending.put("amount", spendings_cursor.getDouble(1));
-				spending.put("comment", spendings_cursor.getString(2));
+				spending.put("amount", spendings_cursor.getDouble(2));
+				spending.put("comment", spendings_cursor.getString(3));
 
 				spendings.put(spending);
 			} catch (JSONException exception) {}
