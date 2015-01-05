@@ -4,6 +4,10 @@
 	text-transform: uppercase;
 }
 
+.underline {
+	text-decoration: underline;
+}
+
 ol {
 	font-size: 14px;
 	color: #777;
