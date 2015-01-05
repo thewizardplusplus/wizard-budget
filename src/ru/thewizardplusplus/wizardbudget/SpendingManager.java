@@ -7,9 +7,11 @@ import java.io.*;
 import org.json.*;
 import org.xmlpull.v1.*;
 
+import android.app.*;
 import android.content.*;
-import android.database.sqlite.*;
 import android.database.*;
+import android.database.sqlite.*;
+import android.net.Uri;
 import android.os.*;
 import android.util.*;
 import android.webkit.*;
@@ -193,6 +195,16 @@ public class SpendingManager {
 
 				serializer.endTag("", "spendings");
 				serializer.endDocument();
+
+				DateFormat notification_timestamp_format = DateFormat
+					.getDateInstance(DateFormat.DEFAULT, Locale.US);
+				String notification_timestamp = notification_timestamp_format
+					.format(current_date);
+				showBackupNotification(
+					context.getString(R.string.app_name),
+					"Backuped at " + notification_timestamp + ".",
+					file
+				);
 			} finally {
 				writter.close();
 			}
@@ -201,8 +213,9 @@ public class SpendingManager {
 		database.close();
 	}
 
-	private static final long DAYS_IN_MY_YEAR = 300;
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
+	private static final long DAYS_IN_MY_YEAR = 300;
+	private static final int NOTIFICATION_ID = 0;
 
 	private Context context;
 
@@ -231,5 +244,35 @@ public class SpendingManager {
 		time.set(Calendar.SECOND, 0);
 
 		return time.getTimeInMillis() / 1000L;
+	}
+
+	public void showBackupNotification(
+		String title,
+		String message,
+		File file
+	) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(file), "text/xml");
+		PendingIntent pending_intent = PendingIntent.getActivity(
+			context,
+			0,
+			intent,
+			0
+		);
+
+		@SuppressWarnings("deprecation")
+		Notification notification = new Notification.Builder(context)
+			.setTicker(title)
+			.setSmallIcon(R.drawable.app_icon)
+			.setContentTitle(title)
+			.setContentText(message)
+			.setContentIntent(pending_intent)
+			.getNotification();
+
+		NotificationManager notifications = (NotificationManager)context
+			.getSystemService(
+				Context.NOTIFICATION_SERVICE
+			);
+		notifications.notify(NOTIFICATION_ID, notification);
 	}
 }

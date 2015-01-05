@@ -1,5 +1,10 @@
 @charset "utf-8";
 
-.bar img {
-	height: 100%;
+.uppercase {
+	text-transform: uppercase;
+}
+
+ol {
+	font-size: 14px;
+	color: #777;
 }
