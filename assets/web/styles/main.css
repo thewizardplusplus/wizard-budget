@@ -1,5 +1,17 @@
 @charset "utf-8";
 
+.spendings-sum-view {
+	font-weight: bold;
+}
+
+.spendings-sum-view.excess {
+	color: #9c0;
+}
+
+.spendings-sum-view.lack {
+	color: #f44;
+}
+
 .uppercase {
 	text-transform: uppercase;
 }

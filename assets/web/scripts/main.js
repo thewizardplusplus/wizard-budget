@@ -5,9 +5,15 @@ $(document).ready(
 			$('.backdrop').get(0).dispatchEvent(event);
 		}
 		function UpdateSpendingList() {
+			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
-			$('.spendings-sum-view').text(spendings_sum);
-			
+			spendings_sum_view.text(spendings_sum);
+			if (spendings_sum <= 0) {
+				spendings_sum_view.addClass('excess').removeClass('lack');
+			} else {
+				spendings_sum_view.addClass('lack').removeClass('excess');
+			}
+
 			var spending_list = $('.spending-list');
 			spending_list.empty();
 
