@@ -12,6 +12,18 @@
 	color: #f44;
 }
 
+.media-object .fa {
+	width: 40px;
+}
+
+.media-body p {
+	margin-right: 55px;
+}
+
+.table-view-cell > .second-list-button {
+	right: 65px;
+}
+
 .uppercase {
 	text-transform: uppercase;
 }

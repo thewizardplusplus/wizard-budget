@@ -23,7 +23,9 @@ $(document).ready(
 		        function(spending) {
 					spending_list.append(
 						'<li class = "table-view-cell media">'
-						    + '<span class = "media-object pull-left">'
+							+ '<button class = "btn second-list-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-edit"></i></button>'
+							+ '<button class = "btn" data-spending-id = "' + spending.id + '"><i class = "fa fa-remove"></i></button>'
+							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
 							        + (spending.amount > 0
 								        ? 'shopping-cart'
@@ -31,7 +33,7 @@ $(document).ready(
 									+ ' fa-2x"></i>'
 							    + '</span>'
 							+ '<div class = "media-body">'
-							    + '<p><strong>' + spending.date + ':</strong></p>'
+								+ '<p><strong>' + spending.date + ':</strong></p>'
 				                + '<p>'
 							        + spending.amount + ' <i class = "fa fa-ruble"></i>'
 								    + (spending.comment.length
