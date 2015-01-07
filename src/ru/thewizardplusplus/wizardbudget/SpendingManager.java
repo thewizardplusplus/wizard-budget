@@ -114,6 +114,13 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public void removeSpending(int id) {
+		SQLiteDatabase database = getDatabase();
+		database.delete("spendings", "_id = ?", new String[]{String.valueOf(id)});
+		database.close();
+	}
+
+	@JavascriptInterface
 	public void removeLastSpending() {
 		SQLiteDatabase database = getDatabase();
 		database.delete(
