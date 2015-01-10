@@ -52,7 +52,7 @@ $(document).ready(
 			$('.remove-spending-button', remove_dialog).click(
 				function() {
 					if ($.type(active_spending_id) !== "null") {
-						spending_manager.removeSpending(parseInt(active_spending_id));
+						spending_manager.deleteSpending(parseInt(active_spending_id));
 						active_spending_id = null;
 
 						PUSH({url: 'history.html'});
@@ -108,7 +108,7 @@ $(document).ready(
 				    var comment = comment_editor.val();
 				    comment_editor.val('');
 
-				    spending_manager.addSpending(amount, comment);
+				    spending_manager.createSpending(amount, comment);
 				    
 					PUSH({url: 'history.html'});
 	            }

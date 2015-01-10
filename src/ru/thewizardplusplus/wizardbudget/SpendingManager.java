@@ -102,7 +102,7 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void addSpending(double amount, String comment) {
+	public void createSpending(double amount, String comment) {
 		ContentValues values = new ContentValues();
 		values.put("timestamp", System.currentTimeMillis() / 1000L);
 		values.put("amount", amount);
@@ -114,7 +114,18 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void removeSpending(int id) {
+	public void updateSpending(int id, double amount, String comment) {
+		ContentValues values = new ContentValues();
+		values.put("amount", amount);
+		values.put("comment", comment);
+
+		SQLiteDatabase database = getDatabase();
+		database.update("spendings", values, "_id = ?", new String[]{String.valueOf(id)});
+		database.close();
+	}
+
+	@JavascriptInterface
+	public void deleteSpending(int id) {
 		SQLiteDatabase database = getDatabase();
 		database.delete("spendings", "_id = ?", new String[]{String.valueOf(id)});
 		database.close();
