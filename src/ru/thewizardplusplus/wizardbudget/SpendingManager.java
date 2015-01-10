@@ -121,17 +121,6 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void removeLastSpending() {
-		SQLiteDatabase database = getDatabase();
-		database.delete(
-			"spendings",
-			"timestamp = (SELECT MAX(timestamp) FROM spendings)",
-			null
-		);
-		database.close();
-	}
-
-	@JavascriptInterface
 	public void backup() {
 		SQLiteDatabase database = getDatabase();
 		Cursor cursor = database.query(

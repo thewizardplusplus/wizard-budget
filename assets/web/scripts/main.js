@@ -84,13 +84,6 @@ $(document).ready(
 			);
 		}
 		function UpdateControlButtons() {
-		    $('.remove-last-spending-button').click(
-			    function() {
-				    spending_manager.removeLastSpending();
-				    UpdateSpendingList();
-					HideMainMenu();
-		        }
-		    );
 		    $('.backup-button').click(
 			    function() {
 				    spending_manager.backup();
