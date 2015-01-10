@@ -1,12 +1,12 @@
 $(document).ready(
 	function() {
-		var active_spending_id = -1;
+		var active_spending_id = null;
 
 		function HideMainMenu() {
 			var event = new CustomEvent('touchend');
 			$('.backdrop').get(0).dispatchEvent(event);
 		}
-		function UpdateSpendingList() {
+		function UpdateSpendingList(add_remove_spending_handler) {
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
 			spendings_sum_view.text(spendings_sum);
@@ -49,10 +49,25 @@ $(document).ready(
 			);
 
 			var remove_dialog = $('#remove-dialog');
+			if (add_remove_spending_handler !== false) {
+				$('.remove-spending-button', remove_dialog).click(
+					function() {
+						if ($.type(active_spending_id) !== "null") {
+							spending_manager.removeSpending(parseInt(active_spending_id));
+							active_spending_id = null;
+
+							remove_dialog.removeClass('active');
+							spending_list.empty();
+							UpdateSpendingList(false);
+						}
+					}
+				);
+			}
 			var remove_dialog_date_view = $('.date-view', remove_dialog);
 			var remove_dialog_amount_view = $('.amount-view', remove_dialog);
 			var remove_dialog_comment_view = $('.comment-view', remove_dialog);
-			$('.remove-spending-button').click(
+
+			$('.remove-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
 					active_spending_id = button.data('spending-id');
