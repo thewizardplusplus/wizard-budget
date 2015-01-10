@@ -1,6 +1,8 @@
 $(document).ready(
 	function() {
 		var active_spending_id = null;
+		var active_spending_amount = null;
+		var active_spending_comment = null;
 
 		function HideMainMenu() {
 			var event = new CustomEvent('touchend');
@@ -25,7 +27,7 @@ $(document).ready(
 		        function(spending) {
 					spending_list.append(
 						'<li class = "table-view-cell media">'
-							+ '<button class = "btn second-list-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-pencil"></i></button>'
+							+ '<button class = "btn second-list-button edit-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-pencil"></i></button>'
 							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-trash"></i></button>'
 							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
@@ -63,6 +65,18 @@ $(document).ready(
 			var remove_dialog_amount_view = $('.amount-view', remove_dialog);
 			var remove_dialog_comment_view = $('.comment-view', remove_dialog);
 
+			$('.edit-spending-button', spending_list).click(
+				function() {
+					var button = $(this);
+					active_spending_id = button.data('spending-id');
+
+					var list_item = button.parent();
+					active_spending_amount = $('.amount-view', list_item).text();
+					active_spending_comment = $('.comment-view', list_item).text();
+
+					PUSH({url: 'editor.html'});
+				}
+			);
 			$('.remove-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
@@ -95,20 +109,36 @@ $(document).ready(
 			UpdateControlButtons();
 			UpdateSpendingList();
 		}
-		function UpdateAddPage() {
+		function UpdateEditorPage() {
+			var spending_id = active_spending_id;
+			active_spending_id = null;
+
 			var amount_editor = $('.amount-editor');
+			if ($.type(active_spending_amount) !== "null") {
+				amount_editor.val(active_spending_amount);
+				active_spending_amount = null;
+			}
 			amount_editor.focus();
-					
-			$('.add-spending-button').click(
+
+			var comment_editor = $('.comment-editor');
+			if ($.type(active_spending_comment) !== "null") {
+				comment_editor.val(active_spending_comment);
+				active_spending_comment = null;
+			}
+
+			$('header .edit-spending-button').click(
 		        function() {
 			        var amount = parseFloat(amount_editor.val());
 			    	amount_editor.val('');
 
-				    var comment_editor = $('.comment-editor');
 				    var comment = comment_editor.val();
 				    comment_editor.val('');
 
-				    spending_manager.createSpending(amount, comment);
+					if ($.type(spending_id) === "null") {
+				    	spending_manager.createSpending(amount, comment);
+					} else {
+						spending_manager.updateSpending(parseInt(spending_id), amount, comment);
+					}
 				    
 					PUSH({url: 'history.html'});
 	            }
@@ -120,8 +150,8 @@ $(document).ready(
 		    function(event) {
 				if (/\bhistory\b/.test(event.detail.state.url)) {
 					UpdateIndexPage();
-				} else if (/\badd\b/.test(event.detail.state.url)) {
-					UpdateAddPage();
+				} else if (/\beditor\b/.test(event.detail.state.url)) {
+					UpdateEditorPage();
 				}
 			}
 		);
