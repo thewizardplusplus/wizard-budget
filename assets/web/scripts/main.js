@@ -25,8 +25,8 @@ $(document).ready(
 		        function(spending) {
 					spending_list.append(
 						'<li class = "table-view-cell media">'
-							+ '<button class = "btn second-list-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-edit"></i></button>'
-							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-remove"></i></button>'
+							+ '<button class = "btn second-list-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-pencil"></i></button>'
+							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-trash"></i></button>'
 							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
 							        + (spending.amount > 0
