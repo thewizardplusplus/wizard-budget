@@ -113,6 +113,15 @@ $(document).ready(
 			var spending_id = active_spending_id;
 			active_spending_id = null;
 
+			var edit_spending_button = $('header .edit-spending-button');
+			if ($.type(spending_id) === "null") {
+				$('.button-icon', edit_spending_button).removeClass('fa-save').addClass('fa-plus');
+				$('.button-text', edit_spending_button).text('Add');
+			} else {
+				$('.button-icon', edit_spending_button).removeClass('fa-plus').addClass('fa-save');
+				$('.button-text', edit_spending_button).text('Save');
+			}
+
 			var amount_editor = $('.amount-editor');
 			if ($.type(active_spending_amount) !== "null") {
 				amount_editor.val(active_spending_amount);
@@ -126,7 +135,7 @@ $(document).ready(
 				active_spending_comment = null;
 			}
 
-			$('header .edit-spending-button').click(
+			edit_spending_button.click(
 		        function() {
 			        var amount = parseFloat(amount_editor.val());
 			    	amount_editor.val('');
