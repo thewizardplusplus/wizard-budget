@@ -1,5 +1,7 @@
 $(document).ready(
 	function() {
+		var active_spending_id = -1;
+
 		function HideMainMenu() {
 			var event = new CustomEvent('touchend');
 			$('.backdrop').get(0).dispatchEvent(event);
@@ -24,7 +26,7 @@ $(document).ready(
 					spending_list.append(
 						'<li class = "table-view-cell media">'
 							+ '<button class = "btn second-list-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-edit"></i></button>'
-							+ '<button class = "btn" data-spending-id = "' + spending.id + '"><i class = "fa fa-remove"></i></button>'
+							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-remove"></i></button>'
 							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
 							        + (spending.amount > 0
@@ -33,16 +35,40 @@ $(document).ready(
 									+ ' fa-2x"></i>'
 							    + '</span>'
 							+ '<div class = "media-body">'
-								+ '<p><strong>' + spending.date + ':</strong></p>'
+								+ '<p><strong><span class = "date-view">' + spending.date + '</span>:</strong></p>'
 				                + '<p>'
-							        + spending.amount + ' <i class = "fa fa-ruble"></i>'
+							        + '<span class = "amount-view">' + spending.amount + '</span> <i class = "fa fa-ruble"></i>'
 								    + (spending.comment.length
-								        ? ' &mdash; <em>' + spending.comment + '</em>'
+								        ? ' &mdash; <em><span class = "comment-view">' + spending.comment + '</span></em>'
 									    : '')
 							    + '.</p>'
 							+ '</div>'
 						+ '</li>'
 					);
+				}
+			);
+
+			var remove_dialog = $('#remove-dialog');
+			var remove_dialog_date_view = $('.date-view', remove_dialog);
+			var remove_dialog_amount_view = $('.amount-view', remove_dialog);
+			var remove_dialog_comment_view = $('.comment-view', remove_dialog);
+			$('.remove-spending-button').click(
+				function() {
+					var button = $(this);
+					active_spending_id = button.data('spending-id');
+
+					var list_item = button.parent();
+					var date = $('.date-view', list_item).text();
+					var amount = $('.amount-view', list_item).text();
+					var comment = $('.comment-view', list_item).text();
+
+					remove_dialog_date_view.text(date);
+					remove_dialog_amount_view.text(amount);
+					if (comment.length) {
+						remove_dialog_comment_view.html(' &mdash; ' + comment);
+					}
+
+					remove_dialog.addClass('active');
 				}
 			);
 		}
