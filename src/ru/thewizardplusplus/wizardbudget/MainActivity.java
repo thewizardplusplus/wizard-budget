@@ -6,6 +6,8 @@ import android.webkit.*;
 import android.widget.*;
 import android.content.*;
 import android.appwidget.*;
+import android.net.*;
+import java.io.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -27,5 +29,76 @@ public class MainActivity extends Activity {
 		RemoteViews views = Widget.getUpdatedViews(this);
 		ComponentName widget = new ComponentName(this, Widget.class);
 		AppWidgetManager.getInstance(this).updateAppWidget(widget, views);
+	}
+
+	@JavascriptInterface
+	public void selectBackupForRestore() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("text/xml");
+
+		startActivityForResult(intent, FILE_SELECT_CODE);
+	}
+
+	@Override
+	protected void onActivityResult(
+		int request_code,
+		int result_code,
+		Intent data
+	) {
+		if (
+			request_code == FILE_SELECT_CODE
+			&& result_code == Activity.RESULT_OK
+			) {
+			Uri uri = data.getData();
+			if (uri != null) {
+				String path = uri.getPath();
+				if (path != null) {
+					String[] path_parts = path.split(":");
+					restoreBackup(
+						Environment.getExternalStorageDirectory()
+						+ "/"
+						+ path_parts[path_parts.length > 1 ? 1 : 0]
+					);
+				}
+			}
+		}
+	}
+
+	private static final int FILE_SELECT_CODE = 1;
+
+	private void restoreBackup(String filename) {
+		File backup_file = new File(filename);
+		InputStream in = null;
+		try {
+			try {
+				in = new BufferedInputStream(new FileInputStream(backup_file));
+
+				SpendingManager spending_manager = new SpendingManager(this);
+				//spending_manager.setDataFromFile(in);
+			} finally {
+				if (in != null) {
+					in.close();
+				}
+			}
+		} catch (IOException exception) {
+			showAlertDialog(
+				getString(R.string.error_message_box_title),
+				getString(R.string.restore_backup_error_message)
+			);
+		}
+	}
+
+	private void showAlertDialog(String title, String message) {
+		AlertDialog dialog = new AlertDialog.Builder(this)
+			.setTitle(title)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setMessage(message)
+			.create();
+		dialog.setButton(
+			AlertDialog.BUTTON_POSITIVE,
+			getString(android.R.string.ok),
+			(Message)null
+		);
+		dialog.show();
 	}
 }

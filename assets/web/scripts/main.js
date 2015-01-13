@@ -107,6 +107,12 @@ $(document).ready(
 					HideMainMenu();
 		        }
 		    );
+			$('.restore-button').click(
+			    function() {
+				    activity.selectBackupForRestore();
+					HideMainMenu();
+		        }
+		    );
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
