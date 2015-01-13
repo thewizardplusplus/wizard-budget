@@ -1,4 +1,7 @@
 <?xml version = "1.0" encoding = "utf-8" ?>
 <resources>
 	<string name = "app_name">Wizard Budget</string>
+	<string name = "widget_label_text">Spendings sum:</string>
+	<string name = "zero">0.0</string>
+	<string name = "widget_spending_units">\u00a0RUB.</string>
 </resources>

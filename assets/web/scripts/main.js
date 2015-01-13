@@ -56,6 +56,7 @@ $(document).ready(
 				function() {
 					if ($.type(active_spending_id) !== "null") {
 						spending_manager.deleteSpending(active_spending_id);
+						activity.updateWidget();
 						active_spending_id = null;
 
 						PUSH({url: 'history.html'});
@@ -162,6 +163,7 @@ $(document).ready(
 					} else {
 						spending_manager.updateSpending(spending_id, amount, comment);
 					}
+					activity.updateWidget();
 				    
 					PUSH({url: 'history.html'});
 	            }

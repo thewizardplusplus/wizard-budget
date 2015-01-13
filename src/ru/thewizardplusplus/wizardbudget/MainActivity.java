@@ -3,6 +3,9 @@ package ru.thewizardplusplus.wizardbudget;
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
+import android.widget.*;
+import android.content.*;
+import android.appwidget.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -16,5 +19,13 @@ public class MainActivity extends Activity {
 
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
+		web_view.addJavascriptInterface(this, "activity");
+	}
+
+	@JavascriptInterface
+	public void updateWidget() {
+		RemoteViews views = Widget.getUpdatedViews(this);
+		ComponentName widget = new ComponentName(this, Widget.class);
+		AppWidgetManager.getInstance(this).updateAppWidget(widget, views);
 	}
 }
