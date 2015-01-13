@@ -54,7 +54,7 @@ $(document).ready(
 			$('.remove-spending-button', remove_dialog).click(
 				function() {
 					if ($.type(active_spending_id) !== "null") {
-						spending_manager.deleteSpending(parseInt(active_spending_id));
+						spending_manager.deleteSpending(active_spending_id);
 						active_spending_id = null;
 
 						PUSH({url: 'history.html'});
@@ -68,7 +68,7 @@ $(document).ready(
 			$('.edit-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
-					active_spending_id = button.data('spending-id');
+					active_spending_id = parseInt(button.data('spending-id'));
 
 					var list_item = button.parent();
 					active_spending_amount = $('.amount-view', list_item).text();
@@ -80,7 +80,7 @@ $(document).ready(
 			$('.remove-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
-					active_spending_id = button.data('spending-id');
+					active_spending_id = parseInt(button.data('spending-id'));
 
 					var list_item = button.parent();
 					var date = $('.date-view', list_item).text();
@@ -146,7 +146,7 @@ $(document).ready(
 					if ($.type(spending_id) === "null") {
 				    	spending_manager.createSpending(amount, comment);
 					} else {
-						spending_manager.updateSpending(parseInt(spending_id), amount, comment);
+						spending_manager.updateSpending(spending_id, amount, comment);
 					}
 				    
 					PUSH({url: 'history.html'});
