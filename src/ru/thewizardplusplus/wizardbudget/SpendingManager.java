@@ -15,6 +15,9 @@ import android.net.Uri;
 import android.os.*;
 import android.util.*;
 import android.webkit.*;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import org.xml.sax.*;
 
 public class SpendingManager {
 	public SpendingManager(Context context) {
@@ -221,6 +224,73 @@ public class SpendingManager {
 		database.close();
 	}
 
+	public void restore(InputStream in) {
+		String sql = "";
+		try {
+			Element history = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.parse(in)
+				.getDocumentElement();
+			history.normalize();
+			NodeList days = history.getElementsByTagName("day");
+			for (int i = 0; i < days.getLength(); i++) {
+				if (days.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element day = (Element)days.item(i);
+					if (!day.hasAttribute("date")) {
+						continue;
+					}
+
+					NodeList foods = day.getElementsByTagName("food");
+					for (int j = 0; j < foods.getLength(); j++) {
+						if (foods.item(j).getNodeType() == Node.ELEMENT_NODE) {
+							Element food = (Element)foods.item(j);
+							if (
+								!food.hasAttribute("weight")
+								|| !food.hasAttribute("calories")
+								) {
+								continue;
+							}
+
+							if (!sql.isEmpty()) {
+								sql += ",";
+							}
+							sql += "("
+								+ food.getAttribute("weight") + ","
+								+ food.getAttribute("calories") + ","
+								+ "'" + day.getAttribute("date") + "'"
+								+ ")";
+						}
+					}
+				}
+			}
+		} catch (ParserConfigurationException exception) {
+			processRestoreException();
+			return;
+		} catch (SAXException exception) {
+			processRestoreException();
+			return;
+		} catch (IOException exception) {
+			processRestoreException();
+			return;
+		} catch (DOMException exception) {
+			processRestoreException();
+			return;
+		}
+
+		/*if (!sql.isEmpty()) {
+			SQLiteDatabase database = database_helper.getWritableDatabase();
+			database.execSQL("DELETE FROM day_data_list");
+			database.execSQL(
+				"INSERT INTO day_data_list"
+				+ "(weight, calories, date)"
+				+ "VALUES" + sql
+			);
+
+			database.close();
+		}*/
+	}
+
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
 	private static final long DAYS_IN_MY_YEAR = 300;
 	private static final int NOTIFICATION_ID = 0;
@@ -282,5 +352,13 @@ public class SpendingManager {
 				Context.NOTIFICATION_SERVICE
 			);
 		notifications.notify(NOTIFICATION_ID, notification);
+	}
+
+	private void processRestoreException() {
+		Utils.showAlertDialog(
+			context,
+			context.getString(R.string.error_message_box_title),
+			context.getString(R.string.restore_backup_error_message)
+		);
 	}
 }

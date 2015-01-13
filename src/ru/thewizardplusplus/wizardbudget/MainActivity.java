@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 				in = new BufferedInputStream(new FileInputStream(backup_file));
 
 				SpendingManager spending_manager = new SpendingManager(this);
-				//spending_manager.setDataFromFile(in);
+				spending_manager.restore(in);
 			} finally {
 				if (in != null) {
 					in.close();
