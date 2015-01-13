@@ -3,6 +3,7 @@ $(document).ready(
 		var active_spending_id = null;
 		var active_spending_amount = null;
 		var active_spending_comment = null;
+		var active_spending_income_flag = null;
 
 		function HideMainMenu() {
 			var event = new CustomEvent('touchend');
@@ -27,7 +28,7 @@ $(document).ready(
 		        function(spending) {
 					spending_list.append(
 						'<li class = "table-view-cell media">'
-							+ '<button class = "btn second-list-button edit-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-pencil"></i></button>'
+							+ '<button class = "btn second-list-button edit-spending-button" data-spending-id = "' + spending.id + '" data-income = "' + (spending.amount < 0 ? 'true' : 'false') + '"><i class = "fa fa-pencil"></i></button>'
 							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-trash"></i></button>'
 							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
@@ -39,7 +40,7 @@ $(document).ready(
 							+ '<div class = "media-body">'
 								+ '<p><strong><span class = "date-view">' + spending.date + '</span>:</strong></p>'
 				                + '<p>'
-							        + '<span class = "amount-view">' + spending.amount + '</span> <i class = "fa fa-ruble"></i>'
+							        + '<span class = "amount-view">' + Math.abs(spending.amount) + '</span> <i class = "fa fa-ruble"></i>'
 								    + (spending.comment.length
 								        ? ' &mdash; <em><span class = "comment-view">' + spending.comment + '</span></em>'
 									    : '')
@@ -69,6 +70,7 @@ $(document).ready(
 				function() {
 					var button = $(this);
 					active_spending_id = parseInt(button.data('spending-id'));
+					active_spending_income_flag = button.data('income') ? true : null;
 
 					var list_item = button.parent();
 					active_spending_amount = $('.amount-view', list_item).text();
@@ -135,13 +137,25 @@ $(document).ready(
 				active_spending_comment = null;
 			}
 
+			var income_flag = $('.income-flag');
+			if ($.type(active_spending_income_flag) !== "null") {
+				if (active_spending_income_flag) {
+					income_flag.addClass('active');
+				}
+				active_spending_income_flag = null;
+			}
+
 			edit_spending_button.click(
 		        function() {
-			        var amount = parseFloat(amount_editor.val());
+			        var amount = Math.abs(parseFloat(amount_editor.val()));
 			    	amount_editor.val('');
 
 				    var comment = comment_editor.val();
 				    comment_editor.val('');
+
+					if (income_flag.hasClass('active')) {
+						amount *= -1;
+					}
 
 					if ($.type(spending_id) === "null") {
 				    	spending_manager.createSpending(amount, comment);
