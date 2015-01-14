@@ -24,6 +24,11 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(this, "activity");
 	}
 
+	@Override
+	public void onBackPressed() {
+		callGuiFunction("back");
+	}
+
 	@JavascriptInterface
 	public void updateWidget() {
 		RemoteViews views = Widget.getUpdatedViews(this);
@@ -37,6 +42,11 @@ public class MainActivity extends Activity {
 		intent.setType("text/xml");
 
 		startActivityForResult(intent, FILE_SELECT_CODE);
+	}
+
+	@JavascriptInterface
+	public void quit() {
+		finish();
 	}
 
 	@Override
@@ -60,14 +70,18 @@ public class MainActivity extends Activity {
 						+ path_parts[path_parts.length > 1 ? 1 : 0]
 					);
 
-					WebView web_view = (WebView)findViewById(R.id.web_view);
-					web_view.loadUrl("javascript:GUI.refresh()");
+					callGuiFunction("refresh");
 				}
 			}
 		}
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
+
+	private void callGuiFunction(String name) {
+		WebView web_view = (WebView)findViewById(R.id.web_view);
+		web_view.loadUrl("javascript:GUI." + name + "()");
+	}
 
 	private void restoreBackup(String filename) {
 		File backup_file = new File(filename);

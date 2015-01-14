@@ -1,7 +1,25 @@
 var GUI = {
+	hideMainMenu: function() {
+		var event = new CustomEvent('touchend');
+		$('.backdrop').get(0).dispatchEvent(event);
+	},
 	refresh: function() {
 		activity.updateWidget();
 		PUSH({url: 'history.html'});
+	},
+	back: function() {
+		if (!/\bhistory\b/.test(window.location)) {
+			PUSH({url: 'history.html'});
+		} else {
+			var remove_dialog = $('#remove-dialog');
+			if (remove_dialog.hasClass('active')) {
+				remove_dialog.removeClass('active');
+			} else if ($('.popover').hasClass('visible')) {
+				this.hideMainMenu();
+			} else {
+				activity.quit();
+			}
+		}
 	}
 };
 
@@ -12,10 +30,6 @@ $(document).ready(
 		var active_spending_comment = null;
 		var active_spending_income_flag = null;
 
-		function HideMainMenu() {
-			var event = new CustomEvent('touchend');
-			$('.backdrop').get(0).dispatchEvent(event);
-		}
 		function UpdateSpendingList() {
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
@@ -111,13 +125,13 @@ $(document).ready(
 		    $('.backup-button').click(
 			    function() {
 				    spending_manager.backup();
-					HideMainMenu();
+					GUI.hideMainMenu();
 		        }
 		    );
 			$('.restore-button').click(
 			    function() {
 				    activity.selectBackupForRestore();
-					HideMainMenu();
+					GUI.hideMainMenu();
 		        }
 		    );
 		}
