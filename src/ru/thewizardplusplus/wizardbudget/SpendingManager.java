@@ -211,7 +211,7 @@ public class SpendingManager {
 					.getDateInstance(DateFormat.DEFAULT, Locale.US);
 				String notification_timestamp = notification_timestamp_format
 					.format(current_date);
-				showBackupNotification(
+				showNotification(
 					context.getString(R.string.app_name),
 					"Backuped at " + notification_timestamp + ".",
 					file
@@ -227,68 +227,61 @@ public class SpendingManager {
 	public void restore(InputStream in) {
 		String sql = "";
 		try {
-			Element history = DocumentBuilderFactory
+			Element spendings = DocumentBuilderFactory
 				.newInstance()
 				.newDocumentBuilder()
 				.parse(in)
 				.getDocumentElement();
-			history.normalize();
-			NodeList days = history.getElementsByTagName("day");
-			for (int i = 0; i < days.getLength(); i++) {
-				if (days.item(i).getNodeType() == Node.ELEMENT_NODE) {
-					Element day = (Element)days.item(i);
-					if (!day.hasAttribute("date")) {
+			spendings.normalize();
+			NodeList spending_list = spendings.getElementsByTagName("spending");
+			for (int i = 0; i < spending_list.getLength(); i++) {
+				if (spending_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element spending = (Element)spending_list.item(i);
+					if (!spending.hasAttribute("date") || !spending.hasAttribute("amount") || !spending.hasAttribute("comment")) {
 						continue;
 					}
 
-					NodeList foods = day.getElementsByTagName("food");
-					for (int j = 0; j < foods.getLength(); j++) {
-						if (foods.item(j).getNodeType() == Node.ELEMENT_NODE) {
-							Element food = (Element)foods.item(j);
-							if (
-								!food.hasAttribute("weight")
-								|| !food.hasAttribute("calories")
-								) {
-								continue;
-							}
-
-							if (!sql.isEmpty()) {
-								sql += ",";
-							}
-							sql += "("
-								+ food.getAttribute("weight") + ","
-								+ food.getAttribute("calories") + ","
-								+ "'" + day.getAttribute("date") + "'"
-								+ ")";
-						}
+					if (!sql.isEmpty()) {
+						sql += ",";
 					}
+					sql += "("
+							+ "(SELECT datetime('" + spending.getAttribute("date") + "')),"
+							+ spending.getAttribute("amount") + ","
+							+ DatabaseUtils.sqlEscapeString(spending.getAttribute("comment"))
+						+ ")";
 				}
 			}
 		} catch (ParserConfigurationException exception) {
-			processRestoreException();
 			return;
 		} catch (SAXException exception) {
-			processRestoreException();
 			return;
 		} catch (IOException exception) {
-			processRestoreException();
 			return;
 		} catch (DOMException exception) {
-			processRestoreException();
 			return;
 		}
 
-		/*if (!sql.isEmpty()) {
-			SQLiteDatabase database = database_helper.getWritableDatabase();
-			database.execSQL("DELETE FROM day_data_list");
+		if (!sql.isEmpty()) {
+			SQLiteDatabase database = getDatabase();
+			database.execSQL("DELETE FROM spendings");
 			database.execSQL(
-				"INSERT INTO day_data_list"
-				+ "(weight, calories, date)"
+				"INSERT INTO spendings"
+				+ "(timestamp, amount, comment)"
 				+ "VALUES" + sql
 			);
-
 			database.close();
-		}*/
+
+			Date current_date = new Date();
+			DateFormat notification_timestamp_format = DateFormat
+				.getDateInstance(DateFormat.DEFAULT, Locale.US);
+			String notification_timestamp = notification_timestamp_format
+				.format(current_date);
+			showNotification(
+				context.getString(R.string.app_name),
+				"Restored at " + notification_timestamp + ".",
+				null
+			);
+		}
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
@@ -324,13 +317,18 @@ public class SpendingManager {
 		return time.getTimeInMillis() / 1000L;
 	}
 
-	public void showBackupNotification(
+	public void showNotification(
 		String title,
 		String message,
 		File file
 	) {
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(file), "text/xml");
+		Intent intent = null;
+		if (file != null) {
+			intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.fromFile(file), "text/xml");
+		} else {
+			intent = new Intent(context, MainActivity.class);
+		}
 		PendingIntent pending_intent = PendingIntent.getActivity(
 			context,
 			0,
@@ -352,13 +350,5 @@ public class SpendingManager {
 				Context.NOTIFICATION_SERVICE
 			);
 		notifications.notify(NOTIFICATION_ID, notification);
-	}
-
-	private void processRestoreException() {
-		Utils.showAlertDialog(
-			context,
-			context.getString(R.string.error_message_box_title),
-			context.getString(R.string.restore_backup_error_message)
-		);
 	}
 }

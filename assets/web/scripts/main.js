@@ -1,3 +1,10 @@
+var GUI = {
+	refresh: function() {
+		activity.updateWidget();
+		PUSH({url: 'history.html'});
+	}
+};
+
 $(document).ready(
 	function() {
 		var active_spending_id = null;

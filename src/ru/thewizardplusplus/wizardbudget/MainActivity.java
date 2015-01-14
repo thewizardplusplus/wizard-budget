@@ -59,6 +59,9 @@ public class MainActivity extends Activity {
 						+ "/"
 						+ path_parts[path_parts.length > 1 ? 1 : 0]
 					);
+
+					WebView web_view = (WebView)findViewById(R.id.web_view);
+					web_view.loadUrl("javascript:GUI.refresh()");
 				}
 			}
 		}
@@ -80,25 +83,6 @@ public class MainActivity extends Activity {
 					in.close();
 				}
 			}
-		} catch (IOException exception) {
-			showAlertDialog(
-				getString(R.string.error_message_box_title),
-				getString(R.string.restore_backup_error_message)
-			);
-		}
-	}
-
-	private void showAlertDialog(String title, String message) {
-		AlertDialog dialog = new AlertDialog.Builder(this)
-			.setTitle(title)
-			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setMessage(message)
-			.create();
-		dialog.setButton(
-			AlertDialog.BUTTON_POSITIVE,
-			getString(android.R.string.ok),
-			(Message)null
-		);
-		dialog.show();
+		} catch (IOException exception) {}
 	}
 }
