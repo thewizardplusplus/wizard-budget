@@ -84,13 +84,11 @@ public class SpendingManager {
 			try {
 				JSONObject spending = new JSONObject();
 				spending.put("id", spendings_cursor.getDouble(0));
-				spending.put(
-					"date",
-					formatDateAsMine(
-						spendings_cursor.getLong(1),
-						start_timestamp
-					)
-				);
+
+				long timestamp = spendings_cursor.getLong(1);
+				spending.put("date", formatDateAsMine(timestamp, start_timestamp));
+				spending.put("time", formatTime(timestamp));
+
 				spending.put("amount", spendings_cursor.getDouble(2));
 				spending.put("comment", spendings_cursor.getString(3));
 
@@ -304,7 +302,7 @@ public class SpendingManager {
 
 		return
 			(day < 10 ? "0" : "") + String.valueOf(day) + "."
-			+ (year < 10 ? "0" : "") + String.valueOf(year) + ".";
+			+ (year < 10 ? "0" : "") + String.valueOf(year);
 	}
 
 	private long resetTimestampToDayBegin(long timestamp) {
@@ -315,6 +313,12 @@ public class SpendingManager {
 		time.set(Calendar.SECOND, 0);
 
 		return time.getTimeInMillis() / 1000L;
+	}
+
+	private String formatTime(long timestamp) {
+		SimpleDateFormat date_format = new SimpleDateFormat("HH:mm:ss", Locale.US);
+		Date date = new Date(timestamp * 1000L);
+		return date_format.format(date);
 	}
 
 	public void showNotification(

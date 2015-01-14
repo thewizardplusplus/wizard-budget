@@ -59,7 +59,7 @@ $(document).ready(
 									+ ' fa-2x"></i>'
 							    + '</span>'
 							+ '<div class = "media-body">'
-								+ '<p><strong><span class = "date-view">' + spending.date + '</span>:</strong></p>'
+								+ '<p><span class = "underline"><strong><span class = "date-view">' + spending.date + '</span></strong> <span class = "time-view">' + spending.time + '</span>:</span></p>'
 				                + '<p>'
 							        + '<span class = "amount-view">' + Math.abs(spending.amount) + '</span> <i class = "fa fa-ruble"></i>'
 								    + (spending.comment.length
@@ -85,6 +85,7 @@ $(document).ready(
 				}
 			);
 			var remove_dialog_date_view = $('.date-view', remove_dialog);
+			var remove_dialog_time_view = $('.time-view', remove_dialog);
 			var remove_dialog_amount_view = $('.amount-view', remove_dialog);
 			var remove_dialog_comment_view = $('.comment-view', remove_dialog);
 
@@ -108,10 +109,12 @@ $(document).ready(
 
 					var list_item = button.parent();
 					var date = $('.date-view', list_item).text();
+					var time = $('.time-view', list_item).text();
 					var amount = $('.amount-view', list_item).text();
 					var comment = $('.comment-view', list_item).text();
 
 					remove_dialog_date_view.text(date);
+					remove_dialog_time_view.text(time);
 					remove_dialog_amount_view.text(amount);
 					if (comment.length) {
 						remove_dialog_comment_view.html(' &mdash; ' + comment);
