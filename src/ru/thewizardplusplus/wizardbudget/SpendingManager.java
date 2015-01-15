@@ -179,16 +179,12 @@ public class SpendingManager {
 				serializer.startDocument("utf-8", true);
 				serializer.startTag("", "spendings");
 
-				SimpleDateFormat date_format = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss",
-					Locale.US
-				);
 				boolean moved = cursor.moveToFirst();
 				while (moved) {
 					serializer.startTag("", "spending");
 
 					Date date = new Date(cursor.getLong(0) * 1000L);
-					String formatted_date = date_format.format(date);
+					String formatted_date = XML_DATE_FORMAT.format(date);
 					serializer.attribute("", "date", formatted_date);
 
 					serializer.attribute(
@@ -239,11 +235,19 @@ public class SpendingManager {
 						continue;
 					}
 
+					long timestamp = 0;
+					try {
+						Date date = XML_DATE_FORMAT.parse(spending.getAttribute("date"));
+						timestamp = date.getTime() / 1000L;
+					} catch (ParseException exception) {
+						continue;
+					}
+
 					if (!sql.isEmpty()) {
 						sql += ",";
 					}
 					sql += "("
-							+ "(SELECT datetime('" + spending.getAttribute("date") + "')),"
+							+ String.valueOf(timestamp) + ","
 							+ spending.getAttribute("amount") + ","
 							+ DatabaseUtils.sqlEscapeString(spending.getAttribute("comment"))
 						+ ")";
@@ -283,6 +287,10 @@ public class SpendingManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
+	private static final SimpleDateFormat XML_DATE_FORMAT = new SimpleDateFormat(
+		"yyyy-MM-dd HH:mm:ss",
+		Locale.US
+	);
 	private static final long DAYS_IN_MY_YEAR = 300;
 	private static final int NOTIFICATION_ID = 0;
 
