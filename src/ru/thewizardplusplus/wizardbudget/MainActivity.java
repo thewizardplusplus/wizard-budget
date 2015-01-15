@@ -11,20 +11,6 @@ import java.io.*;
 
 public class MainActivity extends Activity {
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-
-		WebView web_view = (WebView)findViewById(R.id.web_view);
-		web_view.getSettings().setJavaScriptEnabled(true);
-		web_view.loadUrl("file:///android_asset/web/index.html");
-
-		SpendingManager spending_manager = new SpendingManager(this);
-		web_view.addJavascriptInterface(spending_manager, "spending_manager");
-		web_view.addJavascriptInterface(this, "activity");
-	}
-
-	@Override
 	public void onBackPressed() {
 		callGuiFunction("back");
 	}
@@ -45,8 +31,34 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
+	public void openSettings() {
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+
+	@JavascriptInterface
 	public void quit() {
 		finish();
+	}
+
+	@Override
+	protected void onCreate(Bundle saved_instance_state) {
+		super.onCreate(saved_instance_state);
+		setContentView(R.layout.main);
+
+		WebView web_view = (WebView)findViewById(R.id.web_view);
+		web_view.getSettings().setJavaScriptEnabled(true);
+		web_view.loadUrl("file:///android_asset/web/index.html");
+
+		SpendingManager spending_manager = new SpendingManager(this);
+		web_view.addJavascriptInterface(spending_manager, "spending_manager");
+		web_view.addJavascriptInterface(this, "activity");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		callGuiFunction("refresh");
 	}
 
 	@Override
@@ -55,10 +67,7 @@ public class MainActivity extends Activity {
 		int result_code,
 		Intent data
 	) {
-		if (
-			request_code == FILE_SELECT_CODE
-			&& result_code == Activity.RESULT_OK
-			) {
+		if (result_code == Activity.RESULT_OK && request_code == FILE_SELECT_CODE) {
 			Uri uri = data.getData();
 			if (uri != null) {
 				String path = uri.getPath();

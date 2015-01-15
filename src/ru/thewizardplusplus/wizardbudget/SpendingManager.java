@@ -86,7 +86,11 @@ public class SpendingManager {
 				spending.put("id", spendings_cursor.getDouble(0));
 
 				long timestamp = spendings_cursor.getLong(1);
-				spending.put("date", formatDateAsMine(timestamp, start_timestamp));
+				if (!Settings.getCurrent(context).isUseCustomDate()) {
+					spending.put("date", formatDate(timestamp));
+				} else {
+					spending.put("date", formatCustomDate(timestamp, start_timestamp));
+				}
 				spending.put("time", formatTime(timestamp));
 
 				spending.put("amount", spendings_cursor.getDouble(2));
@@ -301,7 +305,13 @@ public class SpendingManager {
 		return database_helper.getWritableDatabase();
 	}
 
-	private String formatDateAsMine(long timestamp, long start_timestamp) {
+	private String formatDate(long timestamp) {
+		Date date = new Date(timestamp * 1000L);
+		DateFormat date_format = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.US);
+		return date_format.format(date);
+	}
+
+	private String formatCustomDate(long timestamp, long start_timestamp) {
 		timestamp = resetTimestampToDayBegin(timestamp);
 
 		long days = (timestamp - start_timestamp) / (24 * 60 * 60);
@@ -324,8 +334,8 @@ public class SpendingManager {
 	}
 
 	private String formatTime(long timestamp) {
-		SimpleDateFormat date_format = new SimpleDateFormat("HH:mm:ss", Locale.US);
 		Date date = new Date(timestamp * 1000L);
+		DateFormat date_format = DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.US);
 		return date_format.format(date);
 	}
 

@@ -137,6 +137,12 @@ $(document).ready(
 					GUI.hideMainMenu();
 		        }
 		    );
+			$('.settings-button').click(
+			    function() {
+				    activity.openSettings();
+					GUI.hideMainMenu();
+		        }
+		    );
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
