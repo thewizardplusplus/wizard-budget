@@ -24,7 +24,24 @@
 	right: 65px;
 }
 
-input + hr {
+.column {
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.column-2 {
+	width: 50%;
+}
+
+.row + hr {
 	margin-top: 0;
 	margin-bottom: 15px;
 }
