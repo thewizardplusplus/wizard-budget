@@ -50,24 +50,6 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getAllSpendings() {
 		SQLiteDatabase database = getDatabase();
-		Cursor start_timestamp_cursor = database.query(
-			"spendings",
-			new String[]{"MIN(timestamp)"},
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		long start_timestamp = 0;
-		boolean moved = start_timestamp_cursor.moveToFirst();
-		if (moved) {
-			start_timestamp = resetTimestampToDayBegin(
-				start_timestamp_cursor.getLong(0)
-			);
-		}
-
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"_id", "timestamp", "amount", "comment"},
@@ -79,7 +61,8 @@ public class SpendingManager {
 		);
 
 		JSONArray spendings = new JSONArray();
-		moved = spendings_cursor.moveToFirst();
+		long start_timestamp = Settings.getCurrent(context).getCustomDateBaseDay().getTimeInMillis() / 1000L;
+		boolean moved = spendings_cursor.moveToFirst();
 		while (moved) {
 			try {
 				JSONObject spending = new JSONObject();
