@@ -161,8 +161,16 @@ $(document).ready(
 				$('.button-text', edit_spending_button).text('Save');
 			}
 
-			var date_editor = $('.date-editor').pickadate();
-			var time_editor = $('.time-editor').pickatime();
+			var current_timestamp = moment();
+			var date_editor = $('.date-editor');
+			if ($.type(spending_id) === "null") {
+				date_editor.val(current_timestamp.format('YYYY-MM-DD'));
+			}
+
+			var time_editor = $('.time-editor');
+			if ($.type(spending_id) === "null") {
+				time_editor.val(current_timestamp.format('hh:mm'));
+			}
 
 			var amount_editor = $('.amount-editor');
 			if ($.type(active_spending_amount) !== "null") {
