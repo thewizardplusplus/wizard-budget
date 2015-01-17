@@ -24,6 +24,11 @@
 	right: 65px;
 }
 
+input + hr {
+	margin-top: 0;
+	margin-bottom: 15px;
+}
+
 .uppercase {
 	text-transform: uppercase;
 }

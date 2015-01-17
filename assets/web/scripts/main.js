@@ -161,6 +161,9 @@ $(document).ready(
 				$('.button-text', edit_spending_button).text('Save');
 			}
 
+			var date_editor = $('.date-editor').pickadate();
+			var time_editor = $('.time-editor').pickatime();
+
 			var amount_editor = $('.amount-editor');
 			if ($.type(active_spending_amount) !== "null") {
 				amount_editor.val(active_spending_amount);
