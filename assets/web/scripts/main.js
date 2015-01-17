@@ -26,6 +26,8 @@ var GUI = {
 $(document).ready(
 	function() {
 		var active_spending_id = null;
+		var active_spending_date = null;
+		var active_spending_time = null;
 		var active_spending_amount = null;
 		var active_spending_comment = null;
 		var active_spending_income_flag = null;
@@ -49,7 +51,7 @@ $(document).ready(
 		        function(spending) {
 					spending_list.append(
 						'<li class = "table-view-cell media">'
-							+ '<button class = "btn second-list-button edit-spending-button" data-spending-id = "' + spending.id + '" data-income = "' + (spending.amount < 0 ? 'true' : 'false') + '"><i class = "fa fa-pencil"></i></button>'
+							+ '<button class = "btn second-list-button edit-spending-button" data-spending-id = "' + spending.id + '" data-income = "' + (spending.amount < 0 ? 'true' : 'false') + '" data-timestamp = "' + spending.timestamp + '"><i class = "fa fa-pencil"></i></button>'
 							+ '<button class = "btn remove-spending-button" data-spending-id = "' + spending.id + '"><i class = "fa fa-trash"></i></button>'
 							+ '<span class = "media-object pull-left">'
 							    + '<i class = "fa fa-'
@@ -94,6 +96,10 @@ $(document).ready(
 					var button = $(this);
 					active_spending_id = parseInt(button.data('spending-id'));
 					active_spending_income_flag = button.data('income') ? true : null;
+
+					var timestamp = moment(parseInt(button.data('timestamp')) * 1000);
+					active_spending_date = timestamp.format('YYYY-MM-DD');
+					active_spending_time = timestamp.format('hh:mm');
 
 					var list_item = button.parent();
 					active_spending_amount = $('.amount-view', list_item).text();
@@ -164,12 +170,20 @@ $(document).ready(
 			var current_timestamp = moment();
 			var date_editor = $('.date-editor');
 			if ($.type(spending_id) === "null") {
-				date_editor.val(current_timestamp.format('YYYY-MM-DD'));
+				date_editor.hide();
+			} else {
+				date_editor.val(active_spending_date);
 			}
 
 			var time_editor = $('.time-editor');
 			if ($.type(spending_id) === "null") {
-				time_editor.val(current_timestamp.format('hh:mm'));
+				time_editor.hide();
+			} else {
+				time_editor.val(active_spending_time);
+			}
+
+			if ($.type(spending_id) === "null") {
+				$('hr').hide();
 			}
 
 			var amount_editor = $('.amount-editor');
@@ -196,11 +210,7 @@ $(document).ready(
 			edit_spending_button.click(
 		        function() {
 			        var amount = Math.abs(parseFloat(amount_editor.val()));
-			    	amount_editor.val('');
-
-				    var comment = comment_editor.val();
-				    comment_editor.val('');
-
+					var comment = comment_editor.val();
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
@@ -208,10 +218,14 @@ $(document).ready(
 					if ($.type(spending_id) === "null") {
 				    	spending_manager.createSpending(amount, comment);
 					} else {
-						spending_manager.updateSpending(spending_id, amount, comment);
+						var date = date_editor.val();
+						var time = time_editor.val();
+						var timestamp = date + ' ' + time + ':00';
+
+						spending_manager.updateSpending(spending_id, timestamp, amount, comment);
 					}
+
 					activity.updateWidget();
-				    
 					PUSH({url: 'history.html'});
 	            }
 		    );

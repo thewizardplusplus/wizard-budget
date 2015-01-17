@@ -69,6 +69,7 @@ public class SpendingManager {
 				spending.put("id", spendings_cursor.getDouble(0));
 
 				long timestamp = spendings_cursor.getLong(1);
+				spending.put("timestamp", String.valueOf(timestamp));
 				if (!Settings.getCurrent(context).isUseCustomDate()) {
 					spending.put("date", formatDate(timestamp));
 				} else {
@@ -102,14 +103,24 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void updateSpending(int id, double amount, String comment) {
-		ContentValues values = new ContentValues();
-		values.put("amount", amount);
-		values.put("comment", comment);
+	public void updateSpending(int id, String timestamp, double amount, String comment) {
+		SimpleDateFormat timestamp_format = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss",
+			Locale.US
+		);
+		try {
+			Date parsed_timestamp = timestamp_format.parse(timestamp);
+			long integral_timestamp = parsed_timestamp.getTime() / 1000L;
 
-		SQLiteDatabase database = getDatabase();
-		database.update("spendings", values, "_id = ?", new String[]{String.valueOf(id)});
-		database.close();
+			ContentValues values = new ContentValues();
+			values.put("timestamp", integral_timestamp);
+			values.put("amount", amount);
+			values.put("comment", comment);
+
+			SQLiteDatabase database = getDatabase();
+			database.update("spendings", values, "_id = ?", new String[]{String.valueOf(id)});
+			database.close();
+		} catch (ParseException exception) {}
 	}
 
 	@JavascriptInterface
