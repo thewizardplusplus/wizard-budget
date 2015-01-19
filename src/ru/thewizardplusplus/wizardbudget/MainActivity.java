@@ -37,6 +37,16 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
+	public String getSetting(String name) {
+		Settings settings = Settings.getCurrent(this);
+		if (name.equals("use_custom_date")) {
+			return settings.isUseCustomDate() ? "true" : "false";
+		} else {
+			return "";
+		}
+	}
+
+	@JavascriptInterface
 	public void quit() {
 		finish();
 	}
