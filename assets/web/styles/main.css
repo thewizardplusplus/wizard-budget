@@ -41,6 +41,14 @@
 	width: 50%;
 }
 
+.column-4 {
+	width: 25%;
+}
+
+.hidden {
+	display: none;
+}
+
 .row + hr {
 	margin-top: 0;
 	margin-bottom: 15px;

@@ -169,21 +169,19 @@ $(document).ready(
 
 			var current_timestamp = moment();
 			var date_editor = $('.date-editor');
-			if ($.type(spending_id) === "null") {
-				date_editor.hide();
-			} else {
+			if ($.type(spending_id) !== "null") {
+				date_editor.show();
 				date_editor.val(active_spending_date);
 			}
 
 			var time_editor = $('.time-editor');
-			if ($.type(spending_id) === "null") {
-				time_editor.hide();
-			} else {
+			if ($.type(spending_id) !== "null") {
+				time_editor.show();
 				time_editor.val(active_spending_time);
 			}
 
-			if ($.type(spending_id) === "null") {
-				$('hr').hide();
+			if ($.type(spending_id) !== "null") {
+				$('hr').show();
 			}
 
 			var amount_editor = $('.amount-editor');
