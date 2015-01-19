@@ -24,17 +24,17 @@
 	right: 65px;
 }
 
-.column {
+.column-left {
+	padding-right: 7px;
+}
+
+.column-center {
 	padding-left: 7px;
 	padding-right: 7px;
 }
 
-.column:first-child {
-	padding-left: 0;
-}
-
-.column:last-child {
-	padding-right: 0;
+.column-right {
+	padding-left: 7px;
 }
 
 .column-2 {
@@ -43,6 +43,11 @@
 
 .column-4 {
 	width: 25%;
+}
+
+select {
+	height: 40px;
+	font-size: 17px;
 }
 
 .hidden {

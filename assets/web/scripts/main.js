@@ -181,21 +181,31 @@ $(document).ready(
 			var date_editor = $('.date-editor');
 			if ($.type(spending_id) !== "null") {
 				if (activity.getSetting('use_custom_date') == 'true') {
-					for (var day = 1; day <= 300; day++) {
-						var formatted_day = '' + day;
-						if (formatted_day.length == 1) {
-							formatted_day = '0' + formatted_day;
+					for (var day = -300; day <= 300; day++) {
+						if (day == 0) {
+							continue;
 						}
+
+						var formatted_day = Math.abs(day).toString();
+						formatted_day =
+							(day < 0 ? '-' : '')
+							+ (formatted_day.length == 1 ? '0' : '')
+							+ formatted_day;
 
 						custom_day_editor.append('<option value = "' + day + '"' + (active_spending_custom_day == formatted_day ? ' selected = "selected"' : '') + '>' + formatted_day + '</option>');
 					}
 					custom_day_editor.show();
 
-					for (var year = 1; year <= 100; year++) {
-						var formatted_year = '' + year;
-						if (formatted_year.length == 1) {
-							formatted_year = '0' + formatted_year;
+					for (var year = -100; year <= 100; year++) {
+						if (year == 0) {
+							continue;
 						}
+
+						var formatted_year = Math.abs(year).toString();
+						formatted_year =
+							(year < 0 ? '-' : '')
+							+ (formatted_year.length == 1 ? '0' : '')
+							+ formatted_year;
 
 						custom_year_editor.append('<option value = "' + year + '"' + (active_spending_custom_year == formatted_year ? ' selected = "selected"' : '') + '>' + formatted_year + '</option>');
 					}

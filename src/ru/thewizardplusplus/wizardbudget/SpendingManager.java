@@ -107,13 +107,13 @@ public class SpendingManager {
 		try {
 			long timestamp = 0;
 			if (Settings.getCurrent(context).isUseCustomDate()) {
-				
+				Log.d("w", date);
 			} else {
+				String formatted_timestamp = date + " " + time + ":00";
 				SimpleDateFormat timestamp_format = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss",
 					Locale.US
 				);
-				String formatted_timestamp = date + " " + time + ":00";
 				Date parsed_timestamp = timestamp_format.parse(formatted_timestamp);
 				timestamp = parsed_timestamp.getTime() / 1000L;
 			}
@@ -315,12 +315,19 @@ public class SpendingManager {
 		timestamp = resetTimestampToDayBegin(timestamp);
 
 		long days = (timestamp - start_timestamp) / (24 * 60 * 60);
-		long day = days % DAYS_IN_MY_YEAR + 1;
-		long year = days / DAYS_IN_MY_YEAR + 1;
+		long day = days % DAYS_IN_MY_YEAR;
+		if (days >= 0) {
+			day += 1;
+		}
 
-		return
-			(day < 10 ? "0" : "") + String.valueOf(day) + "."
-			+ (year < 10 ? "0" : "") + String.valueOf(year);
+		long year = days / DAYS_IN_MY_YEAR;
+		if (days >= 0) {
+			year += 1;
+		} else {
+			year -= 1;
+		}
+
+		return formatCustomDatePart(day) + "." + formatCustomDatePart(year);
 	}
 
 	private long resetTimestampToDayBegin(long timestamp) {
@@ -331,6 +338,16 @@ public class SpendingManager {
 		time.set(Calendar.SECOND, 0);
 
 		return time.getTimeInMillis() / 1000L;
+	}
+
+	private String formatCustomDatePart(long part) {
+		String string_part = String.valueOf(Math.abs(part));
+		string_part =
+			(part < 0 ? "-" : "")
+			+ (string_part.length() == 1 ? "0" : "")
+			+ string_part;
+
+		return string_part;
 	}
 
 	private String formatTime(long timestamp) {
