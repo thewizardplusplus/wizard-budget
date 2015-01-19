@@ -103,17 +103,23 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void updateSpending(int id, String timestamp, double amount, String comment) {
-		SimpleDateFormat timestamp_format = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss",
-			Locale.US
-		);
+	public void updateSpending(int id, String date, String time, double amount, String comment) {
 		try {
-			Date parsed_timestamp = timestamp_format.parse(timestamp);
-			long integral_timestamp = parsed_timestamp.getTime() / 1000L;
+			long timestamp = 0;
+			if (Settings.getCurrent(context).isUseCustomDate()) {
+				
+			} else {
+				SimpleDateFormat timestamp_format = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss",
+					Locale.US
+				);
+				String formatted_timestamp = date + " " + time + ":00";
+				Date parsed_timestamp = timestamp_format.parse(formatted_timestamp);
+				timestamp = parsed_timestamp.getTime() / 1000L;
+			}
 
 			ContentValues values = new ContentValues();
-			values.put("timestamp", integral_timestamp);
+			values.put("timestamp", timestamp);
 			values.put("amount", amount);
 			values.put("comment", comment);
 

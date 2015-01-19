@@ -26,6 +26,8 @@ var GUI = {
 $(document).ready(
 	function() {
 		var active_spending_id = null;
+		var active_spending_custom_day = null;
+		var active_spending_custom_year = null;
 		var active_spending_date = null;
 		var active_spending_time = null;
 		var active_spending_amount = null;
@@ -98,10 +100,16 @@ $(document).ready(
 					active_spending_income_flag = button.data('income') ? true : null;
 
 					var timestamp = moment(parseInt(button.data('timestamp')) * 1000);
-					active_spending_date = timestamp.format('YYYY-MM-DD');
+					var list_item = button.parent();
+					if (activity.getSetting('use_custom_date') == 'true') {
+						var custom_date_parts = $('.date-view', list_item).text().split('.');
+						active_spending_custom_day = custom_date_parts[0];
+						active_spending_custom_year = custom_date_parts[1];
+					} else {
+						active_spending_date = timestamp.format('YYYY-MM-DD');
+					}
 					active_spending_time = timestamp.format('hh:mm');
 
-					var list_item = button.parent();
 					active_spending_amount = $('.amount-view', list_item).text();
 					active_spending_comment = $('.comment-view', list_item).text();
 
@@ -168,16 +176,40 @@ $(document).ready(
 			}
 
 			var current_timestamp = moment();
+			var custom_day_editor = $('.custom-day-editor');
+			var custom_year_editor = $('.custom-year-editor');
 			var date_editor = $('.date-editor');
 			if ($.type(spending_id) !== "null") {
-				date_editor.show();
-				date_editor.val(active_spending_date);
+				if (activity.getSetting('use_custom_date') == 'true') {
+					for (var day = 1; day <= 300; day++) {
+						var formatted_day = '' + day;
+						if (formatted_day.length == 1) {
+							formatted_day = '0' + formatted_day;
+						}
+
+						custom_day_editor.append('<option value = "' + day + '"' + (active_spending_custom_day == formatted_day ? ' selected = "selected"' : '') + '>' + formatted_day + '</option>');
+					}
+					custom_day_editor.show();
+
+					for (var year = 1; year <= 100; year++) {
+						var formatted_year = '' + year;
+						if (formatted_year.length == 1) {
+							formatted_year = '0' + formatted_year;
+						}
+
+						custom_year_editor.append('<option value = "' + year + '"' + (active_spending_custom_year == formatted_year ? ' selected = "selected"' : '') + '>' + formatted_year + '</option>');
+					}
+					custom_year_editor.show();
+				} else {
+					date_editor.show();
+					date_editor.val(active_spending_date);
+				}
 			}
 
 			var time_editor = $('.time-editor');
 			if ($.type(spending_id) !== "null") {
-				time_editor.show();
 				time_editor.val(active_spending_time);
+				time_editor.show();
 			}
 
 			if ($.type(spending_id) !== "null") {
@@ -216,11 +248,16 @@ $(document).ready(
 					if ($.type(spending_id) === "null") {
 				    	spending_manager.createSpending(amount, comment);
 					} else {
-						var date = date_editor.val();
+						var date = '';
+						if (activity.getSetting('use_custom_date') == 'true') {
+							var custom_day = custom_day_editor.val();
+							var custom_year = custom_year_editor.val();
+							date = custom_day + '.' + custom_year;
+						} else {
+							date = date_editor.val();
+						}
 						var time = time_editor.val();
-						var timestamp = date + ' ' + time + ':00';
-
-						spending_manager.updateSpending(spending_id, timestamp, amount, comment);
+						spending_manager.updateSpending(spending_id, date, time, amount, comment);
 					}
 
 					activity.updateWidget();
