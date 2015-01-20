@@ -1,4 +1,8 @@
 var GUI = {
+	MINIMAL_CUSTOM_YEAR: -100,
+	MAXIMAL_CUSTOM_YEAR: 100,
+	DAYS_IN_CUSTOM_YEAR: 300,
+
 	hideMainMenu: function() {
 		var event = new CustomEvent('touchend');
 		$('.backdrop').get(0).dispatchEvent(event);
@@ -108,7 +112,7 @@ $(document).ready(
 					} else {
 						active_spending_date = timestamp.format('YYYY-MM-DD');
 					}
-					active_spending_time = timestamp.format('hh:mm');
+					active_spending_time = timestamp.format('HH:mm');
 
 					active_spending_amount = $('.amount-view', list_item).text();
 					active_spending_comment = $('.comment-view', list_item).text();
@@ -181,7 +185,7 @@ $(document).ready(
 			var date_editor = $('.date-editor');
 			if ($.type(spending_id) !== "null") {
 				if (activity.getSetting('use_custom_date') == 'true') {
-					for (var day = -300; day <= 300; day++) {
+					for (var day = -GUI.DAYS_IN_CUSTOM_YEAR; day <= GUI.DAYS_IN_CUSTOM_YEAR; day++) {
 						if (day == 0) {
 							continue;
 						}
@@ -196,7 +200,7 @@ $(document).ready(
 					}
 					custom_day_editor.show();
 
-					for (var year = -100; year <= 100; year++) {
+					for (var year = GUI.MINIMAL_CUSTOM_YEAR; year <= GUI.MAXIMAL_CUSTOM_YEAR; year++) {
 						if (year == 0) {
 							continue;
 						}

@@ -18,6 +18,7 @@ import android.webkit.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import org.xml.sax.*;
+import java.util.regex.*;
 
 public class SpendingManager {
 	public SpendingManager(Context context) {
@@ -107,7 +108,21 @@ public class SpendingManager {
 		try {
 			long timestamp = 0;
 			if (Settings.getCurrent(context).isUseCustomDate()) {
-				Log.d("w", date);
+				String[] custom_date_parts = date.split(Pattern.quote("."));
+				long day = Long.valueOf(custom_date_parts[0]);
+				long year = Long.valueOf(custom_date_parts[1]);
+				long days = (day < 0 || year < 0 ? -1 : 1) * ((Math.abs(day) - (day < 0 || year < 0 ? 0 : 1)) + (Math.abs(year) - 1) * DAYS_IN_CUSTOM_YEAR);
+
+				String[] time_parts = time.split(":");
+				long hour = Long.valueOf(time_parts[0]);
+				long minute = Long.valueOf(time_parts[1]);
+
+				Calendar current_timestamp = Settings.getCurrent(context).getCustomDateBaseDay();
+				current_timestamp.add(Calendar.DAY_OF_MONTH, (int)days);
+				current_timestamp.add(Calendar.HOUR_OF_DAY, (int)hour);
+				current_timestamp.add(Calendar.MINUTE, (int)minute);
+
+				timestamp = current_timestamp.getTimeInMillis() / 1000L;
 			} else {
 				String formatted_timestamp = date + " " + time + ":00";
 				SimpleDateFormat timestamp_format = new SimpleDateFormat(
@@ -295,7 +310,7 @@ public class SpendingManager {
 		"yyyy-MM-dd HH:mm:ss",
 		Locale.US
 	);
-	private static final long DAYS_IN_MY_YEAR = 300;
+	private static final long DAYS_IN_CUSTOM_YEAR = 300;
 	private static final int NOTIFICATION_ID = 0;
 
 	private Context context;
@@ -315,12 +330,12 @@ public class SpendingManager {
 		timestamp = resetTimestampToDayBegin(timestamp);
 
 		long days = (timestamp - start_timestamp) / (24 * 60 * 60);
-		long day = days % DAYS_IN_MY_YEAR;
+		long day = days % DAYS_IN_CUSTOM_YEAR;
 		if (days >= 0) {
 			day += 1;
 		}
 
-		long year = days / DAYS_IN_MY_YEAR;
+		long year = days / DAYS_IN_CUSTOM_YEAR;
 		if (days >= 0) {
 			year += 1;
 		} else {
