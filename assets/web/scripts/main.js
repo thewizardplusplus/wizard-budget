@@ -179,9 +179,30 @@ $(document).ready(
 				$('.button-text', edit_spending_button).text('Save');
 			}
 
-			var current_timestamp = moment();
 			var custom_day_editor = $('.custom-day-editor');
 			var custom_year_editor = $('.custom-year-editor');
+			custom_day_editor.change(
+				function() {
+					var year = Math.abs(parseInt(custom_year_editor.val()));
+					if (parseInt($(this).val()) >= 0) {
+						custom_year_editor.val(year);
+					} else {
+						custom_year_editor.val(-year);
+					}
+				}
+			);
+			custom_year_editor.change(
+				function() {
+					var day = Math.abs(parseInt(custom_day_editor.val()));
+					if (parseInt($(this).val()) >= 0) {
+						custom_day_editor.val(day);
+					} else {
+						custom_day_editor.val(-day);
+					}
+				}
+			);
+
+			var current_timestamp = moment();
 			var date_editor = $('.date-editor');
 			if ($.type(spending_id) !== "null") {
 				if (activity.getSetting('use_custom_date') == 'true') {
