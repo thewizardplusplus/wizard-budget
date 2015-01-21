@@ -29,15 +29,6 @@ var GUI = {
 
 $(document).ready(
 	function() {
-		var active_spending_id = null;
-		var active_spending_custom_day = null;
-		var active_spending_custom_year = null;
-		var active_spending_date = null;
-		var active_spending_time = null;
-		var active_spending_amount = null;
-		var active_spending_comment = null;
-		var active_spending_income_flag = null;
-
 		function LoadActiveSpending() {
 			var json = activity.getSetting('active_spending');
 			return JSON.parse(json);
@@ -91,10 +82,11 @@ $(document).ready(
 			var remove_dialog = $('#remove-dialog');
 			$('.remove-spending-button', remove_dialog).click(
 				function() {
-					if ($.type(active_spending_id) !== "null") {
-						spending_manager.deleteSpending(active_spending_id);
+					var active_spending = LoadActiveSpending();
+					if ($.type(active_spending) !== "null") {
+						spending_manager.deleteSpending(active_spending.id);
+						SaveActiveSpending(null);
 						activity.updateWidget();
-						active_spending_id = null;
 
 						PUSH({url: 'history.html'});
 					}
@@ -108,30 +100,36 @@ $(document).ready(
 			$('.edit-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
-					active_spending_id = parseInt(button.data('spending-id'));
-					active_spending_income_flag = button.data('income') ? true : null;
+
+					active_spending = {};
+					active_spending.id = parseInt(button.data('spending-id'));
+					active_spending.income_flag = button.data('income') ? true : null;
 
 					var timestamp = moment(parseInt(button.data('timestamp')) * 1000);
 					var list_item = button.parent();
 					if (activity.getSetting('use_custom_date') == 'true') {
 						var custom_date_parts = $('.date-view', list_item).text().split('.');
-						active_spending_custom_day = custom_date_parts[0];
-						active_spending_custom_year = custom_date_parts[1];
+						active_spending.custom_day = custom_date_parts[0];
+						active_spending.custom_year = custom_date_parts[1];
 					} else {
-						active_spending_date = timestamp.format('YYYY-MM-DD');
+						active_spending.date = timestamp.format('YYYY-MM-DD');
 					}
-					active_spending_time = timestamp.format('HH:mm');
+					active_spending.time = timestamp.format('HH:mm');
 
-					active_spending_amount = $('.amount-view', list_item).text();
-					active_spending_comment = $('.comment-view', list_item).text();
+					active_spending.amount = $('.amount-view', list_item).text();
+					active_spending.comment = $('.comment-view', list_item).text();
 
+					SaveActiveSpending(active_spending);
 					PUSH({url: 'editor.html'});
 				}
 			);
 			$('.remove-spending-button', spending_list).click(
 				function() {
 					var button = $(this);
-					active_spending_id = parseInt(button.data('spending-id'));
+
+					active_spending = {};
+					active_spending.id = parseInt(button.data('spending-id'));
+					SaveActiveSpending(active_spending);
 
 					var list_item = button.parent();
 					var date = $('.date-view', list_item).text();
@@ -175,11 +173,10 @@ $(document).ready(
 			UpdateSpendingList();
 		}
 		function UpdateEditorPage() {
-			var spending_id = active_spending_id;
-			active_spending_id = null;
+			var active_spending = LoadActiveSpending();
 
 			var edit_spending_button = $('header .edit-spending-button');
-			if ($.type(spending_id) === "null") {
+			if ($.type(active_spending) === "null") {
 				$('.button-icon', edit_spending_button).removeClass('fa-save').addClass('fa-plus');
 				$('.button-text', edit_spending_button).text('Add');
 			} else {
@@ -212,7 +209,7 @@ $(document).ready(
 
 			var current_timestamp = moment();
 			var date_editor = $('.date-editor');
-			if ($.type(spending_id) !== "null") {
+			if ($.type(active_spending) !== "null") {
 				if (activity.getSetting('use_custom_date') == 'true') {
 					for (var day = -GUI.DAYS_IN_CUSTOM_YEAR; day <= GUI.DAYS_IN_CUSTOM_YEAR; day++) {
 						if (day == 0) {
@@ -225,7 +222,7 @@ $(document).ready(
 							+ (formatted_day.length == 1 ? '0' : '')
 							+ formatted_day;
 
-						custom_day_editor.append('<option value = "' + day + '"' + (active_spending_custom_day == formatted_day ? ' selected = "selected"' : '') + '>' + formatted_day + '</option>');
+						custom_day_editor.append('<option value = "' + day + '"' + (active_spending.custom_day == formatted_day ? ' selected = "selected"' : '') + '>' + formatted_day + '</option>');
 					}
 					custom_day_editor.show();
 
@@ -240,44 +237,41 @@ $(document).ready(
 							+ (formatted_year.length == 1 ? '0' : '')
 							+ formatted_year;
 
-						custom_year_editor.append('<option value = "' + year + '"' + (active_spending_custom_year == formatted_year ? ' selected = "selected"' : '') + '>' + formatted_year + '</option>');
+						custom_year_editor.append('<option value = "' + year + '"' + (active_spending.custom_year == formatted_year ? ' selected = "selected"' : '') + '>' + formatted_year + '</option>');
 					}
 					custom_year_editor.show();
 				} else {
 					date_editor.show();
-					date_editor.val(active_spending_date);
+					date_editor.val(active_spending.date);
 				}
 			}
 
 			var time_editor = $('.time-editor');
-			if ($.type(spending_id) !== "null") {
-				time_editor.val(active_spending_time);
+			if ($.type(active_spending) !== "null") {
+				time_editor.val(active_spending.time);
 				time_editor.show();
 			}
 
-			if ($.type(spending_id) !== "null") {
+			if ($.type(active_spending) !== "null") {
 				$('hr').show();
 			}
 
 			var amount_editor = $('.amount-editor');
-			if ($.type(active_spending_amount) !== "null") {
-				amount_editor.val(active_spending_amount);
-				active_spending_amount = null;
+			if ($.type(active_spending) !== "null") {
+				amount_editor.val(active_spending.amount);
 			}
 			amount_editor.focus();
 
 			var comment_editor = $('.comment-editor');
-			if ($.type(active_spending_comment) !== "null") {
-				comment_editor.val(active_spending_comment);
-				active_spending_comment = null;
+			if ($.type(active_spending) !== "null") {
+				comment_editor.val(active_spending.comment);
 			}
 
 			var income_flag = $('.income-flag');
-			if ($.type(active_spending_income_flag) !== "null") {
-				if (active_spending_income_flag) {
+			if ($.type(active_spending) !== "null") {
+				if (active_spending.income_flag) {
 					income_flag.addClass('active');
 				}
-				active_spending_income_flag = null;
 			}
 
 			edit_spending_button.click(
@@ -288,7 +282,7 @@ $(document).ready(
 						amount *= -1;
 					}
 
-					if ($.type(spending_id) === "null") {
+					if ($.type(active_spending) === "null") {
 				    	spending_manager.createSpending(amount, comment);
 					} else {
 						var date = '';
@@ -300,10 +294,12 @@ $(document).ready(
 							date = date_editor.val();
 						}
 						var time = time_editor.val();
-						spending_manager.updateSpending(spending_id, date, time, amount, comment);
+						spending_manager.updateSpending(active_spending.id, date, time, amount, comment);
 					}
 
+					SaveActiveSpending(null);
 					activity.updateWidget();
+
 					PUSH({url: 'history.html'});
 	            }
 		    );
