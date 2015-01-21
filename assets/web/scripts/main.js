@@ -306,12 +306,16 @@ $(document).ready(
 		    function(event) {
 				if (/\bhistory\b/.test(event.detail.state.url)) {
 					UpdateIndexPage();
+					activity.setSetting('current_page', 'history');
 				} else if (/\beditor\b/.test(event.detail.state.url)) {
 					UpdateEditorPage();
+					activity.setSetting('current_page', 'editor');
+				} else if (/\bauthors\b/.test(event.detail.state.url)) {
+					activity.setSetting('current_page', 'authors');
 				}
 			}
 		);
-		PUSH({url: 'history.html'});
+		PUSH({url: activity.getSetting('current_page') + '.html'});
 	}
 );
 

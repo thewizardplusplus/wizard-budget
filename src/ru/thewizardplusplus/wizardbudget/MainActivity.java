@@ -41,9 +41,20 @@ public class MainActivity extends Activity {
 		Settings settings = Settings.getCurrent(this);
 		if (name.equals("use_custom_date")) {
 			return settings.isUseCustomDate() ? "true" : "false";
+		} else if (name.equals("current_page")) {
+			return settings.getCurrentPage();
 		} else {
 			return "";
 		}
+	}
+
+	@JavascriptInterface
+	public void setSetting(String name, String value) {
+		Settings settings = Settings.getCurrent(this);
+		if (name.equals("current_page")) {
+			settings.setCurrentPage(value);
+		}
+		settings.save();
 	}
 
 	@JavascriptInterface
