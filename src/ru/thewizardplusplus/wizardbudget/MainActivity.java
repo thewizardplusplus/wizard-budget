@@ -43,6 +43,8 @@ public class MainActivity extends Activity {
 			return settings.isUseCustomDate() ? "true" : "false";
 		} else if (name.equals("current_page")) {
 			return settings.getCurrentPage();
+		} else if (name.equals("active_spending")) {
+			return settings.getActiveSpending();
 		} else {
 			return "";
 		}
@@ -53,6 +55,8 @@ public class MainActivity extends Activity {
 		Settings settings = Settings.getCurrent(this);
 		if (name.equals("current_page")) {
 			settings.setCurrentPage(value);
+		} else if (name.equals("active_spending")) {
+			settings.setActiveSpending(value);
 		}
 		settings.save();
 	}

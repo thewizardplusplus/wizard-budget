@@ -38,6 +38,14 @@ $(document).ready(
 		var active_spending_comment = null;
 		var active_spending_income_flag = null;
 
+		function LoadActiveSpending() {
+			var json = activity.getSetting('active_spending');
+			return JSON.parse(json);
+		}
+		function SaveActiveSpending(active_spending) {
+			var json = JSON.stringify(active_spending);
+			activity.setSetting('active_spending', json);
+		}
 		function UpdateSpendingList() {
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
@@ -52,7 +60,7 @@ $(document).ready(
 			spending_list.empty();
 
 			var raw_spendings = spending_manager.getAllSpendings();
-			var spendings = $.parseJSON(raw_spendings);
+			var spendings = JSON.parse(raw_spendings);
 			spendings.map(
 		        function(spending) {
 					spending_list.append(
