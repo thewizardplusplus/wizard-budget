@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/custom_date_preferences">
-        <CheckBoxPreference
-            android:key="preference_use_custom_date"
-            android:title="@string/preference_use_custom_date_title"
-			android:summary="@string/preference_use_custom_date_summary"
-            android:defaultValue="false" />
-        <org.bostonandroid.datepreference.DatePreference
-            android:key="preference_custom_date_base_day"
-            android:dependency="preference_use_custom_date"
-            android:title="@string/preference_custom_date_base_day_title"
-			android:summary="@string/preference_custom_date_base_day_summary" />
-    </PreferenceCategory>
+<?xml version = "1.0" encoding = "utf-8" ?>
+<PreferenceScreen xmlns:android = "http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title = "@string/custom_date_preferences">
+		<CheckBoxPreference
+			android:key = "preference_use_custom_date"
+			android:title = "@string/preference_use_custom_date_title"
+			android:summary = "@string/preference_use_custom_date_summary"
+			android:defaultValue = "false" />
+		<org.bostonandroid.datepreference.DatePreference
+			android:key = "preference_custom_date_base_day"
+			android:dependency = "preference_use_custom_date"
+			android:title = "@string/preference_custom_date_base_day_title"
+			android:summary = "@string/preference_custom_date_base_day_summary" />
+	</PreferenceCategory>
 </PreferenceScreen>

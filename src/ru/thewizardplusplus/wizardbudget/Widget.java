@@ -16,7 +16,12 @@ public class Widget extends AppWidgetProvider {
 		);
 
 		Intent intent = new Intent(context, MainActivity.class);
-		PendingIntent pending_intent = PendingIntent.getActivity(context, 0, intent, 0);
+		PendingIntent pending_intent = PendingIntent.getActivity(
+			context,
+			0,
+			intent,
+			0
+		);
 		views.setOnClickPendingIntent(R.id.widget_container, pending_intent);
 
 		SpendingManager spending_manager = new SpendingManager(context);

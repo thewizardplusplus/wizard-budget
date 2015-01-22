@@ -1,5 +1,7 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import java.io.*;
+
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
@@ -7,7 +9,6 @@ import android.widget.*;
 import android.content.*;
 import android.appwidget.*;
 import android.net.*;
-import java.io.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -92,7 +93,10 @@ public class MainActivity extends Activity {
 		int result_code,
 		Intent data
 	) {
-		if (result_code == Activity.RESULT_OK && request_code == FILE_SELECT_CODE) {
+		if (
+			result_code == Activity.RESULT_OK
+			&& request_code == FILE_SELECT_CODE
+		) {
 			Uri uri = data.getData();
 			if (uri != null) {
 				String path = uri.getPath();
