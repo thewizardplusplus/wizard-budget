@@ -266,6 +266,17 @@ $(document).ready(
 			if ($.type(active_spending) !== "null") {
 				comment_editor.val(active_spending.comment);
 			}
+			comment_editor.selectize(
+				{
+					create: true,
+					highlight: false,
+					preload: 'focus',
+					options: ["test 1", "test 2", "test 3"],
+					load: function(query, callback) {
+						callback(["ololo 1", "ololo 2", "ololo 3"]);
+					}
+				}
+			);
 
 			var income_flag = $('.income-flag');
 			if ($.type(active_spending) !== "null") {
