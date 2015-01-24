@@ -391,6 +391,8 @@ $(document).ready(
 
 					activity.updateWidget();
 					PUSH({url: 'history.html'});
+
+					return false;
 				}
 			);
 		}
