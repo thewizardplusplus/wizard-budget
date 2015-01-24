@@ -222,13 +222,15 @@ $(document).ready(
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();
 
-			var edit_spending_button = $('header .edit-spending-button');
+			var edit_spending_button = $('form .edit-spending-button');
 			if ($.type(active_spending) === "null") {
+				$('.title').text('Add');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-save')
 					.addClass('fa-plus');
 				$('.button-text', edit_spending_button).text('Add');
 			} else {
+				$('.title').text('Edit');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-plus')
 					.addClass('fa-save');
