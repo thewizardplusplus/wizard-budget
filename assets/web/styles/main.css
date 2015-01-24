@@ -59,6 +59,10 @@ select {
 	margin-bottom: 15px;
 }
 
+.btn-block {
+	margin-top: 15px;
+}
+
 .uppercase {
 	text-transform: uppercase;
 }

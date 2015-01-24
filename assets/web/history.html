@@ -57,19 +57,14 @@
 
 		<div id = "remove-dialog" class = "modal">
 			<header class = "bar bar-nav">
-				<button
-					class = "btn btn-negative pull-left remove-spending-button">
-					<i class = "fa fa-trash"></i>
-					Remove
-				</button>
-				<a class = "btn pull-right" href = "#remove-dialog">
-					<i class = "fa fa-close"></i>
-					Cancel
+				<a href = "#remove-dialog">
+					<i class = "icon fa fa-chevron-left fa-2x pull-left"></i>
+					<h1 class = "title">Remove</h1>
 				</a>
 			</header>
 
-			<div class = "content">
-				<p class = "content-padded">
+			<div class = "content content-padded">
+				<p>
 					Are you sure you want to remove the spending
 					&laquo;<span class = "underline"><strong><span
 						class = "date-view">01.01</span></strong>
@@ -78,6 +73,12 @@
 					<i class = "fa fa-ruble"></i><span class = "comment-view">
 					</span>&raquo;?
 				</p>
+
+				<button
+					class = "btn btn-block btn-negative remove-spending-button">
+					<i class = "fa fa-trash"></i>
+					Remove
+				</button>
 			</div>
 		</div>
 	</body>
