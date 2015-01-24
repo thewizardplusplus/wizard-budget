@@ -31,6 +31,8 @@ $(document).ready(
 	function() {
 		function LoadActiveSpending() {
 			var json = activity.getSetting('active_spending');
+			SaveActiveSpending(null);
+
 			return JSON.parse(json);
 		}
 		function SaveActiveSpending(active_spending) {
@@ -115,22 +117,29 @@ $(document).ready(
 			);
 
 			var remove_dialog = $('#remove-dialog');
-			$('.remove-spending-button', remove_dialog).click(
+			$('.close-remove-dialog', remove_dialog).click(
 				function() {
-					var active_spending = LoadActiveSpending();
-					if ($.type(active_spending) !== "null") {
-						spending_manager.deleteSpending(active_spending.id);
-						SaveActiveSpending(null);
-						activity.updateWidget();
+					remove_dialog.removeClass('active');
+					SaveActiveSpending(null);
 
-						PUSH({url: 'history.html'});
-					}
+					return false;
 				}
 			);
 			var remove_dialog_date_view = $('.date-view', remove_dialog);
 			var remove_dialog_time_view = $('.time-view', remove_dialog);
 			var remove_dialog_amount_view = $('.amount-view', remove_dialog);
 			var remove_dialog_comment_view = $('.comment-view', remove_dialog);
+			$('.remove-spending-button', remove_dialog).click(
+				function() {
+					var active_spending = LoadActiveSpending();
+					if ($.type(active_spending) !== "null") {
+						spending_manager.deleteSpending(active_spending.id);
+						activity.updateWidget();
+
+						PUSH({url: 'history.html'});
+					}
+				}
+			);
 
 			$('.edit-spending-button', spending_list).click(
 				function() {
@@ -380,9 +389,7 @@ $(document).ready(
 						);
 					}
 
-					SaveActiveSpending(null);
 					activity.updateWidget();
-
 					PUSH({url: 'history.html'});
 				}
 			);
