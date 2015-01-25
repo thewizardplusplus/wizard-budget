@@ -12,4 +12,26 @@
 			android:title = "@string/preference_custom_date_base_day_title"
 			android:summary = "@string/preference_custom_date_base_day_summary" />
 	</PreferenceCategory>
+	<PreferenceCategory android:title = "@string/sms_parsing_preferences">
+		<EditTextPreference
+			android:key = "preference_sms_number_pattern"
+			android:title = "@string/preference_sms_number_pattern_title"
+			android:summary = "@string/preference_sms_number_pattern_summary"
+			android:defaultValue = ".*" />
+		<EditTextPreference
+			android:key = "preference_sms_spending_pattern"
+			android:title = "@string/preference_sms_spending_pattern_title"
+			android:summary = "@string/preference_sms_spending_pattern_summary"
+			android:defaultValue = "+?(?\u003cspending\u003e\\d+(?:\\.\\d+)?)" />
+		<EditTextPreference
+			android:key = "preference_sms_income_pattern"
+			android:title = "@string/preference_sms_income_pattern_title"
+			android:summary = "@string/preference_sms_income_pattern_summary"
+			android:defaultValue = "-(?\u003cincome\u003e\\d+(?:\\.\\d+)?)" />
+		<EditTextPreference
+			android:key = "preference_sms_comment_pattern"
+			android:title = "@string/preference_sms_comment_pattern_title"
+			android:summary = "@string/preference_sms_comment_pattern_summary"
+			android:defaultValue = "credit card" />
+	</PreferenceCategory>
 </PreferenceScreen>
