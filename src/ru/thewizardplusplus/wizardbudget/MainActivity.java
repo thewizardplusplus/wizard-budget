@@ -9,6 +9,8 @@ import android.widget.*;
 import android.content.*;
 import android.appwidget.*;
 import android.net.*;
+import java.security.*;
+import android.util.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -42,9 +44,9 @@ public class MainActivity extends Activity {
 		Settings settings = Settings.getCurrent(this);
 		if (name.equals("use_custom_date")) {
 			return settings.isUseCustomDate() ? "true" : "false";
-		} else if (name.equals("current_page")) {
+		} else if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			return settings.getCurrentPage();
-		} else if (name.equals("active_spending")) {
+		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			return settings.getActiveSpending();
 		} else {
 			return "";
@@ -54,12 +56,17 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public void setSetting(String name, String value) {
 		Settings settings = Settings.getCurrent(this);
-		if (name.equals("current_page")) {
+		if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			settings.setCurrentPage(value);
-		} else if (name.equals("active_spending")) {
+		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			settings.setActiveSpending(value);
 		}
 		settings.save();
+	}
+
+	@JavascriptInterface
+	public void log(String message) {
+		Log.d("Web", message);
 	}
 
 	@JavascriptInterface

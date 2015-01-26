@@ -8,6 +8,9 @@ import android.preference.*;
 import org.bostonandroid.datepreference.*;
 
 public class Settings {
+	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
+	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
+
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
 
@@ -15,11 +18,11 @@ public class Settings {
 			PreferenceManager
 			.getDefaultSharedPreferences(context);
 		settings.current_page = preferences.getString(
-			"current_page",
+			SETTING_NAME_CURRENT_PAGE,
 			DEFAULT_PAGE
 		);
 		settings.active_spending = preferences.getString(
-			"active_spending",
+			SETTING_NAME_ACTIVE_SPENDING,
 			DEFAULT_SPENDING
 		);
 		settings.use_custom_date = preferences.getBoolean(
@@ -63,8 +66,8 @@ public class Settings {
 			PreferenceManager
 			.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString("current_page", current_page);
-		editor.putString("active_spending", active_spending);
+		editor.putString(SETTING_NAME_CURRENT_PAGE, current_page);
+		editor.putString(SETTING_NAME_ACTIVE_SPENDING, active_spending);
 		editor.commit();
 	}
 

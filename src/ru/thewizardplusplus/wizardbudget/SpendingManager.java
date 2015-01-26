@@ -3,22 +3,23 @@ package ru.thewizardplusplus.wizardbudget;
 import java.text.*;
 import java.util.*;
 import java.io.*;
+import java.util.regex.*;
+
+import javax.xml.parsers.*;
 
 import org.json.*;
 import org.xmlpull.v1.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
 
 import android.app.*;
 import android.content.*;
 import android.database.*;
 import android.database.sqlite.*;
-import android.net.Uri;
+import android.net.*;
 import android.os.*;
 import android.util.*;
 import android.webkit.*;
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-import java.util.regex.*;
 
 public class SpendingManager {
 	public SpendingManager(Context context) {
@@ -168,7 +169,7 @@ public class SpendingManager {
 				new String[]{String.valueOf(id)}
 			);
 			database.close();
-		} catch (ParseException exception) {}
+		} catch (java.text.ParseException exception) {}
 	}
 
 	@JavascriptInterface
@@ -295,7 +296,7 @@ public class SpendingManager {
 							spending.getAttribute("date")
 						);
 						timestamp = date.getTime() / 1000L;
-					} catch (ParseException exception) {
+					} catch (java.text.ParseException exception) {
 						continue;
 					}
 

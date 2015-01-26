@@ -401,13 +401,15 @@ $(document).ready(
 			'push',
 			function(event) {
 				if (/\bhistory\b/.test(event.detail.state.url)) {
-					UpdateIndexPage();
 					activity.setSetting('current_page', 'history');
+					UpdateIndexPage();
 				} else if (/\beditor\b/.test(event.detail.state.url)) {
-					UpdateEditorPage();
 					activity.setSetting('current_page', 'editor');
+					UpdateEditorPage();
 				} else if (/\bauthors\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'authors');
+				} else {
+					activity.setSetting('current_page', 'history');
 				}
 			}
 		);
