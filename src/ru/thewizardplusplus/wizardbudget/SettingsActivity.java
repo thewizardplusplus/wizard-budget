@@ -14,8 +14,6 @@ public class SettingsActivity extends PreferenceActivity {
 		addValidator("preference_sms_number_pattern", "Invalid syntax of SMS number pattern.");
 		addValidator("preference_sms_spending_pattern", "Invalid syntax of SMS spending pattern.");
 		addValidator("preference_sms_income_pattern", "Invalid syntax of SMS income pattern.");
-		addValidator("preference_sms_spending_comment_pattern", "Invalid syntax of SMS spending comment pattern.");
-		addValidator("preference_sms_income_comment_pattern", "Invalid syntax of SMS income comment pattern.");
 	}
 
 	private void addValidator(String preference_name, String error_message) {

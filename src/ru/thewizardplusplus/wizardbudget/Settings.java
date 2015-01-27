@@ -6,6 +6,7 @@ import android.content.*;
 import android.preference.*;
 
 import org.bostonandroid.datepreference.*;
+import java.util.regex.*;
 
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
@@ -39,25 +40,46 @@ public class Settings {
 			"preference_parse_sms",
 			false
 		);
-		settings.sms_number_pattern = preferences.getString(
-			"preference_sms_number_pattern",
-			context.getString(R.string.preference_sms_number_pattern_default)
+		try {
+			settings.sms_number_pattern = Pattern.compile(
+				preferences.getString(
+					"preference_sms_number_pattern",
+					context.getString(R.string.preference_sms_number_pattern_default)
+				),
+				Pattern.CASE_INSENSITIVE
+			);
+		} catch (PatternSyntaxException exception) {
+			settings.parse_sms = false;
+		}
+		try {
+			settings.sms_spending_pattern = Pattern.compile(
+				preferences.getString(
+					"preference_sms_spending_pattern",
+					context.getString(R.string.preference_sms_spending_pattern_default)
+				),
+				Pattern.CASE_INSENSITIVE
+			);
+		} catch (PatternSyntaxException exception) {
+			settings.parse_sms = false;
+		}
+		try {
+			settings.sms_income_pattern = Pattern.compile(
+				preferences.getString(
+					"preference_sms_income_pattern",
+					context.getString(R.string.preference_sms_income_pattern_default)
+				),
+				Pattern.CASE_INSENSITIVE
+			);
+		} catch (PatternSyntaxException exception) {
+			settings.parse_sms = false;
+		}
+		settings.sms_spending_comment = preferences.getString(
+			"preference_sms_spending_comment",
+			context.getString(R.string.preference_sms_spending_comment_default)
 		);
-		settings.sms_spending_pattern = preferences.getString(
-			"preference_sms_spending_pattern",
-			context.getString(R.string.preference_sms_spending_pattern_default)
-		);
-		settings.sms_income_pattern = preferences.getString(
-			"preference_sms_income_pattern",
-			context.getString(R.string.preference_sms_income_pattern_default)
-		);
-		settings.sms_spending_comment_pattern = preferences.getString(
-			"preference_sms_spending_comment_pattern",
-			context.getString(R.string.preference_sms_spending_comment_pattern_default)
-		);
-		settings.sms_income_comment_pattern = preferences.getString(
-			"preference_sms_income_comment_pattern",
-			context.getString(R.string.preference_sms_income_comment_pattern_default)
+		settings.sms_income_comment = preferences.getString(
+			"preference_sms_income_comment",
+			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
 		return settings;
@@ -91,24 +113,24 @@ public class Settings {
 		return parse_sms;
 	}
 
-	public String getSmsNumberPattern() {
+	public Pattern getSmsNumberPattern() {
 		return sms_number_pattern;
 	}
 
-	public String getSmsSpendingPattern() {
+	public Pattern getSmsSpendingPattern() {
 		return sms_spending_pattern;
 	}
 
-	public String getSmsIncomePattern() {
+	public Pattern getSmsIncomePattern() {
 		return sms_income_pattern;
 	}
 
-	public String getSmsSpendingCommentPattern() {
-		return sms_spending_comment_pattern;
+	public String getSmsSpendingComment() {
+		return sms_spending_comment;
 	}
 
-	public String getSmsIncomeCommentPattern() {
-		return sms_income_comment_pattern;
+	public String getSmsIncomeComment() {
+		return sms_income_comment;
 	}
 
 	public void save() {
@@ -130,11 +152,11 @@ public class Settings {
 	private boolean use_custom_date = false;
 	private Calendar custom_date_base_day = Calendar.getInstance();
 	private boolean parse_sms = false;
-	private String sms_number_pattern = "";
-	private String sms_spending_pattern = "";
-	private String sms_income_pattern = "";
-	private String sms_spending_comment_pattern = "";
-	private String sms_income_comment_pattern = "";
+	private Pattern sms_number_pattern;
+	private Pattern sms_spending_pattern;
+	private Pattern sms_income_pattern;
+	private String sms_spending_comment = "";
+	private String sms_income_comment = "";
 
 	private Settings(Context context) {
 		this.context = context;
