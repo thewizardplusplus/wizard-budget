@@ -256,7 +256,8 @@ public class SpendingManager {
 					.getDateInstance(DateFormat.DEFAULT, Locale.US);
 				String notification_timestamp = notification_timestamp_format
 					.format(current_date);
-				showNotification(
+				Utils.showNotification(
+					context,
 					context.getString(R.string.app_name),
 					"Backuped at " + notification_timestamp + ".",
 					file
@@ -337,7 +338,8 @@ public class SpendingManager {
 				.getDateInstance(DateFormat.DEFAULT, Locale.US);
 			String notification_timestamp = notification_timestamp_format
 				.format(current_date);
-			showNotification(
+			Utils.showNotification(
+				context,
 				context.getString(R.string.app_name),
 				"Restored at " + notification_timestamp + ".",
 				null
@@ -352,7 +354,6 @@ public class SpendingManager {
 			Locale.US
 		);
 	private static final long DAYS_IN_CUSTOM_YEAR = 300;
-	private static final int NOTIFICATION_ID = 0;
 
 	private Context context;
 
@@ -416,40 +417,5 @@ public class SpendingManager {
 			Locale.US
 		);
 		return date_format.format(date);
-	}
-
-	public void showNotification(
-		String title,
-		String message,
-		File file
-	) {
-		Intent intent = null;
-		if (file != null) {
-			intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(file), "text/xml");
-		} else {
-			intent = new Intent(context, MainActivity.class);
-		}
-		PendingIntent pending_intent = PendingIntent.getActivity(
-			context,
-			0,
-			intent,
-			0
-		);
-
-		@SuppressWarnings("deprecation")
-		Notification notification = new Notification.Builder(context)
-			.setTicker(title)
-			.setSmallIcon(R.drawable.app_icon)
-			.setContentTitle(title)
-			.setContentText(message)
-			.setContentIntent(pending_intent)
-			.getNotification();
-
-		NotificationManager notifications = (NotificationManager)context
-			.getSystemService(
-				Context.NOTIFICATION_SERVICE
-			);
-		notifications.notify(NOTIFICATION_ID, notification);
 	}
 }
