@@ -68,12 +68,14 @@ public class SmsReceiver extends BroadcastReceiver {
 						SpendingManager spending_manager = new SpendingManager(context_copy);
 						spending_manager.createSpending(spending, comment);
 
-						Utils.showNotification(
-							context_copy,
-							context_copy.getString(R.string.app_name),
-							"Imported SMS with " + (spending >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(spending)) + " RUB",
-							null
-						);
+						if (Settings.getCurrent(context_copy).isSmsParsingNotification()) {
+							Utils.showNotification(
+								context_copy,
+								context_copy.getString(R.string.app_name),
+								"Imported SMS with " + (spending >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(spending)) + " RUB",
+								null
+							);
+						}
 					}
 				}
 			).start();

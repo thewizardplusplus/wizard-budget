@@ -252,16 +252,18 @@ public class SpendingManager {
 				serializer.endTag("", "spendings");
 				serializer.endDocument();
 
-				DateFormat notification_timestamp_format = DateFormat
-					.getDateInstance(DateFormat.DEFAULT, Locale.US);
-				String notification_timestamp = notification_timestamp_format
-					.format(current_date);
-				Utils.showNotification(
-					context,
-					context.getString(R.string.app_name),
-					"Backuped at " + notification_timestamp + ".",
-					file
-				);
+				if (Settings.getCurrent(context).isBackupNotification()) {
+					DateFormat notification_timestamp_format = DateFormat
+						.getDateInstance(DateFormat.DEFAULT, Locale.US);
+					String notification_timestamp = notification_timestamp_format
+						.format(current_date);
+					Utils.showNotification(
+						context,
+						context.getString(R.string.app_name),
+						"Backuped at " + notification_timestamp + ".",
+						file
+					);
+				}
 			} finally {
 				writter.close();
 			}
@@ -333,17 +335,19 @@ public class SpendingManager {
 			);
 			database.close();
 
-			Date current_date = new Date();
-			DateFormat notification_timestamp_format = DateFormat
-				.getDateInstance(DateFormat.DEFAULT, Locale.US);
-			String notification_timestamp = notification_timestamp_format
-				.format(current_date);
-			Utils.showNotification(
-				context,
-				context.getString(R.string.app_name),
-				"Restored at " + notification_timestamp + ".",
-				null
-			);
+			if (Settings.getCurrent(context).isRestoreNotification()) {
+				Date current_date = new Date();
+				DateFormat notification_timestamp_format = DateFormat
+					.getDateInstance(DateFormat.DEFAULT, Locale.US);
+				String notification_timestamp = notification_timestamp_format
+					.format(current_date);
+				Utils.showNotification(
+					context,
+					context.getString(R.string.app_name),
+					"Restored at " + notification_timestamp + ".",
+					null
+				);
+			}
 		}
 	}
 

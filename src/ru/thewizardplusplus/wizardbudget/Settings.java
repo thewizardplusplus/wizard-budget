@@ -84,6 +84,19 @@ public class Settings {
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
+		settings.backup_notification = preferences.getBoolean(
+			"preference_backup_notification",
+			true
+		);
+		settings.restore_notification = preferences.getBoolean(
+			"preference_restore_notification",
+			true
+		);
+		settings.sms_parsing_notification = preferences.getBoolean(
+			"preference_sms_parsing_notification",
+			true
+		);
+
 		return settings;
 	}
 
@@ -135,6 +148,18 @@ public class Settings {
 		return sms_income_comment;
 	}
 
+	public boolean isBackupNotification() {
+		return backup_notification;
+	}
+
+	public boolean isRestoreNotification() {
+		return restore_notification;
+	}
+
+	public boolean isSmsParsingNotification() {
+		return sms_parsing_notification;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -159,6 +184,9 @@ public class Settings {
 	private Pattern sms_income_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
+	private boolean backup_notification = true;
+	private boolean restore_notification = true;
+	private boolean sms_parsing_notification = true;
 
 	private Settings(Context context) {
 		this.context = context;
