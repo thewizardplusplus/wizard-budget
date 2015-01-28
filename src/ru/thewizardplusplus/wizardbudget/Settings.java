@@ -31,9 +31,11 @@ public class Settings {
 			"preference_use_custom_date",
 			false
 		);
+		Date current_date = new Date();
 		settings.custom_date_base_day = DatePreference.getDateFor(
 			preferences,
-			"preference_custom_date_base_day"
+			"preference_custom_date_base_day",
+			current_date
 		);
 
 		settings.parse_sms = preferences.getBoolean(
