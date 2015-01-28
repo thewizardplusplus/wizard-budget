@@ -49,4 +49,21 @@
 			android:summary = "@string/preference_sms_income_comment_summary"
 			android:defaultValue = "@string/preference_sms_income_comment_default" />
 	</PreferenceCategory>
+	<PreferenceCategory android:title = "@string/notifications_preferences">
+		<CheckBoxPreference
+			android:key = "preference_backup_notification"
+			android:title = "@string/preference_backup_notification_title"
+			android:summary = "@string/preference_backup_notification_symmary"
+			android:defaultValue = "true" />
+		<CheckBoxPreference
+			android:key = "preference_restore_notification"
+			android:title = "@string/preference_restore_notification_title"
+			android:summary = "@string/preference_restore_notification_summary"
+			android:defaultValue = "true" />
+		<CheckBoxPreference
+			android:key = "preference_sms_parsing_notification"
+			android:title = "@string/preference_sms_parsing_notification_title"
+			android:summary = "@string/preference_sms_parsing_notification_summary"
+			android:defaultValue = "true" />
+	</PreferenceCategory>
 </PreferenceScreen>

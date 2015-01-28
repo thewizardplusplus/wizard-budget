@@ -26,6 +26,13 @@
 	<string name = "preference_sms_income_comment_title">Income comment</string>
 	<string name = "preference_sms_income_comment_summary">Income comment text.</string>
 	<string name = "preference_sms_income_comment_default">income, credit card</string>
+	<string name = "notifications_preferences">Notifications</string>
+	<string name = "preference_backup_notification_title">Backup notification</string>
+	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>
+	<string name = "preference_restore_notification_title">Restore notification</string>
+	<string name = "preference_restore_notification_summary">Notify about history restore.</string>
+	<string name = "preference_sms_parsing_notification_title">SMS parsing notification</string>
+	<string name = "preference_sms_parsing_notification_summary">Notify about SMS parsing.</string>
 	<string name = "widget_label_text">Spendings sum:</string>
 	<string name = "zero">0.0</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>
