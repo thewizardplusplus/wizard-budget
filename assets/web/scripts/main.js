@@ -406,6 +406,8 @@ $(document).ready(
 				} else if (/\beditor\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'editor');
 					UpdateEditorPage();
+				} else if (/\bsms\b/.test(event.detail.state.url)) {
+					activity.setSetting('current_page', 'sms');
 				} else if (/\bauthors\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'authors');
 				} else {
