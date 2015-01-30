@@ -75,7 +75,8 @@ $(document).ready(
 								+ 'data-spending-id = "' + spending.id + '">'
 								+ '<i class = "fa fa-trash"></i>'
 							+ '</button>'
-							+ '<span class = "media-object pull-left">'
+							+ '<span class = "media-object pull-left mark-container">'
+								+ '<i class = "fa fa-credit-card mark"></i>'
 								+ '<i class = "fa fa-'
 									+ (spending.amount > 0
 										? 'shopping-cart'

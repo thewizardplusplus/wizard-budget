@@ -16,6 +16,17 @@
 	width: 40px;
 }
 
+.mark-container {
+	position: relative;
+}
+
+.mark {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: white;
+}
+
 .media-body p {
 	margin-right: 55px;
 }
