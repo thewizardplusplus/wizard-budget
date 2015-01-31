@@ -70,5 +70,10 @@
 			android:title = "@string/preference_sms_parsing_notification_title"
 			android:summary = "@string/preference_sms_parsing_notification_summary"
 			android:defaultValue = "true" />
+		<CheckBoxPreference
+			android:key = "preference_sms_import_notification"
+			android:title = "@string/preference_sms_import_notification_title"
+			android:summary = "@string/preference_sms_import_notification_summary"
+			android:defaultValue = "true" />
 	</PreferenceCategory>
 </PreferenceScreen>

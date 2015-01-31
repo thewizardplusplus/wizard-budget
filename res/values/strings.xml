@@ -36,6 +36,8 @@
 	<string name = "preference_restore_notification_summary">Notify about history restore.</string>
 	<string name = "preference_sms_parsing_notification_title">SMS parsing notification</string>
 	<string name = "preference_sms_parsing_notification_summary">Notify about SMS parsing.</string>
+	<string name = "preference_sms_import_notification_title">SMS import notification</string>
+	<string name = "preference_sms_import_notification_summary">Notify about SMS import.</string>
 	<string name = "widget_label_text">Spendings sum:</string>
 	<string name = "zero">0.0</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>

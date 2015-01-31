@@ -101,6 +101,10 @@ public class Settings {
 			"preference_sms_parsing_notification",
 			true
 		);
+		settings.sms_import_notification = preferences.getBoolean(
+			"preference_sms_import_notification",
+			true
+		);
 
 		return settings;
 	}
@@ -169,6 +173,10 @@ public class Settings {
 		return sms_parsing_notification;
 	}
 
+	public boolean isSmsImportNotification() {
+		return sms_import_notification;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -198,6 +206,7 @@ public class Settings {
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;
+	private boolean sms_import_notification = true;
 
 	private Settings(Context context) {
 		this.context = context;
