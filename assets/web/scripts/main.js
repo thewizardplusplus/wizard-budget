@@ -356,6 +356,13 @@ $(document).ready(
 				comment_editor.val(active_spending.comment);
 			}
 
+			$('.tags-editor').select2(
+				{
+					tags: true,
+					tokenSeparators: [',']
+				}
+			);
+
 			var income_flag = $('.income-flag');
 			if ($.type(active_spending) !== "null") {
 				if (active_spending.income_flag) {
