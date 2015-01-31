@@ -3,6 +3,9 @@
 	<string name = "app_name">Wizard Budget</string>
 	<string name = "error_message_box_title">Error!</string>
 	<string name = "restore_backup_error_message">Unable to read backup.</string>
+	<string name = "preference_credit_card_tag_title">Credit card tag</string>
+	<string name = "preference_credit_card_tag_summary">Tag that mark spending from credit card.</string>
+	<string name = "preference_credit_card_tag_default">credit card</string>
 	<string name = "custom_date_preferences">Custom date</string>
 	<string name = "preference_use_custom_date_title">Use custom date</string>
 	<string name = "preference_use_custom_date_summary">Use date with only day and year and 300 day in each year.</string>
