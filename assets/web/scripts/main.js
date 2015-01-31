@@ -399,6 +399,24 @@ $(document).ready(
 				}
 			);
 		}
+		function UpdateSmsPage() {
+			var sms_list = $('.sms-list');
+			sms_list.empty();
+
+			var raw_spendings = spending_manager.getSpendingsFromSms();
+			var spendings = JSON.parse(raw_spendings);
+			spendings.map(
+				function(spending) {
+					sms_list.append(
+						'<li class = "table-view-cell media">'
+							+ spending.date + ' '
+							+ spending.spending + ' '
+							+ spending.comment
+						+ '</li>'
+					);
+				}
+			);
+		}
 
 		window.addEventListener(
 			'push',
@@ -411,6 +429,7 @@ $(document).ready(
 					UpdateEditorPage();
 				} else if (/\bsms\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'sms');
+					UpdateSmsPage();
 				} else if (/\bauthors\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'authors');
 				} else {

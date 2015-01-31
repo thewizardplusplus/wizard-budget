@@ -101,6 +101,39 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public String getSpendingsFromSms() {
+		Uri uri = Uri.parse("content://sms/inbox");
+		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		JSONArray spendings = new JSONArray();
+		if (cursor.moveToFirst()) {
+			do {
+				String date = cursor.getString(cursor.getColumnIndexOrThrow("date")).toString();
+				String number = cursor.getString(cursor.getColumnIndexOrThrow("address")).toString();
+				String text = cursor.getString(cursor.getColumnIndexOrThrow("body")).toString();
+
+				SmsData sms_data = Utils.getSpendingFromSms(context, number, text);
+				if (sms_data == null) {
+					continue;
+				}
+
+				try {
+					JSONObject spending = new JSONObject();
+					spending.put("date", date);
+					spending.put("spending", sms_data.getSpending());
+					spending.put("comment", sms_data.getComment());
+
+					spendings.put(spending);
+				} catch (JSONException exception) {
+					continue;
+				}
+			} while (cursor.moveToNext());
+		}
+
+		cursor.close();
+		return spendings.toString();
+	}
+
+	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
 		ContentValues values = new ContentValues();
 		values.put("timestamp", System.currentTimeMillis() / 1000L);

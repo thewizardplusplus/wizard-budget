@@ -38,42 +38,19 @@ public class SmsReceiver extends BroadcastReceiver {
 							return;
 						}
 
-						Matcher matcher = Settings.getCurrent(context_copy).getSmsNumberPattern().matcher(number);
-						if (!matcher.find()) {
+						SmsData sms_data = Utils.getSpendingFromSms(context_copy, number, text);
+						if (sms_data == null) {
 							return;
 						}
-
-						String spending_string = "";
-						matcher = Settings.getCurrent(context_copy).getSmsSpendingPattern().matcher(text);
-						if (matcher.find()) {
-							spending_string = matcher.group(1);
-						} else {
-							matcher = Settings.getCurrent(context_copy).getSmsIncomePattern().matcher(text);
-							if (matcher.find()) {
-								spending_string = "-" + matcher.group(1);
-							} else {
-								return;
-							}
-						}
-
-						double spending = 0.0;
-						try {
-							spending = Double.valueOf(spending_string);
-						} catch(NumberFormatException exception) {
-							return;
-						}
-
-						String comment = spending >= 0.0 ? Settings.getCurrent(context_copy).getSmsSpendingComment() : Settings.getCurrent(context_copy).getSmsIncomeComment();
-						comment += ", " + Settings.getCurrent(context_copy).getCreditCardTag();
 
 						SpendingManager spending_manager = new SpendingManager(context_copy);
-						spending_manager.createSpending(spending, comment);
+						spending_manager.createSpending(sms_data.getSpending(), sms_data.getComment());
 
 						if (Settings.getCurrent(context_copy).isSmsParsingNotification()) {
 							Utils.showNotification(
 								context_copy,
 								context_copy.getString(R.string.app_name),
-								"Imported SMS with " + (spending >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(spending)) + " RUB.",
+								"Imported SMS with " + (sms_data.getSpending() >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(sms_data.getSpending())) + " RUB.",
 								null
 							);
 						}
