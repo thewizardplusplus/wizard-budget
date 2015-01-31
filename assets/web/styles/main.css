@@ -20,11 +20,14 @@
 	position: relative;
 }
 
-.mark {
+.mark-container .mark {
 	position: absolute;
+	width: auto;
 	top: 0;
 	right: 0;
+	padding: 0 1px;
 	background: white;
+	border-radius: 3px;
 }
 
 .media-body p {
