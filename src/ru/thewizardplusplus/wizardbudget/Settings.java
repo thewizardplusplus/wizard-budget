@@ -27,6 +27,11 @@ public class Settings {
 			DEFAULT_SPENDING
 		);
 
+		settings.credit_card_tag = preferences.getString(
+			"preference_credit_card_tag",
+			DEFAULT_CREDIT_CARD_TAG
+		);
+
 		settings.use_custom_date = preferences.getBoolean(
 			"preference_use_custom_date",
 			false
@@ -116,6 +121,10 @@ public class Settings {
 		this.active_spending = active_spending;
 	}
 
+	public String getCreditCardTag() {
+		return credit_card_tag;
+	}
+
 	public boolean isUseCustomDate() {
 		return use_custom_date;
 	}
@@ -172,10 +181,12 @@ public class Settings {
 
 	private static final String DEFAULT_PAGE = "history";
 	private static final String DEFAULT_SPENDING = "null";
+	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
 	private String active_spending = DEFAULT_SPENDING;
+	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean use_custom_date = false;
 	private Calendar custom_date_base_day = Calendar.getInstance();
 	private boolean parse_sms = false;

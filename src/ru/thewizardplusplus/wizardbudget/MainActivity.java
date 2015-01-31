@@ -42,7 +42,9 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public String getSetting(String name) {
 		Settings settings = Settings.getCurrent(this);
-		if (name.equals("use_custom_date")) {
+		if (name.equals("credit_card_tag")) {
+			return settings.getCreditCardTag();
+		} else if (name.equals("use_custom_date")) {
 			return settings.isUseCustomDate() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			return settings.getCurrentPage();
