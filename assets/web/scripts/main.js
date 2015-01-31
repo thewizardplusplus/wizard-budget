@@ -356,10 +356,29 @@ $(document).ready(
 				comment_editor.val(active_spending.comment);
 			}
 
-			$('.tags-editor').select2(
+			var raw_all_tags = spending_manager.getSpendingTags();
+			var all_tags = JSON.parse(raw_all_tags);
+
+			var amount_tags = null;
+			if ($.type(active_spending) !== "null" && active_spending.comment.length) {
+				amount_tags = active_spending.comment.split(',').map(
+					function(tag) {
+						return $.trim(tag);
+					}
+				);
+			}
+
+			var tags_editor = $('.tags-editor');
+			for (var i = 0; i < all_tags.length; i++) {
+				tags_editor.append('<option>' + all_tags[i] + '</option>');
+			}
+			tags_editor.val(amount_tags).trigger('change');
+			tags_editor.select2(
 				{
+					allowClear: true,
 					tags: true,
-					tokenSeparators: [',']
+					tokenSeparators: [','],
+					placeholder: 'Comment'
 				}
 			);
 
@@ -374,6 +393,7 @@ $(document).ready(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
 					var comment = comment_editor.val();
+					comment = tags_editor.val().join(', ');
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}

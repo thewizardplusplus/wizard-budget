@@ -157,6 +157,40 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public String getSpendingTags() {
+		SQLiteDatabase database = getDatabase();
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"comment"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		JSONArray tags = new JSONArray();
+		boolean moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			String comment = spendings_cursor.getString(0);
+			if (!comment.isEmpty()) {
+				String[] comment_parts = comment.split(",");
+				for (String part: comment_parts) {
+					String trimmed_part = part.trim();
+					if (!trimmed_part.isEmpty()) {
+						tags.put(trimmed_part);
+					}
+				}
+			}
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return tags.toString();
+	}
+
+	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
 		ContentValues values = new ContentValues();
 		values.put("timestamp", System.currentTimeMillis() / 1000L);
