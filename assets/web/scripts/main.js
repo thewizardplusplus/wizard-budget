@@ -351,11 +351,6 @@ $(document).ready(
 			}
 			amount_editor.focus();
 
-			var comment_editor = $('.comment-editor');
-			if ($.type(active_spending) !== "null") {
-				comment_editor.val(active_spending.comment);
-			}
-
 			var raw_all_tags = spending_manager.getSpendingTags();
 			var all_tags = JSON.parse(raw_all_tags);
 
@@ -369,10 +364,11 @@ $(document).ready(
 			}
 
 			var tags_editor = $('.tags-editor');
+			tags_editor.empty();
 			for (var i = 0; i < all_tags.length; i++) {
 				tags_editor.append('<option>' + all_tags[i] + '</option>');
 			}
-			tags_editor.val(amount_tags).trigger('change');
+
 			tags_editor.select2(
 				{
 					allowClear: true,
@@ -381,6 +377,7 @@ $(document).ready(
 					placeholder: 'Comment'
 				}
 			);
+			tags_editor.val(amount_tags).trigger('change');
 
 			var income_flag = $('.income-flag');
 			if ($.type(active_spending) !== "null") {
@@ -392,8 +389,8 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
-					var comment = comment_editor.val();
-					comment = tags_editor.val().join(', ');
+					var tags = tags_editor.val();
+					var comment = tags ? tags.join(', ') : '';
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
