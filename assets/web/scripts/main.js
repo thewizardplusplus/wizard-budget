@@ -441,6 +441,13 @@ $(document).ready(
 					);
 				}
 			);
+
+			$('.import-sms-button').click(
+				function() {
+					spending_manager.importSms(raw_spendings);
+					PUSH({url: 'history.html'});
+				}
+			);
 		}
 
 		window.addEventListener(

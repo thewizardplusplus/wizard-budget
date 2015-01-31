@@ -240,6 +240,50 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public void importSms(String sms_data) {
+		String sql = "";
+		try {
+			JSONArray spendings = new JSONArray(sms_data);
+			for (int i = 0; i < spendings.length(); i++) {
+				if (!sql.isEmpty()) {
+					sql += ",";
+				}
+
+				JSONObject spending = spendings.getJSONObject(i);
+				sql += "("
+						+ String.valueOf(spending.getLong("timestamp")) + ","
+						+ String.valueOf(spending.getDouble("amount")) + ","
+						+ DatabaseUtils.sqlEscapeString(
+							spending.getString("comment")
+						)
+					+ ")";
+			}
+		} catch (JSONException exception) {}
+
+		if (!sql.isEmpty()) {
+			SQLiteDatabase database = getDatabase();
+			database.execSQL(
+				"INSERT INTO spendings"
+				+ "(timestamp, amount, comment)"
+				+ "VALUES" + sql
+			);
+			database.close();
+
+			Date current_date = new Date();
+			DateFormat notification_timestamp_format = DateFormat
+				.getDateInstance(DateFormat.DEFAULT, Locale.US);
+			String notification_timestamp = notification_timestamp_format
+				.format(current_date);
+			Utils.showNotification(
+				context,
+				context.getString(R.string.app_name),
+				"SMS imported at " + notification_timestamp + ".",
+				null
+			);
+		}
+	}
+
+	@JavascriptInterface
 	public void backup() {
 		SQLiteDatabase database = getDatabase();
 		Cursor cursor = database.query(
