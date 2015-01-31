@@ -106,8 +106,21 @@ public class SpendingManager {
 		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 		JSONArray spendings = new JSONArray();
 		if (cursor.moveToFirst()) {
+			long start_timestamp =
+				Settings
+				.getCurrent(context)
+				.getCustomDateBaseDay()
+				.getTimeInMillis()
+				/ 1000L;
 			do {
-				String date = cursor.getString(cursor.getColumnIndexOrThrow("date")).toString();
+				long timestamp = 0;
+				try {
+					String timestamp_string = cursor.getString(cursor.getColumnIndexOrThrow("date")).toString();
+					timestamp = Long.valueOf(timestamp_string) / 1000L;
+				} catch (NumberFormatException exception) {
+					continue;
+				}
+
 				String number = cursor.getString(cursor.getColumnIndexOrThrow("address")).toString();
 				String text = cursor.getString(cursor.getColumnIndexOrThrow("body")).toString();
 
@@ -118,8 +131,18 @@ public class SpendingManager {
 
 				try {
 					JSONObject spending = new JSONObject();
-					spending.put("date", date);
-					spending.put("spending", sms_data.getSpending());
+					spending.put("timestamp", timestamp);
+					if (!Settings.getCurrent(context).isUseCustomDate()) {
+						spending.put("date", formatDate(timestamp));
+					} else {
+						spending.put(
+							"date",
+							formatCustomDate(timestamp, start_timestamp)
+						);
+					}
+					spending.put("time", formatTime(timestamp));
+
+					spending.put("amount", sms_data.getSpending());
 					spending.put("comment", sms_data.getComment());
 
 					spendings.put(spending);

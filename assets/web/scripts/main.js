@@ -84,7 +84,7 @@ $(document).ready(
 										? 'shopping-cart'
 										: 'money')
 									+ ' fa-2x"></i>'
-								+ '</span>'
+							+ '</span>'
 							+ '<div class = "media-body">'
 								+ '<p>'
 									+ '<span class = "underline">'
@@ -409,9 +409,34 @@ $(document).ready(
 				function(spending) {
 					sms_list.append(
 						'<li class = "table-view-cell media">'
-							+ spending.date + ' '
-							+ spending.spending + ' '
-							+ spending.comment
+							+ '<span class = "media-object pull-left mark-container">'
+								+ '<i class = "fa fa-credit-card mark"></i>'
+								+ '<i class = "fa fa-'
+									+ (spending.amount > 0
+										? 'shopping-cart'
+										: 'money')
+									+ ' fa-2x"></i>'
+							+ '</span>'
+							+ '<div class = "media-body">'
+								+ '<p>'
+									+ '<span class = "underline">'
+										+ '<strong>'
+											+ '<span class = "date-view">'
+												+ spending.date
+											+ '</span>'
+										+ '</strong> '
+										+ '<span class = "time-view">'
+											+ spending.time
+										+ '</span>:'
+									+ '</span>'
+								+ '</p>'
+								+ '<p>'
+									+ '<span class = "amount-view">'
+										+ Math.abs(spending.amount)
+									+ '</span> '
+									+ '<i class = "fa fa-ruble"></i>.'
+								+ '</p>'
+							+ '</div>'
 						+ '</li>'
 					);
 				}
