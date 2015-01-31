@@ -64,6 +64,7 @@ public class SmsReceiver extends BroadcastReceiver {
 						}
 
 						String comment = spending >= 0.0 ? Settings.getCurrent(context_copy).getSmsSpendingComment() : Settings.getCurrent(context_copy).getSmsIncomeComment();
+						comment += ", " + Settings.getCurrent(context_copy).getCreditCardTag();
 
 						SpendingManager spending_manager = new SpendingManager(context_copy);
 						spending_manager.createSpending(spending, comment);
@@ -72,7 +73,7 @@ public class SmsReceiver extends BroadcastReceiver {
 							Utils.showNotification(
 								context_copy,
 								context_copy.getString(R.string.app_name),
-								"Imported SMS with " + (spending >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(spending)) + " RUB",
+								"Imported SMS with " + (spending >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(spending)) + " RUB.",
 								null
 							);
 						}

@@ -25,10 +25,10 @@
 	<string name = "preference_sms_income_pattern_default">Income: (\\d+(?:\\.\\d+)?) RUB\\.</string>
 	<string name = "preference_sms_spending_comment_title">Spending comment</string>
 	<string name = "preference_sms_spending_comment_summary">Spending comment text.</string>
-	<string name = "preference_sms_spending_comment_default">spending, credit card</string>
+	<string name = "preference_sms_spending_comment_default">spending</string>
 	<string name = "preference_sms_income_comment_title">Income comment</string>
 	<string name = "preference_sms_income_comment_summary">Income comment text.</string>
-	<string name = "preference_sms_income_comment_default">income, credit card</string>
+	<string name = "preference_sms_income_comment_default">income</string>
 	<string name = "notifications_preferences">Notifications</string>
 	<string name = "preference_backup_notification_title">Backup notification</string>
 	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>
