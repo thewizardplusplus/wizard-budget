@@ -351,33 +351,10 @@ $(document).ready(
 			}
 			amount_editor.focus();
 
-			var raw_all_tags = spending_manager.getSpendingTags();
-			var all_tags = JSON.parse(raw_all_tags);
-
-			var amount_tags = null;
-			if ($.type(active_spending) !== "null" && active_spending.comment.length) {
-				amount_tags = active_spending.comment.split(',').map(
-					function(tag) {
-						return $.trim(tag);
-					}
-				);
+			var comment_editor = $('.comment-editor');
+			if ($.type(active_spending) !== "null") {
+				comment_editor.val(active_spending.comment);
 			}
-
-			var tags_editor = $('.tags-editor');
-			tags_editor.empty();
-			for (var i = 0; i < all_tags.length; i++) {
-				tags_editor.append('<option>' + all_tags[i] + '</option>');
-			}
-
-			tags_editor.select2(
-				{
-					allowClear: true,
-					tags: true,
-					tokenSeparators: [','],
-					placeholder: 'Comment'
-				}
-			);
-			tags_editor.val(amount_tags).trigger('change');
 
 			var income_flag = $('.income-flag');
 			if ($.type(active_spending) !== "null") {
@@ -389,8 +366,7 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
-					var tags = tags_editor.val();
-					var comment = tags ? tags.join(', ') : '';
+					var comment = comment_editor.val();
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}

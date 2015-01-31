@@ -73,16 +73,6 @@ select {
 	margin-bottom: 15px;
 }
 
-.select2-container--default .select2-search--inline {
-	clear: both;
-}
-
-.select2-container--default .select2-search--inline .select2-search__field {
-	border: 1px solid #777;
-	border-radius: 3px;
-	outline: none;
-}
-
 .btn-block {
 	margin-top: 15px;
 }
