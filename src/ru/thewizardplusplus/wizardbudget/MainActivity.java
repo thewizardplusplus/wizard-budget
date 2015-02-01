@@ -42,7 +42,16 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public void saveToDropbox(String filename) {
 		backup_filename = filename;
-		startDropboxAuthentication();
+
+		String dropbox_token = Settings.getCurrent(this).getDropboxToken();
+		if (!dropbox_token.isEmpty()) {
+			AndroidAuthSession session = new AndroidAuthSession(APP_KEYS, dropbox_token);
+			dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
+
+			saveBackupToDropbox();
+		} else {
+			startDropboxAuthentication();
+		}
 	}
 
 	@JavascriptInterface
@@ -119,34 +128,7 @@ public class MainActivity extends Activity {
 				settings.setDropboxToken(token);
 				settings.save();
 
-				final Context context_copy = this;
-				new Thread(
-					new Runnable() {
-						@Override
-						public void run() {
-							try {
-								File backup = new File(backup_filename);
-								FileInputStream in = new FileInputStream(backup);
-								dropbox_api.putFile("/" + backup.getName(), in, backup.length(), null, null);
-
-								if (Settings.getCurrent(context_copy).isDropboxNotification()) {
-									Date current_date = new Date();
-									DateFormat notification_timestamp_format = DateFormat
-										.getDateInstance(DateFormat.DEFAULT, Locale.US);
-									String notification_timestamp = notification_timestamp_format
-										.format(current_date);
-									Utils.showNotification(
-										context_copy,
-										context_copy.getString(R.string.app_name),
-										"Backup saved to Dropbox at " + notification_timestamp + ".",
-										null
-									);
-								}
-							} catch (FileNotFoundException exception) {
-							} catch (DropboxException exception) {}
-						}
-					}
-				).start();
+				saveBackupToDropbox();
 			} catch (IllegalStateException exception) {}
 		}
 	}
@@ -206,6 +188,37 @@ public class MainActivity extends Activity {
 				}
 			}
 		} catch (IOException exception) {}
+	}
+
+	private void saveBackupToDropbox() {
+		final Context context_copy = this;
+		new Thread(
+			new Runnable() {
+				@Override
+				public void run() {
+					try {
+						File backup = new File(backup_filename);
+						FileInputStream in = new FileInputStream(backup);
+						dropbox_api.putFile("/" + backup.getName(), in, backup.length(), null, null);
+
+						if (Settings.getCurrent(context_copy).isDropboxNotification()) {
+							Date current_date = new Date();
+							DateFormat notification_timestamp_format = DateFormat
+								.getDateInstance(DateFormat.DEFAULT, Locale.US);
+							String notification_timestamp = notification_timestamp_format
+								.format(current_date);
+							Utils.showNotification(
+								context_copy,
+								context_copy.getString(R.string.app_name),
+								"Backup saved to Dropbox at " + notification_timestamp + ".",
+								null
+							);
+						}
+					} catch (FileNotFoundException exception) {
+					} catch (DropboxException exception) {}
+				}
+			}
+		).start();
 	}
 
 	private void startDropboxAuthentication() {
