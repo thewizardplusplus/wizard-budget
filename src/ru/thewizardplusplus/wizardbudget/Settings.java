@@ -11,6 +11,8 @@ import org.bostonandroid.datepreference.*;
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
+	public static final String SETTING_NAME_DROPBOX_TOKEN_KEY = "dropbox_token_key";
+	public static final String SETTING_NAME_DROPBOX_TOKEN_SECRET = "dropbox_token_secret";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -25,6 +27,14 @@ public class Settings {
 		settings.active_spending = preferences.getString(
 			SETTING_NAME_ACTIVE_SPENDING,
 			DEFAULT_SPENDING
+		);
+		settings.dropbox_token_key = preferences.getString(
+			SETTING_NAME_DROPBOX_TOKEN_KEY,
+			""
+		);
+		settings.dropbox_token_secret = preferences.getString(
+			SETTING_NAME_DROPBOX_TOKEN_SECRET,
+			""
 		);
 
 		settings.credit_card_tag = preferences.getString(
@@ -129,6 +139,22 @@ public class Settings {
 		this.active_spending = active_spending;
 	}
 
+	public String getDropboxTokenKey() {
+		return dropbox_token_key;
+	}
+
+	public void setDropboxTokenKey(String dropbox_token_key) {
+		this.dropbox_token_key = dropbox_token_key;
+	}
+
+	public String getDropboxTokenSecret() {
+		return dropbox_token_secret;
+	}
+
+	public void setDropboxTokenSecret(String dropbox_token_secret) {
+		this.dropbox_token_secret = dropbox_token_secret;
+	}
+
 	public String getCreditCardTag() {
 		return credit_card_tag;
 	}
@@ -196,6 +222,8 @@ public class Settings {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(SETTING_NAME_CURRENT_PAGE, current_page);
 		editor.putString(SETTING_NAME_ACTIVE_SPENDING, active_spending);
+		editor.putString(SETTING_NAME_DROPBOX_TOKEN_KEY, dropbox_token_key);
+		editor.putString(SETTING_NAME_DROPBOX_TOKEN_SECRET, dropbox_token_secret);
 		editor.commit();
 	}
 
@@ -206,6 +234,8 @@ public class Settings {
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
 	private String active_spending = DEFAULT_SPENDING;
+	private String dropbox_token_key = "";
+	private String dropbox_token_secret = "";
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean save_backup_to_dropbox = true;
 	private boolean use_custom_date = false;
