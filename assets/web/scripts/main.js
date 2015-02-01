@@ -213,7 +213,7 @@ $(document).ready(
 					GUI.hideMainMenu();
 
 					var filename = spending_manager.backup();
-					if (filename.length) {
+					if (activity.getSetting('save_backup_to_dropbox') == "true" && filename.length) {
 						activity.saveToDropbox(filename);
 					}
 				}

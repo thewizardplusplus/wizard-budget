@@ -56,6 +56,8 @@ public class MainActivity extends Activity {
 		Settings settings = Settings.getCurrent(this);
 		if (name.equals("credit_card_tag")) {
 			return settings.getCreditCardTag();
+		} else if (name.equals("save_backup_to_dropbox")) {
+			return settings.isSaveBackupToDropbox() ? "true" : "false";
 		} else if (name.equals("use_custom_date")) {
 			return settings.isUseCustomDate() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
