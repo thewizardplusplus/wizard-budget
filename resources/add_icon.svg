@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--part of the rodentia icon theme by sixsixfive released under CC0 (https://creativecommons.org/publicdomain/zero/1.0/) on openclipart-->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 48 48"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   width="100%"
+   height="100%"
+   sodipodi:docname="add_icon.svg"
+   inkscape:export-filename="/home/thewizardpp/projects/android/add_icon.png"
+   inkscape:export-xdpi="1920"
+   inkscape:export-ydpi="1920">
+  <metadata
+     id="metadata26">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1152"
+     inkscape:window-height="844"
+     id="namedview24"
+     showgrid="false"
+     inkscape:zoom="4.9166667"
+     inkscape:cx="24"
+     inkscape:cy="24"
+     inkscape:window-x="-2"
+     inkscape:window-y="93"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="0">
+    <linearGradient
+       id="2">
+      <stop
+         id="9"
+         stop-color="#2e3436" />
+      <stop
+         id="A"
+         offset="1"
+         stop-color="#2e3436"
+         stop-opacity="0" />
+    </linearGradient>
+    <linearGradient
+       id="3">
+      <stop
+         id="B"
+         stop-color="#fff" />
+      <stop
+         id="C"
+         offset="1"
+         stop-color="#fff"
+         stop-opacity="0" />
+    </linearGradient>
+    <linearGradient
+       id="4">
+      <stop
+         id="D"
+         stop-color="#eeeeec"
+         stop-opacity="0.8" />
+      <stop
+         id="E"
+         offset="1"
+         stop-color="#eeeeec"
+         stop-opacity="0" />
+    </linearGradient>
+    <radialGradient
+       cx="24.559"
+       cy="44.16"
+       r="17.928"
+       id="5"
+       xlink:href="#2"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.1003963,0,39.729506)" />
+    <linearGradient
+       y1="4.063"
+       x2="0"
+       y2="43.938"
+       id="6"
+       xlink:href="#4"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       x1="17.366"
+       y1="-23.24"
+       x2="30.01"
+       y2="39.97"
+       id="7"
+       xlink:href="#3"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,1003.4932)" />
+  </defs>
+  <g
+     transform="translate(0,-1004.3622)"
+     id="1">
+    <g
+       transform="translate(0,0.1490744)"
+       id="8">
+      <path
+         d="m 42.487431,44.163342 a 17.928086,1.7999135 0 1 1 -35.8561711,0 17.928086,1.7999135 0 1 1 35.8561711,0 z"
+         transform="matrix(0.5138824,0,0,0.9991797,11.379385,1004.0075)"
+         id="F"
+         opacity="0.8"
+         fill="url(#5)" />
+      <path
+         d="m 16.5,1006.4932 0,13.5 -13.5,0 0,15 13.5,0 0,13.5 15,0 0,-13.5 13.5,0 0,-15 -13.5,0 0,-13.5 -15,0 0,0 z"
+         id="G"
+         fill="#445800" />
+      <path
+         d="m 17.5,1007.4932 0,12.8437 0,0.6563 -0.65625,0 -12.84375,0 0,13 12.84375,0 0.65625,0 0,0.6562 0,12.8438 13,0 0,-12.8438 0,-0.6562 0.65625,0 12.84375,0 0,-13 -12.84375,0 -0.65625,0 0,-0.6563 0,-12.8437 -13,0 0,0 z"
+         id="H"
+         fill="#8bb300" />
+      <path
+         d="m 18.0625,4.5625 0,12.28125 0,0.65625 A 0.56596419,0.56596419 0 0 1 17.5,18.0625 l -0.65625,0 -12.28125,0 0,11.875 12.28125,0 0.65625,0 A 0.56596419,0.56596419 0 0 1 18.0625,30.5 l 0,0.65625 0,12.28125 11.875,0 0,-12.28125 0,-0.65625 A 0.56596419,0.56596419 0 0 1 30.5,29.9375 l 0.65625,0 12.28125,0 0,-11.875 -12.28125,0 -0.65625,0 A 0.56596419,0.56596419 0 0 1 29.9375,17.5 l 0,-0.65625 0,-12.28125 -11.875,0 z"
+         transform="translate(0,1003.4627)"
+         id="I"
+         fill="none"
+         stroke="url(#6)" />
+      <path
+         d="m 17.5,1007.4932 0,12.8437 0,0.6563 -0.65625,0 -12.84375,0 0,13 c 13.273072,-7.1436 26.530352,-11.3556 40,-12.875 l 0,-0.125 -12.84375,0 -0.65625,0 0,-0.6563 0,-12.8437 -13,0 0,0 z"
+         id="J"
+         opacity="0.6"
+         fill="url(#7)" />
+    </g>
+  </g>
+</svg>
