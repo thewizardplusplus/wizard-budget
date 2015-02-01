@@ -114,12 +114,10 @@ public class MainActivity extends Activity {
 			try {
 				dropbox_api.getSession().finishAuthentication();
 
-				/*AccessTokenPair token = dropbox_api.getSession().getAccessTokenPair();
-				Settings settings = Settings.getCurrent(this);
-				settings.setDropboxTokenKey(token.key);
-				settings.setDropboxTokenSecret(token.secret);
-				settings.save();*/
 				String token = dropbox_api.getSession().getOAuth2AccessToken();
+				Settings settings = Settings.getCurrent(this);
+				settings.setDropboxToken(token);
+				settings.save();
 
 				final Context context_copy = this;
 				new Thread(
