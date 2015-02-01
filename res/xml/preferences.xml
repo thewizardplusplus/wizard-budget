@@ -80,5 +80,11 @@
 			android:title = "@string/preference_sms_import_notification_title"
 			android:summary = "@string/preference_sms_import_notification_summary"
 			android:defaultValue = "true" />
+		<CheckBoxPreference
+			android:key = "preference_dropbox_notification"
+			android:dependency = "preference_save_backup_to_dropbox"
+			android:title = "@string/preference_dropbox_notification_title"
+			android:summary = "@string/preference_dropbox_notification_summary"
+			android:defaultValue = "true" />
 	</PreferenceCategory>
 </PreferenceScreen>

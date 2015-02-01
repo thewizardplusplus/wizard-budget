@@ -185,6 +185,10 @@ public class Settings {
 		return sms_import_notification;
 	}
 
+	public boolean isDropboxNotification() {
+		return dropbox_notification;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -216,6 +220,7 @@ public class Settings {
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;
 	private boolean sms_import_notification = true;
+	private boolean dropbox_notification = true;
 
 	private Settings(Context context) {
 		this.context = context;

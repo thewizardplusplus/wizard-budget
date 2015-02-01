@@ -40,6 +40,8 @@
 	<string name = "preference_sms_parsing_notification_summary">Notify about SMS parsing.</string>
 	<string name = "preference_sms_import_notification_title">SMS import notification</string>
 	<string name = "preference_sms_import_notification_summary">Notify about SMS import.</string>
+	<string name = "preference_dropbox_notification_title">Dropbox notification</string>
+	<string name = "preference_dropbox_notification_summary">Notify about duplicate backup file to Dropbox.</string>
 	<string name = "widget_label_text">Spendings sum:</string>
 	<string name = "zero">0.0</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>
