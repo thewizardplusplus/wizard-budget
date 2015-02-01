@@ -1,12 +1,12 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.util.*;
+import java.util.regex.*;
 
 import android.content.*;
 import android.preference.*;
 
 import org.bostonandroid.datepreference.*;
-import java.util.regex.*;
 
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
@@ -30,6 +30,10 @@ public class Settings {
 		settings.credit_card_tag = preferences.getString(
 			"preference_credit_card_tag",
 			DEFAULT_CREDIT_CARD_TAG
+		);
+		settings.save_backup_to_dropbox = preferences.getBoolean(
+			"preference_save_backup_to_dropbox",
+			true
 		);
 
 		settings.use_custom_date = preferences.getBoolean(
@@ -129,6 +133,10 @@ public class Settings {
 		return credit_card_tag;
 	}
 
+	public boolean isSaveBackupToDropbox() {
+		return save_backup_to_dropbox;
+	}
+
 	public boolean isUseCustomDate() {
 		return use_custom_date;
 	}
@@ -195,6 +203,7 @@ public class Settings {
 	private String current_page = DEFAULT_PAGE;
 	private String active_spending = DEFAULT_SPENDING;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
+	private boolean save_backup_to_dropbox = true;
 	private boolean use_custom_date = false;
 	private Calendar custom_date_base_day = Calendar.getInstance();
 	private boolean parse_sms = false;

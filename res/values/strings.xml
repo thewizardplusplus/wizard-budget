@@ -6,6 +6,8 @@
 	<string name = "preference_credit_card_tag_title">Credit card tag</string>
 	<string name = "preference_credit_card_tag_summary">Tag that mark spending from credit card.</string>
 	<string name = "preference_credit_card_tag_default">credit card</string>
+	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
+	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
 	<string name = "custom_date_preferences">Custom date</string>
 	<string name = "preference_use_custom_date_title">Use custom date</string>
 	<string name = "preference_use_custom_date_summary">Use date with only day and year and 300 day in each year.</string>
