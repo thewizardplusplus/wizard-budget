@@ -306,7 +306,7 @@ public class SpendingManager {
 			if (Settings.getCurrent(context).isSmsImportNotification()) {
 				Date current_date = new Date();
 				DateFormat notification_timestamp_format = DateFormat
-					.getDateInstance(DateFormat.DEFAULT, Locale.US);
+					.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
 				String notification_timestamp = notification_timestamp_format
 					.format(current_date);
 				Utils.showNotification(
@@ -388,7 +388,7 @@ public class SpendingManager {
 
 				if (Settings.getCurrent(context).isBackupNotification()) {
 					DateFormat notification_timestamp_format = DateFormat
-						.getDateInstance(DateFormat.DEFAULT, Locale.US);
+						.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
 					String notification_timestamp = notification_timestamp_format
 						.format(current_date);
 					Utils.showNotification(
@@ -475,7 +475,7 @@ public class SpendingManager {
 			if (Settings.getCurrent(context).isRestoreNotification()) {
 				Date current_date = new Date();
 				DateFormat notification_timestamp_format = DateFormat
-					.getDateInstance(DateFormat.DEFAULT, Locale.US);
+					.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
 				String notification_timestamp = notification_timestamp_format
 					.format(current_date);
 				Utils.showNotification(

@@ -204,7 +204,7 @@ public class MainActivity extends Activity {
 						if (Settings.getCurrent(context_copy).isDropboxNotification()) {
 							Date current_date = new Date();
 							DateFormat notification_timestamp_format = DateFormat
-								.getDateInstance(DateFormat.DEFAULT, Locale.US);
+								.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
 							String notification_timestamp = notification_timestamp_format
 								.format(current_date);
 							Utils.showNotification(
