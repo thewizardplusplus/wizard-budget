@@ -320,7 +320,7 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
-	public void backup() {
+	public String backup() {
 		SQLiteDatabase database = getDatabase();
 		Cursor cursor = database.query(
 			"spendings",
@@ -332,6 +332,7 @@ public class SpendingManager {
 			"timestamp"
 		);
 
+		String filename = "";
 		try {
 			File directory = new File(
 				Environment.getExternalStorageDirectory(),
@@ -346,10 +347,7 @@ public class SpendingManager {
 			);
 			String file_suffix = file_suffix_format.format(current_date);
 
-			File file = new File(
-				directory,
-				"database_dump_" + file_suffix + ".xml"
-			);
+			File file = new File(directory, "database_dump_" + file_suffix + ".xml");
 			FileWriter writter = new FileWriter(file);
 			try {
 				XmlSerializer serializer = Xml.newSerializer();
@@ -400,12 +398,15 @@ public class SpendingManager {
 						file
 					);
 				}
+
+				filename = file.getAbsolutePath();
 			} finally {
 				writter.close();
 			}
 		} catch (IOException exception) {}
 
 		database.close();
+		return filename;
 	}
 
 	public void restore(InputStream in) {

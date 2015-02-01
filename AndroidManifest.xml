@@ -35,6 +35,17 @@
 				android:name = "android.support.PARENT_ACTIVITY"
 				android:value = ".MainActivity" />
 		</activity>
+		<activity
+			android:name = "com.dropbox.client2.android.AuthActivity"
+			android:launchMode = "singleTask"
+			android:configChanges = "orientation|keyboard">
+			<intent-filter>
+				<data android:scheme = "db-g0395gpeyf78f9o" />
+				<action android:name = "android.intent.action.VIEW" />
+				<category android:name = "android.intent.category.BROWSABLE" />
+				<category android:name = "android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 
 		<receiver
 			android:name = "Widget"

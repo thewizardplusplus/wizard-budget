@@ -210,20 +210,24 @@ $(document).ready(
 		function UpdateControlButtons() {
 			$('.backup-button').click(
 				function() {
-					spending_manager.backup();
 					GUI.hideMainMenu();
+
+					var filename = spending_manager.backup();
+					if (filename.length) {
+						activity.saveToDropbox(filename);
+					}
 				}
 			);
 			$('.restore-button').click(
 				function() {
-					activity.selectBackupForRestore();
 					GUI.hideMainMenu();
+					activity.selectBackupForRestore();
 				}
 			);
 			$('.settings-button').click(
 				function() {
-					activity.openSettings();
 					GUI.hideMainMenu();
+					activity.openSettings();
 				}
 			);
 		}

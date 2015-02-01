@@ -11,6 +11,12 @@ import android.content.*;
 import android.appwidget.*;
 import android.net.*;
 import android.util.*;
+import com.dropbox.client2.*;
+import com.dropbox.client2.android.*;
+import com.dropbox.client2.session.*;
+import com.dropbox.client2.exception.*;
+import java.text.*;
+import java.util.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -31,6 +37,12 @@ public class MainActivity extends Activity {
 		intent.setType("text/xml");
 
 		startActivityForResult(intent, FILE_SELECT_CODE);
+	}
+
+	@JavascriptInterface
+	public void saveToDropbox(String filename) {
+		backup_filename = filename;
+		startDropboxAuthentication();
 	}
 
 	@JavascriptInterface
@@ -93,7 +105,50 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		callGuiFunction("refresh");
+
+		if (dropbox_api != null && dropbox_api.getSession().authenticationSuccessful()) {
+			try {
+				dropbox_api.getSession().finishAuthentication();
+
+				/*AccessTokenPair token = dropbox_api.getSession().getAccessTokenPair();
+				Settings settings = Settings.getCurrent(this);
+				settings.setDropboxTokenKey(token.key);
+				settings.setDropboxTokenSecret(token.secret);
+				settings.save();*/
+				String token = dropbox_api.getSession().getOAuth2AccessToken();
+
+				final Context context_copy = this;
+				new Thread(
+					new Runnable() {
+						@Override
+						public void run() {
+							try {
+								File backup = new File(backup_filename);
+								FileInputStream in = new FileInputStream(backup);
+								dropbox_api.putFile("/" + backup.getName(), in, backup.length(), null, null);
+
+								if (Settings.getCurrent(context_copy).isDropboxNotification()) {
+									Date current_date = new Date();
+									DateFormat notification_timestamp_format = DateFormat
+										.getDateInstance(DateFormat.DEFAULT, Locale.US);
+									String notification_timestamp = notification_timestamp_format
+										.format(current_date);
+									Utils.showNotification(
+										context_copy,
+										context_copy.getString(R.string.app_name),
+										"Backup saved to Dropbox at " + notification_timestamp + ".",
+										null
+									);
+								}
+							} catch (FileNotFoundException exception) {
+							} catch (DropboxException exception) {}
+						}
+					}
+				).start();
+			} catch (IllegalStateException exception) {}
+		}
 	}
 
 	@Override
@@ -124,6 +179,12 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
+	private static final String APP_KEY = "g0395gpeyf78f9o";
+	private static final String APP_SECRET = "ahg9sdct9vtmxxb";
+	private static final AppKeyPair APP_KEYS = new AppKeyPair(APP_KEY, APP_SECRET);
+
+	private DropboxAPI<AndroidAuthSession> dropbox_api;
+	private String backup_filename = "";
 
 	private void callGuiFunction(String name) {
 		WebView web_view = (WebView)findViewById(R.id.web_view);
@@ -145,5 +206,11 @@ public class MainActivity extends Activity {
 				}
 			}
 		} catch (IOException exception) {}
+	}
+
+	private void startDropboxAuthentication() {
+		AndroidAuthSession session = new AndroidAuthSession(APP_KEYS);
+		dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
+		dropbox_api.getSession().startOAuth2Authentication(this);
 	}
 }
