@@ -12,6 +12,7 @@ public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
+	public static final String DEFAULT_PAGE = "history";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -213,7 +214,6 @@ public class Settings {
 		editor.commit();
 	}
 
-	private static final String DEFAULT_PAGE = "history";
 	private static final String DEFAULT_SPENDING = "null";
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
