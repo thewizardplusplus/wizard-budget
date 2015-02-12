@@ -8,10 +8,9 @@
 	android:orientation = "vertical"
 	android:gravity = "center"
 	android:background = "@drawable/widget_background">
-	<LinearLayout
+	<RelativeLayout
 		android:layout_width = "fill_parent"
-		android:layout_height = "wrap_content"
-		android:orientation = "horizontal">
+		android:layout_height = "wrap_content">
 		<ImageView
 			android:layout_width = "16dp"
 			android:layout_height = "16dp"
@@ -19,8 +18,9 @@
 		<ImageView
 			android:layout_width = "16dp"
 			android:layout_height = "16dp"
+			android:layout_alignParentRight = "true"
 			android:src = "@drawable/add_icon_small" />
-	</LinearLayout>
+	</RelativeLayout>
 	<TextView
 		style = "@style/widget_label_style"
 		android:layout_width = "fill_parent"
