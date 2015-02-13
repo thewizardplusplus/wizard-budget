@@ -12,14 +12,16 @@
 		android:layout_width = "fill_parent"
 		android:layout_height = "wrap_content">
 		<ImageView
-			android:layout_width = "16dp"
-			android:layout_height = "16dp"
-			android:src = "@drawable/app_icon_small" />
+			android:id = "@+id/widget_app_icon_small"
+			android:layout_width = "32dp"
+			android:layout_height = "32dp"
+			android:src = "@drawable/app_icon_large" />
 		<ImageView
-			android:layout_width = "16dp"
-			android:layout_height = "16dp"
+			android:id = "@+id/widget_add_button_small"
+			android:layout_width = "32dp"
+			android:layout_height = "32dp"
 			android:layout_alignParentRight = "true"
-			android:src = "@drawable/add_icon_small" />
+			android:src = "@drawable/add_icon_large" />
 	</RelativeLayout>
 	<TextView
 		style = "@style/widget_label_style"

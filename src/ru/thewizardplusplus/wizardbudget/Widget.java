@@ -15,15 +15,24 @@ public class Widget extends AppWidgetProvider {
 			R.layout.widget
 		);
 
-		Intent intent = new Intent(context, MainActivity.class);
-		intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "editor");
-		PendingIntent pending_intent = PendingIntent.getActivity(
+		Intent widget_intent = new Intent(context, MainActivity.class);
+		PendingIntent widget_pending_intent = PendingIntent.getActivity(
 			context,
-			0,
-			intent,
-			0
+			CURRENT_PAGE_REQUEST_CODE,
+			widget_intent,
+			PendingIntent.FLAG_UPDATE_CURRENT
 		);
-		views.setOnClickPendingIntent(R.id.widget_container, pending_intent);
+		views.setOnClickPendingIntent(R.id.widget_container, widget_pending_intent);
+
+		Intent widget_add_intent = new Intent(context, MainActivity.class);
+		widget_add_intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "editor");
+		PendingIntent widget_add_pending_intent = PendingIntent.getActivity(
+			context,
+			EDITOR_PAGE_REQUEST_CODE,
+			widget_add_intent,
+			PendingIntent.FLAG_UPDATE_CURRENT
+		);
+		views.setOnClickPendingIntent(R.id.widget_add_button_small, widget_add_pending_intent);
 
 		SpendingManager spending_manager = new SpendingManager(context);
 		String spendings_sum = spending_manager.getSpendingsSum();
@@ -55,4 +64,7 @@ public class Widget extends AppWidgetProvider {
 		RemoteViews views = getUpdatedViews(context);
 		widget_manager.updateAppWidget(widget_ids, views);
 	}
+
+	private static final int CURRENT_PAGE_REQUEST_CODE = 0;
+	private static final int EDITOR_PAGE_REQUEST_CODE = 1;
 }
