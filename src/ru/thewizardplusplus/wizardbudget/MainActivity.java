@@ -26,9 +26,7 @@ public class MainActivity extends Activity {
 
 	@JavascriptInterface
 	public void updateWidget() {
-		RemoteViews views = Widget.getUpdatedViews(this);
-		ComponentName widget = new ComponentName(this, Widget.class);
-		AppWidgetManager.getInstance(this).updateAppWidget(widget, views);
+		Utils.updateWidget(this);
 	}
 
 	@JavascriptInterface

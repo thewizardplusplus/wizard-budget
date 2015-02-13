@@ -449,6 +449,8 @@ $(document).ready(
 			$('.import-sms-button').click(
 				function() {
 					spending_manager.importSms(raw_spendings);
+
+					activity.updateWidget();
 					PUSH({url: 'history.html'});
 				}
 			);

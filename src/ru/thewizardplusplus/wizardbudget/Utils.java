@@ -6,6 +6,8 @@ import android.content.*;
 import android.net.*;
 import android.app.*;
 import java.util.regex.*;
+import android.widget.*;
+import android.appwidget.*;
 
 public class Utils {
 	public static void showNotification(
@@ -77,6 +79,12 @@ public class Utils {
 		}
 
 		return new SmsData(spending, comment);
+	}
+
+	public static void updateWidget(Context context) {
+		RemoteViews views = Widget.getUpdatedViews(context);
+		ComponentName widget = new ComponentName(context, Widget.class);
+		AppWidgetManager.getInstance(context).updateAppWidget(widget, views);
 	}
 
 	private static int notification_id = 0;

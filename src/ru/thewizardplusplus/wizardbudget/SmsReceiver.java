@@ -46,6 +46,7 @@ public class SmsReceiver extends BroadcastReceiver {
 						SpendingManager spending_manager = new SpendingManager(context_copy);
 						spending_manager.createSpending(sms_data.getSpending(), sms_data.getComment());
 
+						Utils.updateWidget(context_copy);
 						if (Settings.getCurrent(context_copy).isSmsParsingNotification()) {
 							Utils.showNotification(
 								context_copy,
