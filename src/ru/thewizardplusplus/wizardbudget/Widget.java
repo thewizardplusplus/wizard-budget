@@ -16,6 +16,7 @@ public class Widget extends AppWidgetProvider {
 		);
 
 		Intent intent = new Intent(context, MainActivity.class);
+		intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "editor");
 		PendingIntent pending_intent = PendingIntent.getActivity(
 			context,
 			0,

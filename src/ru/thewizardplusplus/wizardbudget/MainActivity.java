@@ -105,13 +105,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 
 		String current_page = getIntent().getStringExtra(Settings.SETTING_NAME_CURRENT_PAGE);
-		if (current_page == null) {
-			current_page = Settings.DEFAULT_PAGE;
+		if (current_page != null) {
+			Settings settings = Settings.getCurrent(this);
+			settings.setCurrentPage(current_page);
+			settings.save();
 		}
-
-		Settings settings = Settings.getCurrent(this);
-		settings.setCurrentPage(current_page);
-		settings.save();
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
