@@ -413,6 +413,9 @@ $(document).ready(
 				function(spending) {
 					sms_list.append(
 						'<li class = "table-view-cell media">'
+							+ '<div class = "toggle active">'
+								+ '<div class = "toggle-handle"></div>'
+							+ '</div>'
 							+ '<span class = "media-object pull-left mark-container">'
 								+ '<i class = "fa fa-credit-card mark"></i>'
 								+ '<i class = "fa fa-'
