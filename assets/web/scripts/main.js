@@ -412,8 +412,8 @@ $(document).ready(
 			spendings.map(
 				function(spending) {
 					sms_list.append(
-						'<li class = "table-view-cell media">'
-							+ '<div class = "toggle active">'
+						'<li class = "table-view-cell media" data-timestamp = "' + spending.timestamp + '" data-amount = "' + spending.amount + '">'
+							+ '<div class = "toggle active import-flag">'
 								+ '<div class = "toggle-handle"></div>'
 							+ '</div>'
 							+ '<span class = "media-object pull-left mark-container">'
@@ -427,20 +427,11 @@ $(document).ready(
 							+ '<div class = "media-body">'
 								+ '<p>'
 									+ '<span class = "underline">'
-										+ '<strong>'
-											+ '<span class = "date-view">'
-												+ spending.date
-											+ '</span>'
-										+ '</strong> '
-										+ '<span class = "time-view">'
-											+ spending.time
-										+ '</span>:'
+										+ '<strong>' + spending.date + '</strong> ' + spending.time + ':'
 									+ '</span>'
 								+ '</p>'
 								+ '<p>'
-									+ '<span class = "amount-view">'
-										+ Math.abs(spending.amount)
-									+ '</span> '
+									+ Math.abs(spending.amount)
 									+ '<i class = "fa fa-ruble"></i>.'
 								+ '</p>'
 							+ '</div>'
@@ -451,7 +442,18 @@ $(document).ready(
 
 			$('.import-sms-button').click(
 				function() {
-					spending_manager.importSms(raw_spendings);
+					var sms_data = [];
+					$('li', sms_list).each(
+						function() {
+							var list_item = $(this);
+							if ($('.import-flag.active', list_item).length) {
+								sms_data.push({timestamp: list_item.data('timestamp'), amount: list_item.data('amount')});
+							}
+						}
+					);
+
+					var sms_data_in_string = JSON.stringify(sms_data);
+					spending_manager.importSms(sms_data_in_string);
 
 					activity.updateWidget();
 					PUSH({url: 'history.html'});

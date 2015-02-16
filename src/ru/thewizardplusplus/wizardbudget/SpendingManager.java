@@ -141,10 +141,8 @@ public class SpendingManager {
 						);
 					}
 					spending.put("time", formatTime(timestamp));
-
 					spending.put("amount", sms_data.getSpending());
-					spending.put("comment", sms_data.getComment());
-
+					
 					spendings.put(spending);
 				} catch (JSONException exception) {
 					continue;
@@ -284,12 +282,18 @@ public class SpendingManager {
 				}
 
 				JSONObject spending = spendings.getJSONObject(i);
+				double amount = spending.getDouble("amount");
+
+				String comment = amount >= 0.0 ? Settings.getCurrent(context).getSmsSpendingComment() : Settings.getCurrent(context).getSmsIncomeComment();
+				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+				if (!credit_card_tag.isEmpty()) {
+					comment += ", " + credit_card_tag;
+				}
+
 				sql += "("
 						+ String.valueOf(spending.getLong("timestamp")) + ","
-						+ String.valueOf(spending.getDouble("amount")) + ","
-						+ DatabaseUtils.sqlEscapeString(
-							spending.getString("comment")
-						)
+						+ String.valueOf(amount) + ","
+						+ DatabaseUtils.sqlEscapeString(comment)
 					+ ")";
 			}
 		} catch (JSONException exception) {}
