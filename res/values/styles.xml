@@ -3,5 +3,6 @@
 	<style name = "widget_label_style">
 		<item name = "android:textSize">14sp</item>
 		<item name = "android:textColor">#777777</item>
+		<item name = "android:drawablePadding">5dp</item>
 	</style>
 </resources>

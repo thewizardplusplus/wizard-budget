@@ -15,7 +15,7 @@
 			android:layout_width = "32dp"
 			android:layout_height = "32dp"
 			android:layout_centerVertical = "true"
-			android:src = "@drawable/app_icon_large" />
+			android:src = "@drawable/app_widget_icon" />
 		<LinearLayout
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
@@ -28,12 +28,8 @@
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:textStyle = "bold"
-				android:text = "@string/zero" />
-			<TextView
-				style = "@style/widget_label_style"
-				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content"
-				android:text = "@string/widget_spending_units" />
+				android:text = "@string/zero"
+				android:drawableRight = "@drawable/ruble_widget_icon"/>
 		</LinearLayout>
 		<ImageView
 			android:id = "@+id/widget_add_button_small"
@@ -41,6 +37,6 @@
 			android:layout_height = "32dp"
 			android:layout_alignParentRight = "true"
 			android:layout_centerVertical = "true"
-			android:src = "@drawable/add_icon_large" />
+			android:src = "@drawable/add_widget_icon" />
 	</RelativeLayout>
 </LinearLayout>
