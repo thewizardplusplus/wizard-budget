@@ -43,7 +43,7 @@ public class Widget extends AppWidgetProvider {
 		if (Double.valueOf(spendings_sum) <= 0.0) {
 			views.setTextColor(
 				R.id.widget_spendings_sum,
-				Color.rgb(0x99, 0xcc, 0)
+				Color.rgb(0x2b, 0xaa, 0x2b)
 			);
 		} else {
 			views.setTextColor(
