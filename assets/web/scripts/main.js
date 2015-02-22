@@ -75,8 +75,17 @@ $(document).ready(
 								+ 'data-spending-id = "' + spending.id + '">'
 								+ '<i class = "fa fa-trash"></i>'
 							+ '</button>'
-							+ '<span class = "media-object pull-left mark-container">'
-								+ (spending.comment.search('\\b' + activity.getSetting('credit_card_tag') + '\\b') != -1
+							+ '<span '
+								+ 'class = "'
+									+ 'media-object '
+									+ 'pull-left '
+									+ 'mark-container'
+								+ '">'
+								+ (spending.comment.search(
+									'\\b'
+									+ activity.getSetting('credit_card_tag')
+									+ '\\b'
+								) != -1
 									? '<i class = "fa fa-credit-card mark"></i>'
 									: '')
 								+ '<i class = "fa fa-'
@@ -213,7 +222,10 @@ $(document).ready(
 					GUI.hideMainMenu();
 
 					var filename = spending_manager.backup();
-					if (activity.getSetting('save_backup_to_dropbox') == "true" && filename.length) {
+					if (
+						activity.getSetting('save_backup_to_dropbox') == "true"
+						&& filename.length
+					) {
 						activity.saveToDropbox(filename);
 					}
 				}
@@ -412,11 +424,20 @@ $(document).ready(
 			spendings.map(
 				function(spending) {
 					sms_list.append(
-						'<li class = "table-view-cell media" data-timestamp = "' + spending.timestamp + '" data-amount = "' + spending.amount + '">'
+						'<li '
+							+ 'class = "table-view-cell media" '
+							+ 'data-timestamp = "'
+								+ spending.timestamp
+							+ '" '
+							+ 'data-amount = "' + spending.amount + '">'
 							+ '<div class = "toggle active import-flag">'
 								+ '<div class = "toggle-handle"></div>'
 							+ '</div>'
-							+ '<span class = "media-object pull-left mark-container">'
+							+ '<span class = "'
+								+ 'media-object '
+								+ 'pull-left '
+								+ 'mark-container'
+							+ '">'
 								+ '<i class = "fa fa-credit-card mark"></i>'
 								+ '<i class = "fa fa-'
 									+ (spending.amount > 0
@@ -427,7 +448,10 @@ $(document).ready(
 							+ '<div class = "media-body">'
 								+ '<p>'
 									+ '<span class = "underline">'
-										+ '<strong>' + spending.date + '</strong> ' + spending.time + ':'
+										+ '<strong>'
+											+ spending.date
+										+ '</strong>'
+										+ ' ' + spending.time + ':'
 									+ '</span>'
 								+ '</p>'
 								+ '<p>'
@@ -447,7 +471,12 @@ $(document).ready(
 						function() {
 							var list_item = $(this);
 							if ($('.import-flag.active', list_item).length) {
-								sms_data.push({timestamp: list_item.data('timestamp'), amount: list_item.data('amount')});
+								sms_data.push(
+									{
+										timestamp: list_item.data('timestamp'),
+										amount: list_item.data('amount')
+									}
+								);
 							}
 						}
 					);
