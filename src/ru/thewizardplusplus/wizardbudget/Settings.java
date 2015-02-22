@@ -60,7 +60,9 @@ public class Settings {
 			settings.sms_number_pattern = Pattern.compile(
 				preferences.getString(
 					"preference_sms_number_pattern",
-					context.getString(R.string.preference_sms_number_pattern_default)
+					context.getString(
+						R.string.preference_sms_number_pattern_default
+					)
 				),
 				Pattern.CASE_INSENSITIVE
 			);
@@ -71,7 +73,9 @@ public class Settings {
 			settings.sms_spending_pattern = Pattern.compile(
 				preferences.getString(
 					"preference_sms_spending_pattern",
-					context.getString(R.string.preference_sms_spending_pattern_default)
+					context.getString(
+						R.string.preference_sms_spending_pattern_default
+					)
 				),
 				Pattern.CASE_INSENSITIVE
 			);
@@ -82,7 +86,9 @@ public class Settings {
 			settings.sms_income_pattern = Pattern.compile(
 				preferences.getString(
 					"preference_sms_income_pattern",
-					context.getString(R.string.preference_sms_income_pattern_default)
+					context.getString(
+						R.string.preference_sms_income_pattern_default
+					)
 				),
 				Pattern.CASE_INSENSITIVE
 			);

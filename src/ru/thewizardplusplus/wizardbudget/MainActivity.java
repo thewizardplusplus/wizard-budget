@@ -43,7 +43,10 @@ public class MainActivity extends Activity {
 
 		String dropbox_token = Settings.getCurrent(this).getDropboxToken();
 		if (!dropbox_token.isEmpty()) {
-			AndroidAuthSession session = new AndroidAuthSession(APP_KEYS, dropbox_token);
+			AndroidAuthSession session = new AndroidAuthSession(
+				APP_KEYS,
+				dropbox_token
+			);
 			dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
 
 			saveBackupToDropbox();
@@ -102,7 +105,9 @@ public class MainActivity extends Activity {
 		super.onCreate(saved_instance_state);
 		setContentView(R.layout.main);
 
-		String current_page = getIntent().getStringExtra(Settings.SETTING_NAME_CURRENT_PAGE);
+		String current_page =
+			getIntent()
+			.getStringExtra(Settings.SETTING_NAME_CURRENT_PAGE);
 		if (current_page != null) {
 			Settings settings = Settings.getCurrent(this);
 			settings.setCurrentPage(current_page);
@@ -124,7 +129,10 @@ public class MainActivity extends Activity {
 
 		callGuiFunction("refresh");
 
-		if (dropbox_api != null && dropbox_api.getSession().authenticationSuccessful()) {
+		if (
+			dropbox_api != null
+			&& dropbox_api.getSession().authenticationSuccessful()
+		) {
 			try {
 				dropbox_api.getSession().finishAuthentication();
 
@@ -168,7 +176,10 @@ public class MainActivity extends Activity {
 	private static final int FILE_SELECT_CODE = 1;
 	private static final String APP_KEY = "g0395gpeyf78f9o";
 	private static final String APP_SECRET = "ahg9sdct9vtmxxb";
-	private static final AppKeyPair APP_KEYS = new AppKeyPair(APP_KEY, APP_SECRET);
+	private static final AppKeyPair APP_KEYS = new AppKeyPair(
+		APP_KEY,
+		APP_SECRET
+	);
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private String backup_filename = "";
@@ -204,18 +215,35 @@ public class MainActivity extends Activity {
 					try {
 						File backup = new File(backup_filename);
 						FileInputStream in = new FileInputStream(backup);
-						dropbox_api.putFile("/" + backup.getName(), in, backup.length(), null, null);
+						dropbox_api.putFile(
+							"/" + backup.getName(),
+							in,
+							backup.length(),
+							null,
+							null
+						);
 
-						if (Settings.getCurrent(context_copy).isDropboxNotification()) {
+						if (
+							Settings
+							.getCurrent(context_copy)
+							.isDropboxNotification()
+						) {
 							Date current_date = new Date();
-							DateFormat notification_timestamp_format = DateFormat
-								.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-							String notification_timestamp = notification_timestamp_format
+							DateFormat notification_timestamp_format =
+								DateFormat
+								.getDateTimeInstance(
+									DateFormat.DEFAULT,
+									DateFormat.DEFAULT,
+									Locale.US
+								);
+							String notification_timestamp =
+								notification_timestamp_format
 								.format(current_date);
 							Utils.showNotification(
 								context_copy,
 								context_copy.getString(R.string.app_name),
-								"Backup saved to Dropbox at " + notification_timestamp + ".",
+								"Backup saved to Dropbox at "
+									+ notification_timestamp + ".",
 								null
 							);
 						}

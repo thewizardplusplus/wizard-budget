@@ -38,20 +38,39 @@ public class SmsReceiver extends BroadcastReceiver {
 							return;
 						}
 
-						SmsData sms_data = Utils.getSpendingFromSms(context_copy, number, text);
+						SmsData sms_data = Utils.getSpendingFromSms(
+							context_copy,
+							number,
+							text
+						);
 						if (sms_data == null) {
 							return;
 						}
 
-						SpendingManager spending_manager = new SpendingManager(context_copy);
-						spending_manager.createSpending(sms_data.getSpending(), sms_data.getComment());
+						SpendingManager spending_manager = new SpendingManager(
+							context_copy
+						);
+						spending_manager.createSpending(
+							sms_data.getSpending(),
+							sms_data.getComment()
+						);
 
 						Utils.updateWidget(context_copy);
-						if (Settings.getCurrent(context_copy).isSmsParsingNotification()) {
+						if (
+							Settings
+							.getCurrent(context_copy)
+							.isSmsParsingNotification()
+						) {
 							Utils.showNotification(
 								context_copy,
 								context_copy.getString(R.string.app_name),
-								"Imported SMS with " + (sms_data.getSpending() >= 0.0 ? "spending" : "income") + " " +  String.valueOf(Math.abs(sms_data.getSpending())) + " RUB.",
+								"Imported SMS with "
+									+ (sms_data.getSpending() >= 0.0
+										? "spending"
+										: "income") + " "
+									+ String.valueOf(
+										Math.abs(sms_data.getSpending())
+									) + " RUB.",
 								null
 							);
 						}

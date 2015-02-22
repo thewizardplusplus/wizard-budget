@@ -103,7 +103,13 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getSpendingsFromSms() {
 		Uri uri = Uri.parse("content://sms/inbox");
-		Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+		Cursor cursor = context.getContentResolver().query(
+			uri,
+			null,
+			null,
+			null,
+			null
+		);
 		JSONArray spendings = new JSONArray();
 		if (cursor.moveToFirst()) {
 			long start_timestamp =
@@ -115,16 +121,29 @@ public class SpendingManager {
 			do {
 				long timestamp = 0;
 				try {
-					String timestamp_string = cursor.getString(cursor.getColumnIndexOrThrow("date")).toString();
+					String timestamp_string =
+						cursor
+						.getString(cursor.getColumnIndexOrThrow("date"))
+						.toString();
 					timestamp = Long.valueOf(timestamp_string) / 1000L;
 				} catch (NumberFormatException exception) {
 					continue;
 				}
 
-				String number = cursor.getString(cursor.getColumnIndexOrThrow("address")).toString();
-				String text = cursor.getString(cursor.getColumnIndexOrThrow("body")).toString();
+				String number =
+					cursor
+					.getString(cursor.getColumnIndexOrThrow("address"))
+					.toString();
+				String text =
+					cursor
+					.getString(cursor.getColumnIndexOrThrow("body"))
+					.toString();
 
-				SmsData sms_data = Utils.getSpendingFromSms(context, number, text);
+				SmsData sms_data = Utils.getSpendingFromSms(
+					context,
+					number,
+					text
+				);
 				if (sms_data == null) {
 					continue;
 				}
@@ -142,7 +161,7 @@ public class SpendingManager {
 					}
 					spending.put("time", formatTime(timestamp));
 					spending.put("amount", sms_data.getSpending());
-					
+
 					spendings.put(spending);
 				} catch (JSONException exception) {
 					continue;
@@ -284,8 +303,14 @@ public class SpendingManager {
 				JSONObject spending = spendings.getJSONObject(i);
 				double amount = spending.getDouble("amount");
 
-				String comment = amount >= 0.0 ? Settings.getCurrent(context).getSmsSpendingComment() : Settings.getCurrent(context).getSmsIncomeComment();
-				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+				String comment =
+					amount >= 0.0
+						? Settings.getCurrent(context).getSmsSpendingComment()
+						: Settings.getCurrent(context).getSmsIncomeComment();
+				String credit_card_tag =
+					Settings
+					.getCurrent(context)
+					.getCreditCardTag();
 				if (!credit_card_tag.isEmpty()) {
 					comment += ", " + credit_card_tag;
 				}
@@ -309,9 +334,15 @@ public class SpendingManager {
 
 			if (Settings.getCurrent(context).isSmsImportNotification()) {
 				Date current_date = new Date();
-				DateFormat notification_timestamp_format = DateFormat
-					.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-				String notification_timestamp = notification_timestamp_format
+				DateFormat notification_timestamp_format =
+					DateFormat
+					.getDateTimeInstance(
+						DateFormat.DEFAULT,
+						DateFormat.DEFAULT,
+						Locale.US
+					);
+				String notification_timestamp =
+					notification_timestamp_format
 					.format(current_date);
 				Utils.showNotification(
 					context,
@@ -351,7 +382,10 @@ public class SpendingManager {
 			);
 			String file_suffix = file_suffix_format.format(current_date);
 
-			File file = new File(directory, "database_dump_" + file_suffix + ".xml");
+			File file = new File(
+				directory,
+				"database_dump_" + file_suffix + ".xml"
+			);
 			FileWriter writter = new FileWriter(file);
 			try {
 				XmlSerializer serializer = Xml.newSerializer();
@@ -391,9 +425,15 @@ public class SpendingManager {
 				serializer.endDocument();
 
 				if (Settings.getCurrent(context).isBackupNotification()) {
-					DateFormat notification_timestamp_format = DateFormat
-						.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-					String notification_timestamp = notification_timestamp_format
+					DateFormat notification_timestamp_format =
+						DateFormat
+						.getDateTimeInstance(
+							DateFormat.DEFAULT,
+							DateFormat.DEFAULT,
+							Locale.US
+						);
+					String notification_timestamp =
+						notification_timestamp_format
 						.format(current_date);
 					Utils.showNotification(
 						context,
@@ -478,9 +518,15 @@ public class SpendingManager {
 
 			if (Settings.getCurrent(context).isRestoreNotification()) {
 				Date current_date = new Date();
-				DateFormat notification_timestamp_format = DateFormat
-					.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-				String notification_timestamp = notification_timestamp_format
+				DateFormat notification_timestamp_format =
+					DateFormat
+					.getDateTimeInstance(
+						DateFormat.DEFAULT,
+						DateFormat.DEFAULT,
+						Locale.US
+					);
+				String notification_timestamp =
+					notification_timestamp_format
 					.format(current_date);
 				Utils.showNotification(
 					context,

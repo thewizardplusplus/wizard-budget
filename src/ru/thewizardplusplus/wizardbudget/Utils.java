@@ -46,18 +46,34 @@ public class Utils {
 		notifications.notify(notification_id++, notification);
 	}
 
-	public static SmsData getSpendingFromSms(Context context, String number, String text) {
-		Matcher matcher = Settings.getCurrent(context).getSmsNumberPattern().matcher(number);
+	public static SmsData getSpendingFromSms(
+		Context context,
+		String number,
+		String text
+	) {
+		Matcher matcher =
+			Settings
+			.getCurrent(context)
+			.getSmsNumberPattern()
+			.matcher(number);
 		if (!matcher.find()) {
 			return null;
 		}
 
 		String spending_string = "";
-		matcher = Settings.getCurrent(context).getSmsSpendingPattern().matcher(text);
+		matcher =
+			Settings
+			.getCurrent(context)
+			.getSmsSpendingPattern()
+			.matcher(text);
 		if (matcher.find()) {
 			spending_string = matcher.group(1);
 		} else {
-			matcher = Settings.getCurrent(context).getSmsIncomePattern().matcher(text);
+			matcher =
+				Settings
+				.getCurrent(context)
+				.getSmsIncomePattern()
+				.matcher(text);
 			if (matcher.find()) {
 				spending_string = "-" + matcher.group(1);
 			} else {
@@ -72,8 +88,14 @@ public class Utils {
 			return null;
 		}
 
-		String comment = spending >= 0.0 ? Settings.getCurrent(context).getSmsSpendingComment() : Settings.getCurrent(context).getSmsIncomeComment();
-		String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+		String comment =
+			spending >= 0.0
+				? Settings.getCurrent(context).getSmsSpendingComment()
+				: Settings.getCurrent(context).getSmsIncomeComment();
+		String credit_card_tag =
+			Settings
+			.getCurrent(context)
+			.getCreditCardTag();
 		if (!credit_card_tag.isEmpty()) {
 			comment += ", " + credit_card_tag;
 		}

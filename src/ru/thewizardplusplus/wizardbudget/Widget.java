@@ -22,17 +22,26 @@ public class Widget extends AppWidgetProvider {
 			widget_intent,
 			PendingIntent.FLAG_UPDATE_CURRENT
 		);
-		views.setOnClickPendingIntent(R.id.widget_container, widget_pending_intent);
+		views.setOnClickPendingIntent(
+			R.id.widget_container,
+			widget_pending_intent
+		);
 
 		Intent widget_add_intent = new Intent(context, MainActivity.class);
-		widget_add_intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "editor");
+		widget_add_intent.putExtra(
+			Settings.SETTING_NAME_CURRENT_PAGE,
+			"editor"
+		);
 		PendingIntent widget_add_pending_intent = PendingIntent.getActivity(
 			context,
 			EDITOR_PAGE_REQUEST_CODE,
 			widget_add_intent,
 			PendingIntent.FLAG_UPDATE_CURRENT
 		);
-		views.setOnClickPendingIntent(R.id.widget_add_button_small, widget_add_pending_intent);
+		views.setOnClickPendingIntent(
+			R.id.widget_add_button_small,
+			widget_add_pending_intent
+		);
 
 		SpendingManager spending_manager = new SpendingManager(context);
 		String spendings_sum = spending_manager.getSpendingsSum();
