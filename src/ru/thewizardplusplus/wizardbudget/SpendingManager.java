@@ -75,7 +75,21 @@ public class SpendingManager {
 				spending.put("time", formatTime(timestamp));
 
 				spending.put("amount", spendings_cursor.getDouble(2));
-				spending.put("comment", spendings_cursor.getString(3));
+				String comment = spendings_cursor.getString(3);
+				spending.put("comment", comment);
+
+				boolean has_credit_card_tag = false;
+				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+				if (!credit_card_tag.isEmpty()) {
+					String[] tags = comment.split(",");
+					for (String tag: tags) {
+						if (tag.trim().equals(credit_card_tag)) {
+							has_credit_card_tag = true;
+							break;
+						}
+					}
+				}
+				spending.put("has_credit_card_tag", has_credit_card_tag);
 
 				spendings.put(spending);
 			} catch (JSONException exception) {}

@@ -30,10 +30,12 @@ public class Settings {
 			""
 		);
 
-		settings.credit_card_tag = preferences.getString(
-			"preference_credit_card_tag",
-			DEFAULT_CREDIT_CARD_TAG
-		);
+		settings.credit_card_tag =
+			preferences.getString(
+				"preference_credit_card_tag",
+				DEFAULT_CREDIT_CARD_TAG
+			)
+			.trim();
 		settings.save_backup_to_dropbox = preferences.getBoolean(
 			"preference_save_backup_to_dropbox",
 			true

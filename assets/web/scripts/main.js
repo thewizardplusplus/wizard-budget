@@ -77,11 +77,7 @@ $(document).ready(
 									+ 'pull-left '
 									+ 'mark-container'
 								+ '">'
-								+ (spending.comment.search(
-									'\\b'
-									+ activity.getSetting('credit_card_tag')
-									+ '\\b'
-								) != -1
+								+ (spending.has_credit_card_tag
 									? '<i class = "fa fa-credit-card mark"></i>'
 									: '')
 								+ '<i class = "fa fa-'
