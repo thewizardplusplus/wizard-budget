@@ -10,18 +10,6 @@
 		android:title = "@string/preference_save_backup_to_dropbox_title"
 		android:summary = "@string/preference_save_backup_to_dropbox_summary"
 		android:defaultValue = "true" />
-	<PreferenceCategory android:title = "@string/custom_date_preferences">
-		<CheckBoxPreference
-			android:key = "preference_use_custom_date"
-			android:title = "@string/preference_use_custom_date_title"
-			android:summary = "@string/preference_use_custom_date_summary"
-			android:defaultValue = "false" />
-		<org.bostonandroid.datepreference.DatePreference
-			android:key = "preference_custom_date_base_day"
-			android:dependency = "preference_use_custom_date"
-			android:title = "@string/preference_custom_date_base_day_title"
-			android:summary = "@string/preference_custom_date_base_day_summary" />
-	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/sms_parsing_preferences">
 		<CheckBoxPreference
 			android:key = "preference_parse_sms"
