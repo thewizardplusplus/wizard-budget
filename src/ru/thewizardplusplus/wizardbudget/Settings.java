@@ -41,17 +41,6 @@ public class Settings {
 			true
 		);
 
-		settings.use_custom_date = preferences.getBoolean(
-			"preference_use_custom_date",
-			false
-		);
-		Date current_date = new Date();
-		settings.custom_date_base_day = DatePreference.getDateFor(
-			preferences,
-			"preference_custom_date_base_day",
-			current_date
-		);
-
 		settings.parse_sms = preferences.getBoolean(
 			"preference_parse_sms",
 			false
@@ -156,14 +145,6 @@ public class Settings {
 		return save_backup_to_dropbox;
 	}
 
-	public boolean isUseCustomDate() {
-		return use_custom_date;
-	}
-
-	public Calendar getCustomDateBaseDay() {
-		return custom_date_base_day;
-	}
-
 	public boolean isParseSms() {
 		return parse_sms;
 	}
@@ -229,8 +210,6 @@ public class Settings {
 	private String dropbox_token = "";
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean save_backup_to_dropbox = true;
-	private boolean use_custom_date = false;
-	private Calendar custom_date_base_day = Calendar.getInstance();
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
 	private Pattern sms_spending_pattern;
