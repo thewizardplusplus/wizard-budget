@@ -63,12 +63,6 @@ public class SpendingManager {
 		);
 
 		JSONArray spendings = new JSONArray();
-		long start_timestamp =
-			Settings
-				.getCurrent(context)
-				.getCustomDateBaseDay()
-				.getTimeInMillis()
-			/ 1000L;
 		boolean moved = spendings_cursor.moveToFirst();
 		while (moved) {
 			try {
@@ -77,14 +71,7 @@ public class SpendingManager {
 
 				long timestamp = spendings_cursor.getLong(1);
 				spending.put("timestamp", String.valueOf(timestamp));
-				if (!Settings.getCurrent(context).isUseCustomDate()) {
-					spending.put("date", formatDate(timestamp));
-				} else {
-					spending.put(
-						"date",
-						formatCustomDate(timestamp, start_timestamp)
-					);
-				}
+				spending.put("date", formatDate(timestamp));
 				spending.put("time", formatTime(timestamp));
 
 				spending.put("amount", spendings_cursor.getDouble(2));
@@ -112,12 +99,6 @@ public class SpendingManager {
 		);
 		JSONArray spendings = new JSONArray();
 		if (cursor.moveToFirst()) {
-			long start_timestamp =
-				Settings
-				.getCurrent(context)
-				.getCustomDateBaseDay()
-				.getTimeInMillis()
-				/ 1000L;
 			do {
 				long timestamp = 0;
 				try {
@@ -151,14 +132,7 @@ public class SpendingManager {
 				try {
 					JSONObject spending = new JSONObject();
 					spending.put("timestamp", timestamp);
-					if (!Settings.getCurrent(context).isUseCustomDate()) {
-						spending.put("date", formatDate(timestamp));
-					} else {
-						spending.put(
-							"date",
-							formatCustomDate(timestamp, start_timestamp)
-						);
-					}
+					spending.put("date", formatDate(timestamp));
 					spending.put("time", formatTime(timestamp));
 					spending.put("amount", sms_data.getSpending());
 
@@ -228,40 +202,15 @@ public class SpendingManager {
 		String comment
 	) {
 		try {
-			long timestamp = 0;
-			if (Settings.getCurrent(context).isUseCustomDate()) {
-				String[] custom_date_parts = date.split(Pattern.quote("."));
-				long day = Long.valueOf(custom_date_parts[0]);
-				long year = Long.valueOf(custom_date_parts[1]);
-				long days =
-					(day < 0 || year < 0 ? -1 : 1)
-					* ((Math.abs(day) - (day < 0 || year < 0 ? 0 : 1))
-					+ (Math.abs(year) - 1) * DAYS_IN_CUSTOM_YEAR);
-
-				String[] time_parts = time.split(":");
-				long hour = Long.valueOf(time_parts[0]);
-				long minute = Long.valueOf(time_parts[1]);
-
-				Calendar current_timestamp =
-					Settings
-					.getCurrent(context)
-					.getCustomDateBaseDay();
-				current_timestamp.add(Calendar.DAY_OF_MONTH, (int)days);
-				current_timestamp.add(Calendar.HOUR_OF_DAY, (int)hour);
-				current_timestamp.add(Calendar.MINUTE, (int)minute);
-
-				timestamp = current_timestamp.getTimeInMillis() / 1000L;
-			} else {
-				String formatted_timestamp = date + " " + time + ":00";
-				SimpleDateFormat timestamp_format = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss",
-					Locale.US
-				);
-				Date parsed_timestamp = timestamp_format.parse(
-					formatted_timestamp
-				);
-				timestamp = parsed_timestamp.getTime() / 1000L;
-			}
+			String formatted_timestamp = date + " " + time + ":00";
+			SimpleDateFormat timestamp_format = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss",
+				Locale.US
+			);
+			Date parsed_timestamp = timestamp_format.parse(
+				formatted_timestamp
+			);
+			long timestamp = parsed_timestamp.getTime() / 1000L;
 
 			ContentValues values = new ContentValues();
 			values.put("timestamp", timestamp);

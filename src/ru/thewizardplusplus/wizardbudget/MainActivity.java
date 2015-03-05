@@ -68,8 +68,6 @@ public class MainActivity extends Activity {
 			return settings.getCreditCardTag();
 		} else if (name.equals("save_backup_to_dropbox")) {
 			return settings.isSaveBackupToDropbox() ? "true" : "false";
-		} else if (name.equals("use_custom_date")) {
-			return settings.isUseCustomDate() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			return settings.getCurrentPage();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {

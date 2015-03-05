@@ -6,8 +6,6 @@ import java.util.regex.*;
 import android.content.*;
 import android.preference.*;
 
-import org.bostonandroid.datepreference.*;
-
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
