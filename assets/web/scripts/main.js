@@ -1,8 +1,4 @@
 var GUI = {
-	MINIMAL_CUSTOM_YEAR: -100,
-	MAXIMAL_CUSTOM_YEAR: 100,
-	DAYS_IN_CUSTOM_YEAR: 300,
-
 	hideMainMenu: function() {
 		var event = new CustomEvent('touchend');
 		$('.backdrop').get(0).dispatchEvent(event);
@@ -167,19 +163,10 @@ $(document).ready(
 					var timestamp = moment(
 						parseInt(button.data('timestamp')) * 1000
 					);
-					var list_item = button.parent();
-					if (activity.getSetting('use_custom_date') == 'true') {
-						var custom_date_parts =
-							$('.date-view', list_item)
-							.text()
-							.split('.');
-						active_spending.custom_day = custom_date_parts[0];
-						active_spending.custom_year = custom_date_parts[1];
-					} else {
-						active_spending.date = timestamp.format('YYYY-MM-DD');
-					}
+					active_spending.date = timestamp.format('YYYY-MM-DD');
 					active_spending.time = timestamp.format('HH:mm');
 
+					var list_item = button.parent();
 					active_spending.amount =
 						$('.amount-view', list_item)
 						.text();
@@ -265,90 +252,10 @@ $(document).ready(
 				$('.button-text', edit_spending_button).text('Save');
 			}
 
-			var custom_day_editor = $('.custom-day-editor');
-			var custom_year_editor = $('.custom-year-editor');
-			custom_day_editor.change(
-				function() {
-					var year = Math.abs(parseInt(custom_year_editor.val()));
-					if (parseInt($(this).val()) >= 0) {
-						custom_year_editor.val(year);
-					} else {
-						custom_year_editor.val(-year);
-					}
-				}
-			);
-			custom_year_editor.change(
-				function() {
-					var day = Math.abs(parseInt(custom_day_editor.val()));
-					if (parseInt($(this).val()) >= 0) {
-						custom_day_editor.val(day);
-					} else {
-						custom_day_editor.val(-day);
-					}
-				}
-			);
-
-			var current_timestamp = moment();
 			var date_editor = $('.date-editor');
 			if ($.type(active_spending) !== "null") {
-				if (activity.getSetting('use_custom_date') == 'true') {
-					for (
-						var day = -GUI.DAYS_IN_CUSTOM_YEAR;
-						day <= GUI.DAYS_IN_CUSTOM_YEAR;
-						day++
-					) {
-						if (day == 0) {
-							continue;
-						}
-
-						var formatted_day = Math.abs(day).toString();
-						formatted_day =
-							(day < 0 ? '-' : '')
-							+ (formatted_day.length == 1 ? '0' : '')
-							+ formatted_day;
-
-						custom_day_editor.append(
-							'<option '
-								+ 'value = "' + day + '"'
-								+ (active_spending.custom_day == formatted_day
-									? ' selected = "selected"'
-									: '') + '>'
-								+ formatted_day
-							+ '</option>'
-						);
-					}
-					custom_day_editor.show();
-
-					for (
-						var year = GUI.MINIMAL_CUSTOM_YEAR;
-						year <= GUI.MAXIMAL_CUSTOM_YEAR;
-						year++
-					) {
-						if (year == 0) {
-							continue;
-						}
-
-						var formatted_year = Math.abs(year).toString();
-						formatted_year =
-							(year < 0 ? '-' : '')
-							+ (formatted_year.length == 1 ? '0' : '')
-							+ formatted_year;
-
-						custom_year_editor.append(
-							'<option '
-								+ 'value = "' + year + '"'
-								+ (active_spending.custom_year == formatted_year
-									? ' selected = "selected"'
-									: '') + '>'
-								+ formatted_year
-							+ '</option>'
-						);
-					}
-					custom_year_editor.show();
-				} else {
-					date_editor.show();
-					date_editor.val(active_spending.date);
-				}
+				date_editor.val(active_spending.date);
+				date_editor.show();
 			}
 
 			var time_editor = $('.time-editor');
@@ -390,14 +297,7 @@ $(document).ready(
 					if ($.type(active_spending) === "null") {
 						spending_manager.createSpending(amount, comment);
 					} else {
-						var date = '';
-						if (activity.getSetting('use_custom_date') == 'true') {
-							var custom_day = custom_day_editor.val();
-							var custom_year = custom_year_editor.val();
-							date = custom_day + '.' + custom_year;
-						} else {
-							date = date_editor.val();
-						}
+						var date = date_editor.val();
 						var time = time_editor.val();
 						spending_manager.updateSpending(
 							active_spending.id,
