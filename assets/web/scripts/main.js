@@ -275,6 +275,17 @@ $(document).ready(
 				comment_editor.val(active_spending.comment);
 			}
 
+			var raw_tags = spending_manager.getSpendingTags();
+			var tags = JSON.parse(raw_tags);
+			var tags_editor = new WizardTags(
+				'.tags-editor',
+				{
+					tags: tags,
+					separators: ',',
+					only_unique: true
+				}
+			);
+
 			var income_flag = $('.income-flag');
 			if ($.type(active_spending) !== "null") {
 				if (active_spending.income_flag) {
