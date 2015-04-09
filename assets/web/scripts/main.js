@@ -283,8 +283,7 @@ $(document).ready(
 					sort: 'asc',
 					default_tags: default_tags,
 					separators: ',',
-					only_unique: true,
-					placeholder: 'Tags'
+					only_unique: true
 				}
 			);
 

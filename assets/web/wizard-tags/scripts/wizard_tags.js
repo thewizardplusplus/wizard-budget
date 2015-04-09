@@ -110,7 +110,7 @@ var WizardTags = (function() {
 				processed_options.only_unique = !!processed_options.only_unique;
 				processed_options.placeholder =
 					processed_options.placeholder
-					|| 'Теги';
+					|| 'Tags';
 				processed_options.onChange =
 					processed_options.onChange
 					|| function() {};
@@ -206,6 +206,15 @@ var WizardTags = (function() {
 						},
 						LIST_UPDATE_TIMEOUT
 					);
+				}
+			);
+			input.addEventListener(
+				'keydown',
+				function(event) {
+					if (event.which == 13) {
+						event.preventDefault();
+						return false;
+					}
 				}
 			);
 
@@ -488,5 +497,7 @@ var WizardTags = (function() {
 				);
 			}
 		);
+		list_manager.removeList(list);
+		list = null;
 	};
 })();

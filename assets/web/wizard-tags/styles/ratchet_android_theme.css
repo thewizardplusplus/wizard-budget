@@ -25,6 +25,7 @@
 @charset "utf-8";
 
 .wizard-tags {
+	padding: 10px 9px 4px 15px;
 	background-color: white;
 	border-color: rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
@@ -46,6 +47,10 @@
 	border-top-color: #d9d9d9;
 }
 
+.wizard-tags .autocomplete-list li:hover {
+	background-color: white;
+}
+
 .wizard-tags .autocomplete-list li:active {
 	background-color: #9c0;
 }
@@ -58,6 +63,10 @@
 }
 
 .wizard-tags .inner-container .tag-view .remove-button {
+	background-color: #9c0;
+}
+
+.wizard-tags .inner-container .tag-view .remove-button:hover {
 	background-color: #9c0;
 }
 
