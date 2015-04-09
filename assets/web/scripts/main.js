@@ -280,6 +280,7 @@ $(document).ready(
 				'.tags-editor',
 				{
 					tags: tags,
+					sort: 'asc',
 					default_tags: default_tags,
 					separators: ',',
 					only_unique: true,
