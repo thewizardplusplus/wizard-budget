@@ -302,7 +302,7 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
-					var comment = comment_editor.val();
+					var comment = tags_editor.getTags().join(', ');
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
