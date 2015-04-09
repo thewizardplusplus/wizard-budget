@@ -270,11 +270,6 @@ $(document).ready(
 			}
 			amount_editor.focus();
 
-			var comment_editor = $('.comment-editor');
-			if ($.type(active_spending) !== "null") {
-				comment_editor.val(active_spending.comment);
-			}
-
 			var raw_tags = spending_manager.getSpendingTags();
 			var tags = JSON.parse(raw_tags);
 			var default_tags =
