@@ -46,19 +46,35 @@ var WizardTags = (function() {
 
 			return tags_sorter;
 		};
-		var MakeDefaultTagsGenerator = function(tags, sorter) {
+		var MakeDefaultTagsGenerator = function(tags) {
 			return function(query) {
-				tags = tags.filter(
+				return tags.filter(
 					function(tag) {
 						return tag.substr(0, query.length) == query;
 					}
 				);
-				if (sorter) {
-					tags = tags.sort(sorter);
-				}
-
-				return tags;
 			};
+		};
+		var TrimTags = function(tags) {
+			return tags.map(
+				function(tag) {
+					return tag.trim();
+				}
+			);
+		};
+		var UniqueTags = function(tags) {
+			return tags.filter(
+				function(value, index, self) {
+					return self.indexOf(value) == index;
+				}
+			);
+		};
+		var SortTags = function(tags, sorter) {
+			if (sorter) {
+				tags = tags.sort(sorter);
+			}
+
+			return tags;
 		};
 		var GetTagsGenerator = function(options) {
 			var tags_generator = function() {
@@ -67,18 +83,16 @@ var WizardTags = (function() {
 			if (options.tags instanceof Function) {
 				tags_generator = options.tags;
 			} else if (options.tags instanceof Array) {
-				tags_generator = MakeDefaultTagsGenerator(
-					options.tags,
-					options.sort
-				);
+				tags_generator = MakeDefaultTagsGenerator(options.tags);
 			}
 
 			return function(query) {
-				return tags_generator(query).map(
-					function(tag) {
-						return tag.trim();
-					}
-				);
+				var tags = tags_generator(query);
+				tags = TrimTags(tags);
+				tags = UniqueTags(tags);
+				tags = SortTags(tags, options.sort);
+
+				return tags;
 			};
 		};
 
@@ -87,10 +101,16 @@ var WizardTags = (function() {
 				var processed_options = options || {};
 				processed_options.sort = GetTagsSorter(processed_options);
 				processed_options.tags = GetTagsGenerator(processed_options);
+				processed_options.default_tags =
+					processed_options.default_tags
+					|| [];
 				processed_options.separators =
 					processed_options.separators
 					|| ' ';
 				processed_options.only_unique = !!processed_options.only_unique;
+				processed_options.placeholder =
+					processed_options.placeholder
+					|| 'Теги';
 				processed_options.onChange =
 					processed_options.onChange
 					|| function() {};
@@ -125,7 +145,13 @@ var WizardTags = (function() {
 		var LIST_REMOVE_DELAY = 250;
 
 		var UpdateInputSize = function(input) {
-			var new_size = input.value.length + 1;
+			var new_size = input.value.length;
+			if (new_size == 0 && input.hasAttribute('placeholder')) {
+				var placeholder = input.getAttribute('placeholder');
+				new_size = placeholder.length;
+			}
+			new_size += 1;
+
 			input.setAttribute('size', new_size);
 		};
 		var ClearInput = function(input) {
@@ -133,9 +159,15 @@ var WizardTags = (function() {
 			UpdateInputSize(input);
 		};
 
-		return function(inner_container, separators, event_handlers) {
+		return function(
+			inner_container,
+			separators,
+			placeholder,
+			event_handlers
+		) {
 			var input = document.createElement('input');
 			input.className = 'input';
+			input.setAttribute('placeholder', placeholder);
 			UpdateInputSize(input);
 
 			input.addEventListener(
@@ -189,6 +221,9 @@ var WizardTags = (function() {
 				}
 			);
 
+			input.updateSize = function() {
+				UpdateInputSize(this);
+			};
 			input.clear = function() {
 				ClearInput(this);
 				event_handlers.updateAutocompleteList('');
@@ -378,6 +413,14 @@ var WizardTags = (function() {
 
 		var tags_event_handlers = {
 			onTagListChange: function() {
+				input.setAttribute(
+					'placeholder',
+					self.getTags().length == 0
+						? options.placeholder
+						: ''
+				);
+				input.updateSize();
+
 				options.onChange.apply(self);
 			}
 		};
@@ -390,6 +433,7 @@ var WizardTags = (function() {
 		var input = MakeInput(
 			inner_container,
 			options.separators,
+			options.placeholder,
 			{
 				addTag: function(text) {
 					tag_manager.addTag(
@@ -427,5 +471,22 @@ var WizardTags = (function() {
 		this.getTags = function() {
 			return tag_manager.getTags();
 		};
+
+		options.default_tags.map(
+			function(default_tag) {
+				default_tag = default_tag.trim();
+				if (default_tag.length == 0) {
+					return;
+				}
+
+				tag_manager.addTag(
+					default_tag,
+					options.only_unique,
+					inner_container,
+					input,
+					tags_event_handlers
+				);
+			}
+		);
 	};
 })();

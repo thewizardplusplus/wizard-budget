@@ -277,12 +277,18 @@ $(document).ready(
 
 			var raw_tags = spending_manager.getSpendingTags();
 			var tags = JSON.parse(raw_tags);
+			var default_tags =
+				$.type(active_spending) !== "null"
+					? active_spending.comment.split(',')
+					: [];
 			var tags_editor = new WizardTags(
 				'.tags-editor',
 				{
 					tags: tags,
+					default_tags: default_tags,
 					separators: ',',
-					only_unique: true
+					only_unique: true,
+					placeholder: 'Tags'
 				}
 			);
 
