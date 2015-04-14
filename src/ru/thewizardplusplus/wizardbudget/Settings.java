@@ -1,6 +1,5 @@
 package ru.thewizardplusplus.wizardbudget;
 
-import java.util.*;
 import java.util.regex.*;
 
 import android.content.*;

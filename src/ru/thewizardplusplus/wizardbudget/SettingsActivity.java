@@ -3,10 +3,12 @@ package ru.thewizardplusplus.wizardbudget;
 import android.preference.*;
 import android.os.*;
 import android.app.*;
+
 import java.util.regex.*;
 
 public class SettingsActivity extends PreferenceActivity {
 	@Override
+	@SuppressWarnings("deprecation")
 	protected void onCreate(Bundle saved_instance_state) {
 		super.onCreate(saved_instance_state);
 		addPreferencesFromResource(R.xml.preferences);
@@ -25,6 +27,7 @@ public class SettingsActivity extends PreferenceActivity {
 		);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void addValidator(String preference_name, String error_message) {
 		final String error_message_copy = error_message;
 		EditTextPreference sms_number_pattern =

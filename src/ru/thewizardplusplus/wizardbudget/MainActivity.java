@@ -1,14 +1,11 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.io.*;
-import java.security.*;
 
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
-import android.widget.*;
 import android.content.*;
-import android.appwidget.*;
 import android.net.*;
 import android.util.*;
 import com.dropbox.client2.*;

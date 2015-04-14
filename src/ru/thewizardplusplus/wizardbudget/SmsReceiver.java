@@ -2,8 +2,6 @@ package ru.thewizardplusplus.wizardbudget;
 
 import android.content.*;
 import android.telephony.*;
-import java.util.regex.*;
-import android.util.*;
 
 public class SmsReceiver extends BroadcastReceiver {
 	@Override

@@ -31,7 +31,7 @@ public class Utils {
 		);
 
 		@SuppressWarnings("deprecation")
-			Notification notification = new Notification.Builder(context)
+		Notification notification = new Notification.Builder(context)
 			.setTicker(title)
 			.setSmallIcon(R.drawable.app_icon)
 			.setContentTitle(title)
