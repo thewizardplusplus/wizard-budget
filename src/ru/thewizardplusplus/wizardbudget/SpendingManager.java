@@ -77,7 +77,10 @@ public class SpendingManager {
 				spending.put("comment", comment);
 
 				boolean has_credit_card_tag = false;
-				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+				String credit_card_tag =
+					Settings
+					.getCurrent(context)
+					.getCreditCardTag();
 				if (!credit_card_tag.isEmpty()) {
 					String[] tags = comment.split(",");
 					for (String tag: tags) {
