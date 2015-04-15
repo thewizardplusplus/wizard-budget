@@ -18,6 +18,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "comment TEXT NOT NULL"
 			+ ");"
 		);
+		database.execSQL(
+			"CREATE TABLE buys ("
+				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "name TEXT NOT NULL,"
+				+ "cost REAL NOT NULL,"
+				+ "priority INTEGER NOT NULL,"
+				+ "status INTEGER NOT NULL"
+			+ ");"
+		);
 	}
 
 	@Override
