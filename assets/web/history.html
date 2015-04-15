@@ -19,12 +19,21 @@
 		</header>
 
 		<div class = "content">
-			<p class = "content-padded">
-				Spendings sum: <span class = "spendings-sum-view">
-					0.0
-				</span> <i class = "fa fa-ruble"></i>.
-			</p>
-			<ul class = "table-view spending-list"></ul>
+			<div class = "segmented-control">
+				<a class = "control-item" href = "#plans-segment">Plans</a>
+				<a class = "control-item active" href = "#history-segment">History</a>
+			</div>
+			<div id = "plans-segment" class = "control-content">
+				<p>Plans page.</p>
+			</div>
+			<div id = "history-segment" class = "control-content active">
+				<p class = "content-padded">
+					Spendings sum: <span class = "spendings-sum-view">
+						0.0
+					</span> <i class = "fa fa-ruble"></i>.
+				</p>
+				<ul class = "table-view spending-list"></ul>
+			</div>
 		</div>
 
 		<nav id = "main-menu" class = "popover">
