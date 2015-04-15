@@ -26,7 +26,7 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String getSpendingsSum() {
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor cursor = database.query(
 			"spendings",
 			new String[]{"ROUND(SUM(amount), 2)"},
@@ -49,7 +49,7 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String getAllSpendings() {
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"_id", "timestamp", "amount", "comment"},
@@ -164,7 +164,7 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String getSpendingTags() {
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"comment"},
@@ -203,7 +203,7 @@ public class SpendingManager {
 		values.put("amount", amount);
 		values.put("comment", comment);
 
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		database.insert("spendings", null, values);
 		database.close();
 	}
@@ -232,7 +232,7 @@ public class SpendingManager {
 			values.put("amount", amount);
 			values.put("comment", comment);
 
-			SQLiteDatabase database = getDatabase();
+			SQLiteDatabase database = Utils.getDatabase(context);
 			database.update(
 				"spendings",
 				values,
@@ -245,7 +245,7 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public void deleteSpending(int id) {
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		database.delete(
 			"spendings",
 			"_id = ?",
@@ -288,7 +288,7 @@ public class SpendingManager {
 		} catch (JSONException exception) {}
 
 		if (!sql.isEmpty()) {
-			SQLiteDatabase database = getDatabase();
+			SQLiteDatabase database = Utils.getDatabase(context);
 			database.execSQL(
 				"INSERT INTO spendings"
 				+ "(timestamp, amount, comment)"
@@ -320,7 +320,7 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String backup() {
-		SQLiteDatabase database = getDatabase();
+		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor cursor = database.query(
 			"spendings",
 			new String[]{"timestamp", "amount", "comment"},
@@ -471,7 +471,7 @@ public class SpendingManager {
 		}
 
 		if (!sql.isEmpty()) {
-			SQLiteDatabase database = getDatabase();
+			SQLiteDatabase database = Utils.getDatabase(context);
 			database.execSQL("DELETE FROM spendings");
 			database.execSQL(
 				"INSERT INTO spendings"
@@ -510,11 +510,6 @@ public class SpendingManager {
 		);
 
 	private Context context;
-
-	private SQLiteDatabase getDatabase() {
-		DatabaseHelper database_helper = new DatabaseHelper(context);
-		return database_helper.getWritableDatabase();
-	}
 
 	private String formatDate(long timestamp) {
 		Date date = new Date(timestamp * 1000L);

@@ -8,6 +8,7 @@ import android.app.*;
 import java.util.regex.*;
 import android.widget.*;
 import android.appwidget.*;
+import android.database.sqlite.*;
 
 public class Utils {
 	public static void showNotification(
@@ -107,6 +108,11 @@ public class Utils {
 		RemoteViews views = Widget.getUpdatedViews(context);
 		ComponentName widget = new ComponentName(context, Widget.class);
 		AppWidgetManager.getInstance(context).updateAppWidget(widget, views);
+	}
+
+	public static SQLiteDatabase getDatabase(Context context) {
+		DatabaseHelper database_helper = new DatabaseHelper(context);
+		return database_helper.getWritableDatabase();
 	}
 
 	private static int notification_id = 0;
