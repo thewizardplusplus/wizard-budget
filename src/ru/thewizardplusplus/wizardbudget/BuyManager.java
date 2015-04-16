@@ -61,6 +61,23 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
+	public void updateBuy(int id, String name, double cost, long status) {
+		ContentValues values = new ContentValues();
+		values.put("name", name);
+		values.put("cost", cost);
+		values.put("status", status);
+
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.update(
+			"buys",
+			values,
+			"_id = ?",
+			new String[]{String.valueOf(id)}
+		);
+		database.close();
+	}
+
+	@JavascriptInterface
 	public void deleteBuy(int id) {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		database.delete("buys", "_id = ?", new String[]{String.valueOf(id)});
