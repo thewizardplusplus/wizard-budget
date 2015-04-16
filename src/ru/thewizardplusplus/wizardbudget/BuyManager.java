@@ -52,10 +52,10 @@ public class BuyManager {
 		values.put("cost", cost);
 		values.put("status", 1L);
 
-		long maximal_priority = getMaximalPriority();
+		SQLiteDatabase database = Utils.getDatabase(context);
+		long maximal_priority = getMaximalPriority(database);
 		values.put("priority", maximal_priority + 1);
 
-		SQLiteDatabase database = Utils.getDatabase(context);
 		database.insert("buys", null, values);
 		database.close();
 	}
@@ -67,8 +67,7 @@ public class BuyManager {
 		database.close();
 	}
 
-	public long getMaximalPriority() {
-		SQLiteDatabase database = Utils.getDatabase(context);
+	private long getMaximalPriority(SQLiteDatabase database) {
 		Cursor cursor = database.query(
 			"buys",
 			new String[]{"MAX(priority)"},
@@ -85,7 +84,6 @@ public class BuyManager {
 			maximal_priority = cursor.getLong(0);
 		}
 
-		database.close();
 		return maximal_priority;
 	}
 
