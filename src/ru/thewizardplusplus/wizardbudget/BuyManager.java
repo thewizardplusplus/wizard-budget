@@ -5,6 +5,7 @@ import android.database.sqlite.*;
 import android.database.*;
 import org.json.*;
 import android.webkit.*;
+import android.renderscript.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {
@@ -42,6 +43,43 @@ public class BuyManager {
 
 		database.close();
 		return buys.toString();
+	}
+
+	@JavascriptInterface
+	public void createBuy(String name, double cost) {
+		ContentValues values = new ContentValues();
+		values.put("name", name);
+		values.put("cost", cost);
+		values.put("status", 1L);
+
+		long maximal_priority = getMaximalPriority();
+		values.put("priority", maximal_priority + 1);
+
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.insert("buys", null, values);
+		database.close();
+	}
+
+	public long getMaximalPriority() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor cursor = database.query(
+			"buys",
+			new String[]{"MAX(priority)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		long maximal_priority = 0L;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			maximal_priority = cursor.getLong(0);
+		}
+
+		database.close();
+		return maximal_priority;
 	}
 
 	private Context context;
