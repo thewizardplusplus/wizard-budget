@@ -13,6 +13,29 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
+	public String getCostsSum() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor cursor = database.query(
+			"buys",
+			new String[]{"ROUND(SUM(cost), 2)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		double costs_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			costs_sum = cursor.getDouble(0);
+		}
+
+		database.close();
+		return String.valueOf(costs_sum);
+	}
+
+	@JavascriptInterface
 	public String getAllBuys() {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor buys_cursor = database.query(
