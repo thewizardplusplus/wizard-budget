@@ -60,6 +60,13 @@ public class BuyManager {
 		database.close();
 	}
 
+	@JavascriptInterface
+	public void deleteBuy(int id) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.delete("buys", "_id = ?", new String[]{String.valueOf(id)});
+		database.close();
+	}
+
 	public long getMaximalPriority() {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor cursor = database.query(
