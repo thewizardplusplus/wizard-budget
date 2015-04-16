@@ -115,6 +115,8 @@ public class MainActivity extends Activity {
 
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
+		BuyManager buy_manager = new BuyManager(this);
+		web_view.addJavascriptInterface(buy_manager, "buy_manager");
 		web_view.addJavascriptInterface(this, "activity");
 	}
 
