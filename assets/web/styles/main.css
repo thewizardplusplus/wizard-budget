@@ -94,3 +94,8 @@ ol {
 	font-size: 14px;
 	color: #777;
 }
+
+.buy-list .buyed {
+	opacity: 0.5;
+}
+

@@ -18,7 +18,7 @@ public class BuyManager {
 		Cursor cursor = database.query(
 			"buys",
 			new String[]{"ROUND(SUM(cost), 2)"},
-			null,
+			"status = 0",
 			null,
 			null,
 			null,
@@ -45,7 +45,7 @@ public class BuyManager {
 			null,
 			null,
 			null,
-			"status DESC, priority DESC"
+			"status, priority DESC"
 		);
 
 		JSONArray buys = new JSONArray();
@@ -73,7 +73,7 @@ public class BuyManager {
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("cost", cost);
-		values.put("status", 1L);
+		values.put("status", 0L);
 
 		SQLiteDatabase database = Utils.getDatabase(context);
 		long maximal_priority = getMaximalPriority(database);

@@ -199,6 +199,76 @@ $(document).ready(
 				}
 			);
 		}
+		function UpdateBuyList() {
+			var costs_sum_view = $('.costs-sum-view');
+			var costs_sum = buy_manager.getCostsSum();
+			costs_sum_view.text(costs_sum);
+
+			var buy_list = $('.buy-list');
+			buy_list.empty();
+
+			var raw_buys = buy_manager.getAllBuys();
+			var buys = JSON.parse(raw_buys);
+			buys.map(
+				function(buy) {
+					buy_list.append(
+						'<li '
+							+ 'class = "'
+								+ 'table-view-cell '
+								+ 'media '
+								+ (buy.status
+									? 'buyed'
+									: '')
+							+ '">'
+							+ '<button '
+								+ 'class = "btn second-list-button '
+									+ 'edit-buy-button"'
+								+ 'data-buy-id = "' + buy.id + '"'
+								+ 'data-status = "' + buy.status + '">'
+								+ '<i class = "fa fa-pencil"></i>'
+							+ '</button>'
+							+ '<button '
+								+ 'class = "btn remove-buy-button"'
+								+ 'data-buy-id = "' + buy.id + '">'
+								+ '<i class = "fa fa-trash"></i>'
+							+ '</button>'
+							+ '<span '
+								+ 'class = "'
+									+ 'media-object '
+									+ 'pull-left'
+								+ '">'
+								+ '<i '
+									+ 'class = "'
+										+ 'fa '
+										+ 'fa-' + (buy.status
+											? 'gift'
+											: 'shopping-cart') + ' '
+										+ 'fa-2x'
+									+ '">'
+								+ '</i>'
+							+ '</span>'
+							+ '<div class = "media-body">'
+								+ '<p>'
+									+ '<span class = "underline">'
+										+ '<strong>'
+											+ '<span class = "name-view">'
+												+ buy.name
+											+ '</span>'
+										+ '</strong>:'
+									+ '</span>'
+								+ '</p>'
+								+ '<p>'
+									+ '<span class = "cost-view">'
+										+ buy.cost
+									+ '</span> '
+									+ '<i class = "fa fa-ruble"></i>.'
+								+ '</p>'
+							+ '</div>'
+						+ '</li>'
+					);
+				}
+			);
+		}
 		function UpdateControlButtons() {
 			$('.backup-button').click(
 				function() {
@@ -229,6 +299,7 @@ $(document).ready(
 		function UpdateIndexPage() {
 			UpdateControlButtons();
 			UpdateSpendingList();
+			UpdateBuyList();
 		}
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();
