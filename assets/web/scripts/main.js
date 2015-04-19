@@ -14,10 +14,17 @@ var GUI = {
 			var remove_dialog = $('#remove-dialog');
 			if (remove_dialog.hasClass('active')) {
 				remove_dialog.removeClass('active');
-			} else if ($('.popover').hasClass('visible')) {
-				this.hideMainMenu();
 			} else {
-				activity.quit();
+				remove_dialog = $('#remove-buy-dialog');
+				if (remove_dialog.hasClass('active')) {
+					remove_dialog.removeClass('active');
+				} else {
+					if ($('.popover').hasClass('visible')) {
+						this.hideMainMenu();
+					} else {
+						activity.quit();
+					}
+				}
 			}
 		}
 	}
@@ -263,8 +270,8 @@ $(document).ready(
 										+ '<strong>'
 											+ '<span class = "name-view">'
 												+ buy.name
-											+ '</span>'
-										+ '</strong>:'
+											+ '</span>:'
+										+ '</strong>'
 									+ '</span>'
 								+ '</p>'
 								+ '<p>'
@@ -276,6 +283,47 @@ $(document).ready(
 							+ '</div>'
 						+ '</li>'
 					);
+				}
+			);
+
+			var remove_dialog = $('#remove-buy-dialog');
+			$('.close-remove-dialog', remove_dialog).click(
+				function() {
+					remove_dialog.removeClass('active');
+					SaveActiveBuy(null);
+
+					return false;
+				}
+			);
+			var remove_dialog_name_view = $('.name-view', remove_dialog);
+			var remove_dialog_cost_view = $('.cost-view', remove_dialog);
+			$('.remove-buy-button', remove_dialog).click(
+				function() {
+					var active_buy = LoadActiveBuy();
+					if ($.type(active_buy) !== "null") {
+						buy_manager.deleteBuy(active_buy.id);
+						activity.updateWidget();
+
+						PUSH({url: 'history.html'});
+					}
+				}
+			);
+
+			$('.remove-buy-button', buy_list).click(
+				function() {
+					var button = $(this);
+
+					active_buy = {};
+					active_buy.id = parseInt(button.data('buy-id'));
+					SaveActiveBuy(active_buy);
+
+					var list_item = button.parent();
+					var name = $('.name-view', list_item).text();
+					var cost = $('.cost-view', list_item).text();
+
+					remove_dialog_name_view.text(name);
+					remove_dialog_cost_view.text(cost);
+					remove_dialog.addClass('active');
 				}
 			);
 		}
