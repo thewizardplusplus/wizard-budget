@@ -8,6 +8,7 @@ import android.preference.*;
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
+	public static final String SETTING_NAME_ACTIVE_BUY = "active_buy";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
 
 	public static Settings getCurrent(Context context) {
@@ -23,6 +24,10 @@ public class Settings {
 		settings.active_spending = preferences.getString(
 			SETTING_NAME_ACTIVE_SPENDING,
 			DEFAULT_SPENDING
+		);
+		settings.active_buy = preferences.getString(
+			SETTING_NAME_ACTIVE_BUY,
+			DEFAULT_BUY
 		);
 		settings.dropbox_token = preferences.getString(
 			SETTING_NAME_DROPBOX_TOKEN,
@@ -124,8 +129,16 @@ public class Settings {
 		return active_spending;
 	}
 
+	public String getActiveBuy() {
+		return active_buy;
+	}
+
 	public void setActiveSpending(String active_spending) {
 		this.active_spending = active_spending;
+	}
+
+	public void setActiveBuy(String active_buy) {
+		this.active_buy = active_buy;
 	}
 
 	public String getDropboxToken() {
@@ -195,17 +208,20 @@ public class Settings {
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(SETTING_NAME_CURRENT_PAGE, current_page);
 		editor.putString(SETTING_NAME_ACTIVE_SPENDING, active_spending);
+		editor.putString(SETTING_NAME_ACTIVE_BUY, active_buy);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
 		editor.commit();
 	}
 
 	private static final String DEFAULT_PAGE = "history";
 	private static final String DEFAULT_SPENDING = "null";
+	private static final String DEFAULT_BUY = "null";
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
 	private String active_spending = DEFAULT_SPENDING;
+	private String active_buy = DEFAULT_BUY;
 	private String dropbox_token = "";
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean save_backup_to_dropbox = true;

@@ -35,6 +35,16 @@ $(document).ready(
 			var json = JSON.stringify(active_spending);
 			activity.setSetting('active_spending', json);
 		}
+		function LoadActiveBuy() {
+			var json = activity.getSetting('active_buy');
+			SaveActiveBuy(null);
+
+			return JSON.parse(json);
+		}
+		function SaveActiveBuy(active_buy) {
+			var json = JSON.stringify(active_buy);
+			activity.setSetting('active_buy', json);
+		}
 		function UpdateSpendingList() {
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();

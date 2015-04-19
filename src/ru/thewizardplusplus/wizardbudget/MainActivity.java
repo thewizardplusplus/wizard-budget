@@ -69,6 +69,8 @@ public class MainActivity extends Activity {
 			return settings.getCurrentPage();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			return settings.getActiveSpending();
+		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
+			return settings.getActiveBuy();
 		} else {
 			return "";
 		}
@@ -81,6 +83,8 @@ public class MainActivity extends Activity {
 			settings.setCurrentPage(value);
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			settings.setActiveSpending(value);
+		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
+			settings.setActiveBuy(value);
 		}
 		settings.save();
 	}
