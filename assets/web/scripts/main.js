@@ -309,6 +309,25 @@ $(document).ready(
 				}
 			);
 
+			$('.edit-buy-button', buy_list).click(
+				function() {
+					var button = $(this);
+
+					active_buy = {};
+					active_buy.id = parseInt(button.data('buy-id'));
+					active_buy.status =
+						button.data('status')
+							? true
+							: null;
+
+					var list_item = button.parent();
+					active_buy.name = $('.name-view', list_item).text();
+					active_buy.cost = $('.cost-view', list_item).text();
+
+					SaveActiveBuy(active_buy);
+					PUSH({url: 'buy_editor.html'});
+				}
+			);
 			$('.remove-buy-button', buy_list).click(
 				function() {
 					var button = $(this);
@@ -452,6 +471,59 @@ $(document).ready(
 				}
 			);
 		}
+		function UpdateBuyEditorPage() {
+			var active_buy = LoadActiveBuy();
+
+			var edit_buy_button = $('form .edit-buy-button');
+			if ($.type(active_buy) === "null") {
+				$('.title').text('Add');
+				$('.button-icon', edit_buy_button).removeClass('fa-save').addClass('fa-plus');
+				$('.button-text', edit_buy_button).text('Add');
+			} else {
+				$('.title').text('Edit');
+				$('.button-icon', edit_buy_button).removeClass('fa-plus').addClass('fa-save');
+				$('.button-text', edit_buy_button).text('Save');
+			}
+
+			var name_editor = $('.name-editor');
+			if ($.type(active_buy) !== "null") {
+				name_editor.val(active_buy.name);
+			}
+			name_editor.focus();
+
+			var cost_editor = $('.cost-editor');
+			if ($.type(active_buy) !== "null") {
+				cost_editor.val(active_buy.cost);
+			}
+
+			var status_flag = $('.status');
+			if ($.type(active_buy) !== "null") {
+				if (active_buy.status) {
+					status_flag.addClass('active');
+				}
+			} else {
+				status_flag.parent().hide();
+			}
+
+			edit_buy_button.click(
+				function() {
+					var name = name_editor.val();
+					var cost = parseFloat(cost_editor.val());
+					var status = status_flag.hasClass('active') ? 1 : 0;
+
+					if ($.type(active_buy) === "null") {
+						buy_manager.createBuy(name, cost);
+					} else {
+						buy_manager.updateBuy(active_buy.id, name, cost, status);
+					}
+
+					activity.updateWidget();
+					PUSH({url: 'history.html'});
+
+					return false;
+				}
+			);
+		}
 		function UpdateSmsPage() {
 			var sms_list = $('.sms-list');
 			sms_list.empty();
@@ -536,6 +608,9 @@ $(document).ready(
 				} else if (/\beditor\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'editor');
 					UpdateEditorPage();
+				} else if (/\bbuy_editor\b/.test(event.detail.state.url)) {
+					activity.setSetting('current_page', 'buy_editor');
+					UpdateBuyEditorPage();
 				} else if (/\bsms\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'sms');
 					UpdateSmsPage();

@@ -6,6 +6,7 @@ import android.database.*;
 import org.json.*;
 import android.webkit.*;
 import android.renderscript.*;
+import android.util.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {
