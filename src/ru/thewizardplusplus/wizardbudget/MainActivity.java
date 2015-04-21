@@ -67,6 +67,8 @@ public class MainActivity extends Activity {
 			return settings.isSaveBackupToDropbox() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			return settings.getCurrentPage();
+		} else if (name.equals(Settings.SETTING_NAME_CURRENT_SEGMENT)) {
+			return settings.getCurrentSegment();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			return settings.getActiveSpending();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
@@ -81,6 +83,8 @@ public class MainActivity extends Activity {
 		Settings settings = Settings.getCurrent(this);
 		if (name.equals(Settings.SETTING_NAME_CURRENT_PAGE)) {
 			settings.setCurrentPage(value);
+		} else if (name.equals(Settings.SETTING_NAME_CURRENT_SEGMENT)) {
+			settings.setCurrentSegment(value);
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_SPENDING)) {
 			settings.setActiveSpending(value);
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {

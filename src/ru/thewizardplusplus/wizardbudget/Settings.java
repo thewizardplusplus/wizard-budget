@@ -7,6 +7,7 @@ import android.preference.*;
 
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
+	public static final String SETTING_NAME_CURRENT_SEGMENT = "current_segment";
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
 	public static final String SETTING_NAME_ACTIVE_BUY = "active_buy";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
@@ -20,6 +21,10 @@ public class Settings {
 		settings.current_page = preferences.getString(
 			SETTING_NAME_CURRENT_PAGE,
 			DEFAULT_PAGE
+		);
+		settings.current_segment = preferences.getString(
+			SETTING_NAME_CURRENT_SEGMENT,
+			DEFAULT_SEGMENT
 		);
 		settings.active_spending = preferences.getString(
 			SETTING_NAME_ACTIVE_SPENDING,
@@ -125,6 +130,14 @@ public class Settings {
 		this.current_page = current_page;
 	}
 
+	public String getCurrentSegment() {
+		return current_segment;
+	}
+
+	public void setCurrentSegment(String current_segment) {
+		this.current_segment = current_segment;
+	}
+
 	public String getActiveSpending() {
 		return active_spending;
 	}
@@ -207,6 +220,7 @@ public class Settings {
 			.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(SETTING_NAME_CURRENT_PAGE, current_page);
+		editor.putString(SETTING_NAME_CURRENT_SEGMENT, current_segment);
 		editor.putString(SETTING_NAME_ACTIVE_SPENDING, active_spending);
 		editor.putString(SETTING_NAME_ACTIVE_BUY, active_buy);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
@@ -214,12 +228,14 @@ public class Settings {
 	}
 
 	private static final String DEFAULT_PAGE = "history";
+	private static final String DEFAULT_SEGMENT = "history";
 	private static final String DEFAULT_SPENDING = "null";
 	private static final String DEFAULT_BUY = "null";
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
+	private String current_segment = DEFAULT_SEGMENT;
 	private String active_spending = DEFAULT_SPENDING;
 	private String active_buy = DEFAULT_BUY;
 	private String dropbox_token = "";

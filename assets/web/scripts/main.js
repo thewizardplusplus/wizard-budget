@@ -383,8 +383,26 @@ $(document).ready(
 				}
 			);
 		}
+		function UpdateSegments() {
+			$('.control-item, .control-content').removeClass('active');
+			var current_segment = activity.getSetting('current_segment');
+			$('.' + current_segment + '-segment').addClass('active');
+
+			$('.control-item').on(
+				'touchend',
+				function() {
+					var self = $(this);
+					if (self.hasClass('buys-segment')) {
+						activity.setSetting('current_segment', 'buys');
+					} else {
+						activity.setSetting('current_segment', 'history');
+					}
+				}
+			);
+		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
+			UpdateSegments();
 			UpdateSpendingList();
 			UpdateBuyList();
 		}
