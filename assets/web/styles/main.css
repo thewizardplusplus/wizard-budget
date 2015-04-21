@@ -99,3 +99,7 @@ ol {
 	opacity: 0.5;
 }
 
+.segmented-control .control-item.active {
+	font-weight: bold;
+}
+

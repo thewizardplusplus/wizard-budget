@@ -375,7 +375,7 @@ $(document).ready(
 
 			$('.add-button').click(
 				function() {
-					if ($('.buys-segment').hasClass('active')) {
+					if ($('#buys-segment').hasClass('active')) {
 						PUSH({url: 'buy_editor.html'});
 					} else {
 						PUSH({url: 'editor.html'});
