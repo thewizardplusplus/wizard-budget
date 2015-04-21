@@ -553,6 +553,8 @@ $(document).ready(
 			);
 		}
 		function UpdateSmsPage() {
+			var UPDATE_INPUT_BUTTON_TIMEOUT = 100;
+
 			var sms_list = $('.sms-list');
 			sms_list.empty();
 
@@ -567,7 +569,7 @@ $(document).ready(
 								+ spending.timestamp
 							+ '" '
 							+ 'data-amount = "' + spending.amount + '">'
-							+ '<div class = "toggle active import-flag">'
+							+ '<div class = "toggle import-flag">'
 								+ '<div class = "toggle-handle"></div>'
 							+ '</div>'
 							+ '<span class = "'
@@ -601,7 +603,8 @@ $(document).ready(
 				}
 			);
 
-			$('.import-sms-button').click(
+			var import_button = $('.import-sms-button');
+			import_button.click(
 				function() {
 					var sms_data = [];
 					$('li', sms_list).each(
@@ -622,9 +625,25 @@ $(document).ready(
 					spending_manager.importSms(sms_data_in_string);
 
 					activity.updateWidget();
+
+					activity.setSetting('current_segment', 'history');
 					PUSH({url: 'history.html'});
 				}
 			);
+			var UpdateImportButton = function() {
+				if ($('.sms-list .import-flag.active').length) {
+					import_button.show();
+				} else {
+					import_button.hide();
+				}
+			};
+
+			$('.sms-list').click(
+				function() {
+					setTimeout(UpdateImportButton, UPDATE_INPUT_BUTTON_TIMEOUT);
+				}
+			);
+			UpdateImportButton();
 		}
 
 		window.addEventListener(
