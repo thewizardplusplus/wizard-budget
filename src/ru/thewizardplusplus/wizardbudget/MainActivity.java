@@ -204,8 +204,8 @@ public class MainActivity extends Activity {
 			try {
 				in = new BufferedInputStream(new FileInputStream(backup_file));
 
-				SpendingManager spending_manager = new SpendingManager(this);
-				spending_manager.restore(in);
+				BackupManager backup_manager = new BackupManager(this);
+				backup_manager.restore(in);
 			} finally {
 				if (in != null) {
 					in.close();

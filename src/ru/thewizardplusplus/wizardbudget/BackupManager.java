@@ -12,6 +12,9 @@ import android.database.sqlite.*;
 import android.database.*;
 import android.os.*;
 import android.util.*;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import org.xml.sax.*;
 
 public class BackupManager {
 	public BackupManager(Context context) {
@@ -105,7 +108,7 @@ public class BackupManager {
 					serializer.attribute("", "name", cursor.getString(0));
 					serializer.attribute("", "cost", String.valueOf(cursor.getDouble(1)));
 					serializer.attribute("", "priority", String.valueOf(cursor.getLong(2)));
-					
+
 					long status = cursor.getLong(3);
 					serializer.attribute(
 						"",
@@ -149,6 +152,130 @@ public class BackupManager {
 		} catch (IOException exception) {}
 
 		return filename;
+	}
+
+	public void restore(InputStream in) {
+		String spending_sql = "";
+		String buy_sql = "";
+		try {
+			Element budget = DocumentBuilderFactory
+				.newInstance()
+				.newDocumentBuilder()
+				.parse(in)
+				.getDocumentElement();
+			budget.normalize();
+
+			NodeList spending_list = budget.getElementsByTagName("spending");
+			for (int i = 0; i < spending_list.getLength(); i++) {
+				if (spending_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element spending = (Element)spending_list.item(i);
+					if (
+						!spending.hasAttribute("date")
+						|| !spending.hasAttribute("amount")
+						|| !spending.hasAttribute("comment")
+					) {
+						continue;
+					}
+
+					long timestamp = 0;
+					try {
+						Date date = XML_DATE_FORMAT.parse(
+							spending.getAttribute("date")
+						);
+						timestamp = date.getTime() / 1000L;
+					} catch (java.text.ParseException exception) {
+						continue;
+					}
+
+					if (!spending_sql.isEmpty()) {
+						spending_sql += ",";
+					}
+					spending_sql += "("
+							+ String.valueOf(timestamp) + ","
+							+ spending.getAttribute("amount") + ","
+							+ DatabaseUtils.sqlEscapeString(
+								spending.getAttribute("comment")
+							)
+						+ ")";
+				}
+			}
+
+			NodeList buy_list = budget.getElementsByTagName("buy");
+			for (int i = 0; i < buy_list.getLength(); i++) {
+				if (buy_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element buy = (Element)buy_list.item(i);
+					if (
+						!buy.hasAttribute("name")
+						|| !buy.hasAttribute("cost")
+						|| !buy.hasAttribute("priority")
+						|| !buy.hasAttribute("purchased")
+					) {
+						continue;
+					}
+
+					String status =
+						buy.getAttribute("purchased").equals("false")
+							? "0"
+							: "1";
+
+					if (!buy_sql.isEmpty()) {
+						buy_sql += ",";
+					}
+					buy_sql += "("
+							+ DatabaseUtils.sqlEscapeString(buy.getAttribute("name")) + ","
+							+ buy.getAttribute("cost") + ","
+							+ buy.getAttribute("priority") + ","
+							+ status
+						+ ")";
+				}
+			}
+		} catch (ParserConfigurationException exception) {
+			return;
+		} catch (SAXException exception) {
+			return;
+		} catch (IOException exception) {
+			return;
+		} catch (DOMException exception) {
+			return;
+		}
+
+		if (!spending_sql.isEmpty() || !buy_sql.isEmpty()) {
+			SQLiteDatabase database = Utils.getDatabase(context);
+			database.execSQL("DELETE FROM spendings");
+			database.execSQL(
+				"INSERT INTO spendings"
+				+ "(timestamp, amount, comment)"
+				+ "VALUES" + spending_sql
+			);
+
+			database.execSQL("DELETE FROM buys");
+			database.execSQL(
+				"INSERT INTO buys"
+				+ "(name, cost, priority, status)"
+				+ "VALUES" + buy_sql
+			);
+			database.close();
+
+			if (Settings.getCurrent(context).isRestoreNotification()) {
+				Date current_date = new Date();
+				DateFormat notification_timestamp_format =
+					DateFormat
+					.getDateTimeInstance(
+						DateFormat.DEFAULT,
+						DateFormat.DEFAULT,
+						Locale.US
+					);
+				String notification_timestamp =
+					notification_timestamp_format
+					.format(current_date);
+				Utils.showNotification(
+					context,
+					context.getString(R.string.app_name),
+					"Restored at " + notification_timestamp + ".",
+					null
+				);
+			}
+		}
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
