@@ -1,6 +1,8 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.io.*;
+import java.text.*;
+import java.util.*;
 
 import android.app.*;
 import android.os.*;
@@ -8,12 +10,11 @@ import android.webkit.*;
 import android.content.*;
 import android.net.*;
 import android.util.*;
+
 import com.dropbox.client2.*;
 import com.dropbox.client2.android.*;
 import com.dropbox.client2.session.*;
 import com.dropbox.client2.exception.*;
-import java.text.*;
-import java.util.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -125,6 +126,8 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
 		BuyManager buy_manager = new BuyManager(this);
 		web_view.addJavascriptInterface(buy_manager, "buy_manager");
+		BackupManager backup_manager = new BackupManager(this);
+		web_view.addJavascriptInterface(backup_manager, "backup_manager");
 		web_view.addJavascriptInterface(this, "activity");
 	}
 

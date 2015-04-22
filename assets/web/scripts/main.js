@@ -351,7 +351,7 @@ $(document).ready(
 				function() {
 					GUI.hideMainMenu();
 
-					var filename = spending_manager.backup();
+					var filename = backup_manager.backup();
 					if (
 						activity.getSetting('save_backup_to_dropbox') == "true"
 						&& filename.length
