@@ -56,9 +56,8 @@ public class BackupManager {
 				serializer.startTag("", "budget");
 				serializer.attribute("", "version", String.valueOf(BACKUP_VERSION));
 
-				serializer.startTag("", "spendings");
-
 				SQLiteDatabase database = Utils.getDatabase(context);
+				serializer.startTag("", "spendings");
 				Cursor cursor = database.query(
 					"spendings",
 					new String[]{"timestamp", "amount", "comment"},
@@ -87,10 +86,40 @@ public class BackupManager {
 
 					moved = cursor.moveToNext();
 				}
+				serializer.endTag("", "spendings");
 
+				serializer.startTag("", "buys");
+				cursor = database.query(
+					"buys",
+					new String[]{"name", "cost", "priority", "status"},
+					null,
+					null,
+					null,
+					null,
+					"status, priority DESC"
+				);
+
+				moved = cursor.moveToFirst();
+				while (moved) {
+					serializer.startTag("", "buy");
+					serializer.attribute("", "name", cursor.getString(0));
+					serializer.attribute("", "cost", String.valueOf(cursor.getDouble(1)));
+					serializer.attribute("", "priority", String.valueOf(cursor.getLong(2)));
+					
+					long status = cursor.getLong(3);
+					serializer.attribute(
+						"",
+						"purchased",
+						status == 0 ? "false" : "true"
+					);
+
+					serializer.endTag("", "buy");
+
+					moved = cursor.moveToNext();
+				}
+				serializer.endTag("", "buys");
 				database.close();
 
-				serializer.endTag("", "spendings");
 				serializer.endTag("", "budget");
 				serializer.endDocument();
 
