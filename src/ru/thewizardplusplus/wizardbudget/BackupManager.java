@@ -53,6 +53,9 @@ public class BackupManager {
 				 "\t"
 				 );*/
 				serializer.startDocument("utf-8", true);
+				serializer.startTag("", "budget");
+				serializer.attribute("", "version", String.valueOf(BACKUP_VERSION));
+
 				serializer.startTag("", "spendings");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -88,6 +91,7 @@ public class BackupManager {
 				database.close();
 
 				serializer.endTag("", "spendings");
+				serializer.endTag("", "budget");
 				serializer.endDocument();
 
 				if (Settings.getCurrent(context).isBackupNotification()) {
@@ -119,11 +123,12 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
+	private static final long BACKUP_VERSION = 2;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
-	new SimpleDateFormat(
-		"yyyy-MM-dd HH:mm:ss",
-		Locale.US
-	);
+		new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss",
+			Locale.US
+		);
 
 	private Context context;
 }
