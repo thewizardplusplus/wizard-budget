@@ -70,6 +70,35 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
+	public String getBuyNames() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor buys_cursor = database.query(
+			"buys",
+			new String[]{"name"},
+			"status = 0",
+			null,
+			null,
+			null,
+			null
+		);
+
+		JSONArray names = new JSONArray();
+		boolean moved = buys_cursor.moveToFirst();
+		while (moved) {
+			String name = buys_cursor.getString(0);
+			name = name.trim();
+			if (!name.isEmpty()) {
+				names.put(name);
+			}
+
+			moved = buys_cursor.moveToNext();
+		}
+
+		database.close();
+		return names.toString();
+	}
+
+	@JavascriptInterface
 	public void createBuy(String name, double cost) {
 		ContentValues values = new ContentValues();
 		values.put("name", name);

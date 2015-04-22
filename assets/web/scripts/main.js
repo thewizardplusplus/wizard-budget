@@ -448,6 +448,10 @@ $(document).ready(
 
 			var raw_tags = spending_manager.getSpendingTags();
 			var tags = JSON.parse(raw_tags);
+			var raw_buy_names = buy_manager.getBuyNames();
+			var buy_names = JSON.parse(raw_buy_names);
+			tags = tags.concat(buy_names);
+
 			var default_tags =
 				$.type(active_spending) !== "null"
 					? active_spending.comment.split(',')
