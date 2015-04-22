@@ -7,6 +7,7 @@ import org.json.*;
 import android.webkit.*;
 import android.renderscript.*;
 import android.util.*;
+import java.util.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {
@@ -134,6 +135,37 @@ public class BuyManager {
 	public void deleteBuy(int id) {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		database.delete("buys", "_id = ?", new String[]{String.valueOf(id)});
+		database.close();
+	}
+
+	@JavascriptInterface
+	public void mayBeBuy(String spending_tags) {
+		StringBuilder prepared_tags = new StringBuilder();
+		try {
+			JSONArray deserialized_tags = new JSONArray(spending_tags);
+			for (int i = 0; i < deserialized_tags.length(); i++) {
+				String tag = deserialized_tags.getString(i);
+				tag = DatabaseUtils.sqlEscapeString(tag);
+
+				if (i != 0) {
+					prepared_tags.append(", ");
+				}
+				prepared_tags.append(tag);
+			}
+		} catch (JSONException exception) {
+			return;
+		}
+
+		ContentValues values = new ContentValues();
+		values.put("status", 1L);
+
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.update(
+			"buys",
+			values,
+			"name IN (" + prepared_tags.toString() + ")",
+			null
+		);
 		database.close();
 	}
 

@@ -477,7 +477,8 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
-					var comment = tags_editor.getTags().join(', ');
+					var tags = tags_editor.getTags();
+					var comment = tags.join(', ');
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
@@ -495,6 +496,9 @@ $(document).ready(
 							comment
 						);
 					}
+
+					var serialized_tags = JSON.stringify(tags);
+					buy_manager.mayBeBuy(serialized_tags);
 
 					activity.updateWidget();
 					PUSH({url: 'history.html'});
