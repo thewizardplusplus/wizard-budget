@@ -235,8 +235,8 @@ $(document).ready(
 								+ 'media '
 								+ (buy.status
 									? 'buyed'
-									: '')
-							+ '">'
+									: 'not-buyed') + '"'
+							+ 'data-id = "' + buy.id + '">'
 							+ '<button '
 								+ 'class = "btn second-list-button '
 									+ 'edit-buy-button"'
@@ -343,6 +343,22 @@ $(document).ready(
 					remove_dialog_name_view.text(name);
 					remove_dialog_cost_view.text(cost);
 					remove_dialog.addClass('active');
+				}
+			);
+
+			buy_list.sortable(
+				{
+					handle: '.media-object',
+					draggable: '.not-buyed',
+					onEnd: function() {
+						var order = $('.not-buyed', buy_list).map(
+							function() {
+								return $(this).data('id');
+							}
+						);
+						var serialized_order = JSON.stringify(order.get());
+						$('.debug').text(serialized_order);
+					}
 				}
 			);
 		}
