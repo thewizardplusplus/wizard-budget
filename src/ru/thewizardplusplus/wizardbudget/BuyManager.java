@@ -132,6 +132,31 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
+	public void updateBuyOrder(String id_list) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		try {
+			JSONArray deserialized_id_list = new JSONArray(id_list);
+			long priority = deserialized_id_list.length();
+			for (int i = 0; i < priority; i++) {
+				ContentValues values = new ContentValues();
+				values.put("priority", priority - i);
+
+				Long id = deserialized_id_list.getLong(i);
+				database.update(
+					"buys",
+					values,
+					"_id = ?",
+					new String[]{String.valueOf(id)}
+				);
+			}
+		} catch (JSONException exception) {
+			return;
+		}
+
+		database.close();
+	}
+
+	@JavascriptInterface
 	public void deleteBuy(int id) {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		database.delete("buys", "_id = ?", new String[]{String.valueOf(id)});

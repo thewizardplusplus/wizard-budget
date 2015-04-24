@@ -350,13 +350,13 @@ $(document).ready(
 				{
 					items: '.not-buyed',
 					update: function() {
-						var order = $('.not-buyed', buy_list).map(
+						var order = $('li', buy_list).map(
 							function() {
 								return $(this).data('id');
 							}
 						);
 						var serialized_order = JSON.stringify(order.get());
-						$('.debug').text(serialized_order);
+						buy_manager.updateBuyOrder(serialized_order);
 					}
 				}
 			);
