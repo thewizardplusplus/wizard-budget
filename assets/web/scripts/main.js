@@ -348,9 +348,8 @@ $(document).ready(
 
 			buy_list.sortable(
 				{
-					handle: '.media-object',
-					draggable: '.not-buyed',
-					onEnd: function() {
+					items: '.not-buyed',
+					update: function() {
 						var order = $('.not-buyed', buy_list).map(
 							function() {
 								return $(this).data('id');
