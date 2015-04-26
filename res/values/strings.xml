@@ -6,8 +6,6 @@
 	<string name = "preference_credit_card_tag_title">Credit card tag</string>
 	<string name = "preference_credit_card_tag_summary">Tag that mark spending from credit card.</string>
 	<string name = "preference_credit_card_tag_default">credit card</string>
-	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
-	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
 	<string name = "sms_parsing_preferences">SMS parsing</string>
 	<string name = "preference_parse_sms_title">Parse SMS</string>
 	<string name = "preference_parse_sms_summary">Parse bank SMS notification.</string>
@@ -26,6 +24,17 @@
 	<string name = "preference_sms_income_comment_title">Income comment</string>
 	<string name = "preference_sms_income_comment_summary">Income comment text.</string>
 	<string name = "preference_sms_income_comment_default">income</string>
+	<string name = "dropbox_preferences">Dropbox backuping</string>
+	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
+	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
+	<string name = "preference_dropbox_app_key_title">Dropbox app key</string>
+	<string name = "preference_dropbox_app_key_summary">Public key of backuping Dropbox app.</string>
+	<string name = "preference_dropbox_app_key_default">g0395gpeyf78f9o</string>
+	<string name = "preference_dropbox_app_secret_title">Dropbox app secret</string>
+	<string name = "preference_dropbox_app_secret_summary">Private key of backuping Dropbox app.</string>
+	<string name = "preference_dropbox_app_secret_default">ahg9sdct9vtmxxb</string>
+	<string name = "preference_dropbox_passwords_reset_button_title">Reset passwords</string>
+	<string name = "preference_dropbox_passwords_reset_button_summary">Reset Dropbox app access passwords to defaults.</string>
 	<string name = "notifications_preferences">Notifications</string>
 	<string name = "preference_backup_notification_title">Backup notification</string>
 	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>

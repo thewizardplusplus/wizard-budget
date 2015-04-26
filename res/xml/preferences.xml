@@ -5,11 +5,6 @@
 		android:title = "@string/preference_credit_card_tag_title"
 		android:summary = "@string/preference_credit_card_tag_summary"
 		android:defaultValue = "@string/preference_credit_card_tag_default" />
-	<CheckBoxPreference
-		android:key = "preference_save_backup_to_dropbox"
-		android:title = "@string/preference_save_backup_to_dropbox_title"
-		android:summary = "@string/preference_save_backup_to_dropbox_summary"
-		android:defaultValue = "true" />
 	<PreferenceCategory android:title = "@string/sms_parsing_preferences">
 		<CheckBoxPreference
 			android:key = "preference_parse_sms"
@@ -46,6 +41,30 @@
 			android:title = "@string/preference_sms_income_comment_title"
 			android:summary = "@string/preference_sms_income_comment_summary"
 			android:defaultValue = "@string/preference_sms_income_comment_default" />
+	</PreferenceCategory>
+	<PreferenceCategory android:title = "@string/dropbox_preferences">
+		<CheckBoxPreference
+			android:key = "preference_save_backup_to_dropbox"
+			android:title = "@string/preference_save_backup_to_dropbox_title"
+			android:summary = "@string/preference_save_backup_to_dropbox_summary"
+			android:defaultValue = "false" />
+		<EditTextPreference
+			android:key = "preference_dropbox_app_key"
+			android:dependency = "preference_save_backup_to_dropbox"
+			android:title = "@string/preference_dropbox_app_key_title"
+			android:summary = "@string/preference_dropbox_app_key_summary"
+			android:defaultValue = "@string/preference_dropbox_app_key_default" />
+		<EditTextPreference
+			android:key = "preference_dropbox_app_secret"
+			android:dependency = "preference_save_backup_to_dropbox"
+			android:title = "@string/preference_dropbox_app_secret_title"
+			android:summary = "@string/preference_dropbox_app_secret_summary"
+			android:defaultValue = "@string/preference_dropbox_app_secret_default" />
+		<Preference
+			android:key = "preference_dropbox_passwords_reset_button"
+			android:dependency = "preference_save_backup_to_dropbox"
+			android:title = "@string/preference_dropbox_passwords_reset_button_title"
+			android:summary = "@string/preference_dropbox_passwords_reset_button_summary" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/notifications_preferences">
 		<CheckBoxPreference
