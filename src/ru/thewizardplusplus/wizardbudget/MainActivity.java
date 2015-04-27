@@ -41,8 +41,9 @@ public class MainActivity extends Activity {
 
 		String dropbox_token = Settings.getCurrent(this).getDropboxToken();
 		if (!dropbox_token.isEmpty()) {
+			AppKeyPair app_keys = getDropboxAppKeys();
 			AndroidAuthSession session = new AndroidAuthSession(
-				APP_KEYS,
+				app_keys,
 				dropbox_token
 			);
 			dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
@@ -182,12 +183,6 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
-	private static final String APP_KEY = "g0395gpeyf78f9o";
-	private static final String APP_SECRET = "ahg9sdct9vtmxxb";
-	private static final AppKeyPair APP_KEYS = new AppKeyPair(
-		APP_KEY,
-		APP_SECRET
-	);
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private String backup_filename = "";
@@ -263,8 +258,16 @@ public class MainActivity extends Activity {
 	}
 
 	private void startDropboxAuthentication() {
-		AndroidAuthSession session = new AndroidAuthSession(APP_KEYS);
+		AppKeyPair app_keys = getDropboxAppKeys();
+		AndroidAuthSession session = new AndroidAuthSession(app_keys);
 		dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
 		dropbox_api.getSession().startOAuth2Authentication(this);
+	}
+
+	private AppKeyPair getDropboxAppKeys() {
+		Settings settings = Settings.getCurrent(this);
+		String app_key = settings.getDropboxAppKey();
+		String app_secret = settings.getDropboxAppSecret();
+		return new AppKeyPair(app_key, app_secret);
 	}
 }

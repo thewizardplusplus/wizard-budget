@@ -102,6 +102,15 @@ public class Settings {
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
+		settings.dropbox_app_key = preferences.getString(
+			"preference_dropbox_app_key",
+			context.getString(R.string.preference_dropbox_app_key_default)
+		);
+		settings.dropbox_app_secret = preferences.getString(
+			"preference_dropbox_app_secret",
+			context.getString(R.string.preference_dropbox_app_secret_default)
+		);
+
 		settings.backup_notification = preferences.getBoolean(
 			"preference_backup_notification",
 			true
@@ -194,6 +203,14 @@ public class Settings {
 		return sms_income_comment;
 	}
 
+	public String getDropboxAppKey() {
+		return dropbox_app_key;
+	}
+
+	public String getDropboxAppSecret() {
+		return dropbox_app_secret;
+	}
+
 	public boolean isBackupNotification() {
 		return backup_notification;
 	}
@@ -247,6 +264,8 @@ public class Settings {
 	private Pattern sms_income_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
+	private String dropbox_app_key = "";
+	private String dropbox_app_secret = "";
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;
