@@ -103,3 +103,14 @@ ol {
 	font-weight: bold;
 }
 
+.buy-list .placeholder {
+	position: relative;
+	padding: 11px 65px 11px 15px;
+	background-color: #fcf8e3;
+	border-bottom: 1px solid #d9d9d9;
+	overflow: hidden;
+}
+
+.buy-list .placeholder > * {
+	opacity: 0.5;
+}
