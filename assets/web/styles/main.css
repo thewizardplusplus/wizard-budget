@@ -114,3 +114,10 @@ ol {
 .buy-list .placeholder > * {
 	opacity: 0.5;
 }
+
+.buy-list .moving {
+	background-color: #f2f2f2;
+	border: 1px solid #a9a9a9;
+	border-radius: 2px;
+	opacity: 1 !important;
+}
