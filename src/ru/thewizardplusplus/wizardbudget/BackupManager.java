@@ -57,7 +57,11 @@ public class BackupManager {
 				 );*/
 				serializer.startDocument("utf-8", true);
 				serializer.startTag("", "budget");
-				serializer.attribute("", "version", String.valueOf(BACKUP_VERSION));
+				serializer.attribute(
+					"",
+					"version",
+					String.valueOf(BACKUP_VERSION)
+				);
 
 				SQLiteDatabase database = Utils.getDatabase(context);
 				serializer.startTag("", "spendings");
@@ -106,8 +110,16 @@ public class BackupManager {
 				while (moved) {
 					serializer.startTag("", "buy");
 					serializer.attribute("", "name", cursor.getString(0));
-					serializer.attribute("", "cost", String.valueOf(cursor.getDouble(1)));
-					serializer.attribute("", "priority", String.valueOf(cursor.getLong(2)));
+					serializer.attribute(
+						"",
+						"cost",
+						String.valueOf(cursor.getDouble(1))
+					);
+					serializer.attribute(
+						"",
+						"priority",
+						String.valueOf(cursor.getLong(2))
+					);
 
 					long status = cursor.getLong(3);
 					serializer.attribute(
@@ -222,7 +234,9 @@ public class BackupManager {
 						buy_sql += ",";
 					}
 					buy_sql += "("
-							+ DatabaseUtils.sqlEscapeString(buy.getAttribute("name")) + ","
+							+ DatabaseUtils.sqlEscapeString(
+								buy.getAttribute("name")
+							) + ","
 							+ buy.getAttribute("cost") + ","
 							+ buy.getAttribute("priority") + ","
 							+ status

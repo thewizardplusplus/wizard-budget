@@ -548,11 +548,15 @@ $(document).ready(
 			var edit_buy_button = $('form .edit-buy-button');
 			if ($.type(active_buy) === "null") {
 				$('.title').text('Add');
-				$('.button-icon', edit_buy_button).removeClass('fa-save').addClass('fa-plus');
+				$('.button-icon', edit_buy_button)
+					.removeClass('fa-save')
+					.addClass('fa-plus');
 				$('.button-text', edit_buy_button).text('Add');
 			} else {
 				$('.title').text('Edit');
-				$('.button-icon', edit_buy_button).removeClass('fa-plus').addClass('fa-save');
+				$('.button-icon', edit_buy_button)
+					.removeClass('fa-plus')
+					.addClass('fa-save');
 				$('.button-text', edit_buy_button).text('Save');
 			}
 
@@ -585,7 +589,12 @@ $(document).ready(
 					if ($.type(active_buy) === "null") {
 						buy_manager.createBuy(name, cost);
 					} else {
-						buy_manager.updateBuy(active_buy.id, name, cost, status);
+						buy_manager.updateBuy(
+							active_buy.id,
+							name,
+							cost,
+							status
+						);
 					}
 
 					activity.updateWidget();

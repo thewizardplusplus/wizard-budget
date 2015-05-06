@@ -28,7 +28,12 @@ public class SettingsActivity extends PreferenceActivity {
 			"Invalid syntax of SMS income pattern."
 		);
 
-		final Context context = this;
+		final String dropbox_app_key_default = getString(
+			R.string.preference_dropbox_app_key_default
+		);
+		final String dropbox_app_secret_default = getString(
+			R.string.preference_dropbox_app_secret_default
+		);
 		getPreferenceScreen()
 			.findPreference("preference_dropbox_passwords_reset_button")
 			.setOnPreferenceClickListener(
@@ -37,19 +42,34 @@ public class SettingsActivity extends PreferenceActivity {
 					public boolean onPreferenceClick(Preference preference) {
 						showAlert(
 							"Warning!",
-							"Are you sure you want to reset passwords of backuping Dropbox app to defaults?",
+							"Are you sure you want to reset passwords "
+								+ "of backuping Dropbox app to defaults?",
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
+								public void onClick(
+									DialogInterface dialog,
+									int which
+								) {
+									EditTextPreference preference_screen =
+										(EditTextPreference)
+										getPreferenceScreen();
 									EditTextPreference dropbox_app_key =
-										(EditTextPreference)getPreferenceScreen()
-										.findPreference("preference_dropbox_app_key");
-									dropbox_app_key.setText(context.getString(R.string.preference_dropbox_app_key_default));
+										preference_screen
+										.findPreference(
+											"preference_dropbox_app_key"
+										);
+									dropbox_app_key.setText(
+										dropbox_app_key_default
+									);
 
 									EditTextPreference dropbox_app_secret =
-										(EditTextPreference)getPreferenceScreen()
-										.findPreference("preference_dropbox_app_secret");
-									dropbox_app_secret.setText(context.getString(R.string.preference_dropbox_app_secret_default));
+										preference_screen
+										.findPreference(
+											"preference_dropbox_app_secret"
+										);
+									dropbox_app_secret.setText(
+										dropbox_app_secret_default
+									);
 								}
 							},
 							true
@@ -62,7 +82,10 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void addRegexpValidator(String preference_name, String error_message) {
+	private void addRegexpValidator(
+		String preference_name,
+		String error_message
+	) {
 		final String error_message_copy = error_message;
 		EditTextPreference preference =
 			(EditTextPreference)getPreferenceScreen()
