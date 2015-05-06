@@ -4,7 +4,11 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
+import javax.xml.parsers.*;
+
 import org.xmlpull.v1.*;
+import org.w3c.dom.*;
+import org.xml.sax.*;
 
 import android.content.*;
 import android.webkit.*;
@@ -12,9 +16,6 @@ import android.database.sqlite.*;
 import android.database.*;
 import android.os.*;
 import android.util.*;
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
 
 public class BackupManager {
 	public BackupManager(Context context) {

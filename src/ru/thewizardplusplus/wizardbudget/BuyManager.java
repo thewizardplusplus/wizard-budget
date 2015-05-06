@@ -1,13 +1,11 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import org.json.*;
+
 import android.content.*;
 import android.database.sqlite.*;
 import android.database.*;
-import org.json.*;
 import android.webkit.*;
-import android.renderscript.*;
-import android.util.*;
-import java.util.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {

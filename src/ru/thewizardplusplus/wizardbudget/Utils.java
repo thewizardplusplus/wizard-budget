@@ -1,11 +1,11 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.io.*;
+import java.util.regex.*;
 
 import android.content.*;
 import android.net.*;
 import android.app.*;
-import java.util.regex.*;
 import android.widget.*;
 import android.appwidget.*;
 import android.database.sqlite.*;
