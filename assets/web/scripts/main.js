@@ -351,14 +351,23 @@ $(document).ready(
 					draggable: '.not-buyed',
 					handle: '.media-object',
 					ghostClass: 'placeholder',
-					onStart: function() {
-						$('li', buy_list)
+					onStart: function(event) {
+						var item = $('li', buy_list)
 							.filter(
 								function() {
 									return $(this).css('position') == 'fixed';
 								}
 							)
 							.addClass('moving');
+
+						setTimeout(
+							function() {
+								var position = item.offset();
+								position.top -= 95;
+								item.offset(position);
+							},
+							1
+						);
 					},
 					onUpdate: function() {
 						var order = $('li', buy_list).map(
@@ -371,20 +380,6 @@ $(document).ready(
 					}
 				}
 			);
-			/*setInterval(
-				function() {
-					var data = $('li', buy_list).map(
-						function() {
-							var item = $(this);
-							return '#' + item.data('id') + ': '
-								+ item.attr('class') + ' '
-								+ item.css('position');
-						}
-					);
-					$('.debug').html(data.get().join('<br />'));
-				},
-				250
-			);*/
 		}
 		function UpdateControlButtons() {
 			$('.backup-button').click(
