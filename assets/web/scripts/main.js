@@ -429,6 +429,8 @@ $(document).ready(
 					var self = $(this);
 					if (self.hasClass('buys-segment')) {
 						activity.setSetting('current_segment', 'buys');
+					} else if (self.hasClass('stats-segment')) {
+						activity.setSetting('current_segment', 'stats');
 					} else {
 						activity.setSetting('current_segment', 'history');
 					}
