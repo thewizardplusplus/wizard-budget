@@ -121,3 +121,7 @@ ol {
 	border-radius: 2px;
 	opacity: 1 !important;
 }
+
+.debug {
+	font-family: monospace;
+}

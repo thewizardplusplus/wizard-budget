@@ -437,11 +437,29 @@ $(document).ready(
 				}
 			);
 		}
+		function UpdateStats() {
+			var debug_view = $('.debug');
+			var raw_stats = spending_manager.getStats(0, "");
+			var stats = JSON.parse(raw_stats);
+			stats.map(
+				function(row) {
+					var dump = JSON.stringify(row);
+					dump = dump.replace(/,/g, ', ');
+					debug_view.append(
+						'<p class = "content-padded">'
+							+ dump
+							+ '<hr />'
+						+ '</p>'
+					);
+				}
+			);
+		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
 			UpdateSegments();
 			UpdateSpendingList();
 			UpdateBuyList();
+			UpdateStats();
 		}
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();

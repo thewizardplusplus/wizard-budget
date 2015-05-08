@@ -189,6 +189,50 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public String getStats(int number_of_last_days, String prefix) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"_id", "timestamp", "amount", "comment"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		JSONArray spendings = new JSONArray();
+		boolean moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			try {
+				JSONObject spending = new JSONObject();
+				String[] names = spendings_cursor.getColumnNames();
+				for (int i = 0; i < spendings_cursor.getColumnCount(); i++) {
+					int field_type = spendings_cursor.getType(i);
+					switch (field_type) {
+						case Cursor.FIELD_TYPE_INTEGER:
+							spending.put(names[i], spendings_cursor.getLong(i));
+							break;
+						case Cursor.FIELD_TYPE_FLOAT:
+							spending.put(names[i], spendings_cursor.getDouble(i));
+							break;
+						case Cursor.FIELD_TYPE_STRING:
+							spending.put(names[i], spendings_cursor.getString(i));
+							break;
+					}
+				}
+
+				spendings.put(spending);
+			} catch (JSONException exception) {}
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return spendings.toString();
+	}
+
+	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
 		ContentValues values = new ContentValues();
 		values.put("timestamp", System.currentTimeMillis() / 1000L);
