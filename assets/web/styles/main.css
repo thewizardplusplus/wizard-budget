@@ -99,8 +99,17 @@ ol {
 	opacity: 0.5;
 }
 
+.segmented-control {
+	position: fixed;
+	z-index: 10;
+}
+
 .segmented-control .control-item.active {
 	font-weight: bold;
+}
+
+.control-content {
+	padding-top: 35px;
 }
 
 .buy-list .placeholder {
