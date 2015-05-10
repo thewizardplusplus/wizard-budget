@@ -438,8 +438,15 @@ $(document).ready(
 			);
 		}
 		function UpdateStats() {
+			var number_of_last_days = 7;
+			var comment_prefix = "test 1, test 2, test 3";
+
+			var spendings_sum_view = $('.spendings-sum-view');
+			var spendings_sum = spending_manager.getStatsSum(number_of_last_days, comment_prefix);
+			spendings_sum_view.text(spendings_sum);
+
 			var debug_view = $('.debug');
-			var raw_stats = spending_manager.getStats(7, "test 1, test 2, test 3");
+			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
 			var stats = JSON.parse(raw_stats);
 			stats.map(
 				function(row) {
