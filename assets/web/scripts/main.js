@@ -439,7 +439,7 @@ $(document).ready(
 		}
 		function UpdateStats() {
 			var debug_view = $('.debug');
-			var raw_stats = spending_manager.getStats(0, "");
+			var raw_stats = spending_manager.getStats(7, "test 1, test 2, test 3");
 			var stats = JSON.parse(raw_stats);
 			stats.map(
 				function(row) {

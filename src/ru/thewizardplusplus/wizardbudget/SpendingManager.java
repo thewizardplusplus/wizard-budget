@@ -194,7 +194,13 @@ public class SpendingManager {
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"_id", "timestamp", "amount", "comment"},
-			null,
+			"amount > 0 "
+				+ "AND date(timestamp, 'unixepoch')"
+					+ ">= date("
+						+ "'now',"
+						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
+					+ ")"
+				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%"),
 			null,
 			null,
 			null,
