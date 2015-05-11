@@ -545,6 +545,7 @@ $(document).ready(
 				'.tags-editor',
 				{
 					tags: tags,
+					search_mode: 'words',
 					sort: 'asc',
 					default_tags: default_tags,
 					separators: ',',
