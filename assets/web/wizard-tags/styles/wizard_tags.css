@@ -63,10 +63,18 @@
 	border-top: 0;
 }
 
+.wizard-tags .autocomplete-list .match {
+	text-decoration: underline;
+}
+
 .wizard-tags .inner-container .tag-view {
 	display: block;
 	float: left;
 	border: 1px solid;
+}
+
+.wizard-tags .inner-container .tag-view.for-remove {
+	opacity: 0.5;
 }
 
 .wizard-tags .inner-container .tag-view .remove-button:after {

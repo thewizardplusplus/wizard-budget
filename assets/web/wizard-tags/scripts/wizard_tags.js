@@ -22,12 +22,40 @@
  */
 
 var WizardTags = (function() {
+	var VERSION = '1.1';
+
 	var OptionsProcessor = (function() {
 		var AscTagsSorter = function(tag_1, tag_2) {
 			return tag_1.localeCompare(tag_2);
 		};
 		var DescTagsSorter = function(tag_1, tag_2) {
 			return tag_2.localeCompare(tag_1);
+		};
+		var AscPrioritiesTagsSorter = function(priorities_tags) {
+			return function(tag_1, tag_2) {
+				var priority_tag_1 = priorities_tags[tag_1] || 0;
+				var priority_tag_2 = priorities_tags[tag_2] || 0;
+				if (priority_tag_1 < priority_tag_2) {
+					return -1;
+				} else if (priority_tag_1 == priority_tag_2) {
+					return 0;
+				} else {
+					return 1;
+				}
+			};
+		};
+		var DescPrioritiesTagsSorter = function(priorities_tags) {
+			return function(tag_1, tag_2) {
+				var priority_tag_1 = priorities_tags[tag_1] || 0;
+				var priority_tag_2 = priorities_tags[tag_2] || 0;
+				if (priority_tag_2 < priority_tag_1) {
+					return -1;
+				} else if (priority_tag_2 == priority_tag_1) {
+					return 0;
+				} else {
+					return 1;
+				}
+			};
 		};
 		var GetTagsSorter = function(options) {
 			var tags_sorter = null;
@@ -39,6 +67,14 @@ var WizardTags = (function() {
 					tags_sorter = AscTagsSorter;
 				} else if (options.sort == 'desc') {
 					tags_sorter = DescTagsSorter;
+				} else if (options.sort == 'priorities-asc') {
+					tags_sorter = AscPrioritiesTagsSorter(
+						options.priorities_tags
+					);
+				} else if (options.sort == 'priorities-desc') {
+					tags_sorter = DescPrioritiesTagsSorter(
+						options.priorities_tags
+					);
 				}
 			} else if (options.sort instanceof Function) {
 				tags_sorter = options.sort;
@@ -46,11 +82,43 @@ var WizardTags = (function() {
 
 			return tags_sorter;
 		};
-		var MakeDefaultTagsGenerator = function(tags) {
+		var MakeDefaultTagsGenerator = function(
+			tags,
+			case_sensitive,
+			search_mode
+		) {
 			return function(query) {
 				return tags.filter(
 					function(tag) {
-						return tag.substr(0, query.length) == query;
+						var words = [];
+						if (search_mode == 'tag') {
+							words.push(tag);
+						} else if (search_mode == 'words') {
+							words =
+								tag
+								.split(/\s+/)
+								.filter(
+									function(word) {
+										return word.length != 0;
+									}
+								);
+						}
+
+						for (var i = 0; i < words.length; i++) {
+							var word = words[i];
+							var word_prefix = word.substr(0, query.length);
+							if (
+								(case_sensitive
+								&& word_prefix == query)
+								|| (!case_sensitive
+								&& word_prefix.toLowerCase()
+									== query.toLowerCase())
+							) {
+								return true;
+							}
+						}
+
+						return false;
 					}
 				);
 			};
@@ -76,6 +144,50 @@ var WizardTags = (function() {
 
 			return tags;
 		};
+		var MarkMatches = function(tags, query, case_sensitive, search_mode) {
+			return tags.map(
+				function(tag) {
+					if (query.length != 0) {
+						if (search_mode == 'tag') {
+							return '<span class = "match">'
+								+ tag.substr(0, query.length)
+								+ '</span>'
+								+ tag.substr(query.length);
+						} else if (search_mode == 'words') {
+							var whitespaces_pattern = /\s+/g;
+							var index = 0;
+							while (true) {
+								var subtag = tag.substr(
+									index,
+									query.length
+								);
+								if (
+									(case_sensitive
+									&& subtag == query)
+									|| (!case_sensitive
+									&& subtag.toLowerCase()
+										== query.toLowerCase())
+								) {
+									return tag.substr(0, index)
+										+ '<span class = "match">'
+										+ subtag
+										+ '</span>'
+										+ tag.substr(index + query.length);
+								}
+
+								var match = whitespaces_pattern.exec(tag);
+								if (match === null) {
+									break;
+								}
+								index = whitespaces_pattern.lastIndex;
+							}
+						}
+					}
+
+					return tag;
+				}
+			);
+		};
 		var GetTagsGenerator = function(options) {
 			var tags_generator = function() {
 				return [];
@@ -83,7 +195,11 @@ var WizardTags = (function() {
 			if (options.tags instanceof Function) {
 				tags_generator = options.tags;
 			} else if (options.tags instanceof Array) {
-				tags_generator = MakeDefaultTagsGenerator(options.tags);
+				tags_generator = MakeDefaultTagsGenerator(
+					options.tags,
+					options.case_sensitive,
+					options.search_mode
+				);
 			}
 
 			return function(query) {
@@ -91,6 +207,12 @@ var WizardTags = (function() {
 				tags = TrimTags(tags);
 				tags = UniqueTags(tags);
 				tags = SortTags(tags, options.sort);
+				tags = MarkMatches(
+					tags,
+					query,
+					options.case_sensitive,
+					options.search_mode
+				);
 
 				return tags;
 			};
@@ -99,6 +221,14 @@ var WizardTags = (function() {
 		return {
 			process: function(options) {
 				var processed_options = options || {};
+				processed_options.case_sensitive =
+					!!processed_options.case_sensitive;
+				processed_options.search_mode =
+					processed_options.search_mode
+					|| 'tag';
+				processed_options.priorities_tags =
+					processed_options.priorities_tags
+					|| {};
 				processed_options.sort = GetTagsSorter(processed_options);
 				processed_options.tags = GetTagsGenerator(processed_options);
 				processed_options.default_tags =
@@ -143,7 +273,12 @@ var WizardTags = (function() {
 	var MakeInput = (function() {
 		var LIST_UPDATE_TIMEOUT = 300;
 		var LIST_REMOVE_DELAY = 250;
+		var BACKSPACE_KEY_CODE = 8;
+		var ENTER_KEY_CODE = 13;
 
+		var GetKeyCode = function(event) {
+			return event.which || event.charCode || event.keyCode;
+		};
 		var UpdateInputSize = function(input) {
 			var new_size = input.value.length;
 			if (new_size == 0 && input.hasAttribute('placeholder')) {
@@ -183,17 +318,21 @@ var WizardTags = (function() {
 				function(event) {
 					var last_symbol = this.value.slice(-1);
 					if (
-						event.which == 13
+						GetKeyCode(event) == ENTER_KEY_CODE
 						|| (last_symbol.length
 						&& separators.indexOf(last_symbol) != -1)
 					) {
 						event_handlers.addTag(
-							event.which == 13
+							GetKeyCode(event) == ENTER_KEY_CODE
 								? this.value
 								: this.value.slice(0, -1)
 						);
 
 						return;
+					}
+
+					if (GetKeyCode(event) != BACKSPACE_KEY_CODE) {
+						event_handlers.remarkLastTag();
 					}
 
 					UpdateInputSize(this);
@@ -211,7 +350,21 @@ var WizardTags = (function() {
 			input.addEventListener(
 				'keydown',
 				function(event) {
-					if (event.which == 13) {
+					if (GetKeyCode(event) == ENTER_KEY_CODE) {
+						event.preventDefault();
+						return false;
+					}
+
+					if (
+						GetKeyCode(event) == BACKSPACE_KEY_CODE
+						&& this.value.length == 0
+					) {
+						if (event_handlers.isMarkedLastTag()) {
+							event_handlers.removeLastTag();
+						} else {
+							event_handlers.markLastTag();
+						}
+
 						event.preventDefault();
 						return false;
 					}
@@ -323,6 +476,36 @@ var WizardTags = (function() {
 
 			input.clear();
 		};
+		this.isMarkedLastTag = function() {
+			return !!inner_container.querySelector('.tag-view.for-remove');
+		};
+		this.markLastTag = function() {
+			var last_tag = inner_container.querySelector(
+				'.tag-view:last-of-type'
+			);
+			if (last_tag) {
+				last_tag.className += ' for-remove';
+			}
+		};
+		this.remarkLastTag = function() {
+			var marked_last_tag = inner_container.querySelector(
+				'.tag-view.for-remove'
+			);
+			if (marked_last_tag) {
+				marked_last_tag.className = marked_last_tag.className.replace(
+					/(?:^|\s+)for-remove(?:\s+|$)/,
+					' '
+				);
+			}
+		};
+		this.removeLastTag = function() {
+			var last_tag_remove_button = inner_container.querySelector(
+				'.tag-view.for-remove .remove-button'
+			);
+			if (last_tag_remove_button) {
+				last_tag_remove_button.click();
+			}
+		};
 	};
 	var AutocompleteListManager = function(
 		tags_generator,
@@ -346,7 +529,8 @@ var WizardTags = (function() {
 			item.addEventListener(
 				'click',
 				function() {
-					event_handlers.addTag(text);
+					var cleared_text = text.replace(/<[^>]+>/g, '');
+					event_handlers.addTag(cleared_text);
 				}
 			);
 
@@ -396,11 +580,13 @@ var WizardTags = (function() {
 		var self = this;
 		var list = null;
 		var uniqueFilter = function(tags) {
-			return tags.filter(
-				function(tag) {
-					return tag_manager.getTags().indexOf(tag) == -1;
-				}
-			);
+			return tags
+				.filter(
+					function(tag) {
+						var cleared_tag = tag.replace(/<[^>]+>/g, '');
+						return tag_manager.getTags().indexOf(cleared_tag) == -1;
+					}
+				);
 		};
 		var updateAutocompleteList = function(query) {
 			list = list_manager.updateList(
@@ -457,6 +643,18 @@ var WizardTags = (function() {
 				removeAutocompleteList: function() {
 					list_manager.removeList(list);
 					list = null;
+				},
+				isMarkedLastTag: function() {
+					return tag_manager.isMarkedLastTag();
+				},
+				markLastTag: function() {
+					tag_manager.markLastTag();
+				},
+				remarkLastTag: function() {
+					tag_manager.remarkLastTag();
+				},
+				removeLastTag: function() {
+					tag_manager.removeLastTag();
 				}
 			}
 		);
@@ -477,8 +675,20 @@ var WizardTags = (function() {
 			}
 		);
 
+		this.getVersion = function() {
+			return VERSION;
+		};
 		this.getTags = function() {
 			return tag_manager.getTags();
+		};
+		this.addCurrentText = function() {
+			tag_manager.addTag(
+				input.value,
+				options.only_unique,
+				inner_container,
+				input,
+				tags_event_handlers
+			);
 		};
 
 		options.default_tags.map(
