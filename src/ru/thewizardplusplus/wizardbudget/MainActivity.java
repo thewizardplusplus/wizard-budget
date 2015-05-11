@@ -75,6 +75,8 @@ public class MainActivity extends Activity {
 			return settings.getActiveSpending();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			return settings.getActiveBuy();
+		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+			return String.valueOf(settings.getStatsRange());
 		} else {
 			return "";
 		}
@@ -91,6 +93,8 @@ public class MainActivity extends Activity {
 			settings.setActiveSpending(value);
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			settings.setActiveBuy(value);
+		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+			settings.setStatsRange(Long.valueOf(value));
 		}
 		settings.save();
 	}
