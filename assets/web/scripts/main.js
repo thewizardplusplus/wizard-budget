@@ -563,8 +563,11 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
+
+					tags_editor.addCurrentText();
 					var tags = tags_editor.getTags();
 					var comment = tags.join(', ');
+
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
