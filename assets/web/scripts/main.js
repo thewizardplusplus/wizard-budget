@@ -437,15 +437,14 @@ $(document).ready(
 				}
 			);
 		}
-		function UpdateStats() {
-			var number_of_last_days = 7;
-			var comment_prefix = "test 1, test 2, test 3";
-
+		function DrawStatsView(number_of_last_days, comment_prefix) {
 			var spendings_sum_view = $('.stats-sum-view');
 			var spendings_sum = spending_manager.getStatsSum(number_of_last_days, comment_prefix);
 			spendings_sum_view.text(spendings_sum);
 
 			var debug_view = $('.debug');
+			debug_view.empty();
+
 			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
 			var stats = JSON.parse(raw_stats);
 			stats.map(
@@ -460,6 +459,30 @@ $(document).ready(
 					);
 				}
 			);
+		}
+		function UpdateStats() {
+			var number_of_last_days = activity.getSetting('stats_range');
+			var range_editor = $('.stats-range-editor');
+			range_editor.val(number_of_last_days);
+
+			var range_update_timer = null;
+			range_editor.on(
+				'keyup',
+				function() {
+					clearTimeout(range_update_timer);
+					range_update_timer = setTimeout(
+						function() {
+							var number_of_last_days = range_editor.val();
+							activity.setSetting('stats_range', number_of_last_days);
+
+							DrawStatsView(parseInt(number_of_last_days), "test 1, test 2, test 3");
+						},
+						500
+					);
+				}
+			);
+
+			DrawStatsView(parseInt(number_of_last_days), "test 1, test 2, test 3");
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
