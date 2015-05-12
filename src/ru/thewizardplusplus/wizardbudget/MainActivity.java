@@ -125,15 +125,15 @@ public class MainActivity extends Activity {
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
-		web_view.loadUrl("file:///android_asset/web/index.html");
-
+		web_view.addJavascriptInterface(this, "activity");
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
 		BuyManager buy_manager = new BuyManager(this);
 		web_view.addJavascriptInterface(buy_manager, "buy_manager");
 		BackupManager backup_manager = new BackupManager(this);
 		web_view.addJavascriptInterface(backup_manager, "backup_manager");
-		web_view.addJavascriptInterface(this, "activity");
+
+		web_view.loadUrl("file:///android_asset/web/index.html");
 	}
 
 	@Override
