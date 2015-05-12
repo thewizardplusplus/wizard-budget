@@ -533,9 +533,13 @@ $(document).ready(
 
 			var raw_tags = spending_manager.getSpendingTags();
 			var tags = JSON.parse(raw_tags);
+
 			var raw_buy_names = buy_manager.getBuyNames();
 			var buy_names = JSON.parse(raw_buy_names);
 			tags = tags.concat(buy_names);
+
+			var raw_priorities_tags = spending_manager.getPrioritiesTags();
+			var priorities_tags = JSON.parse(raw_priorities_tags);
 
 			var default_tags =
 				$.type(active_spending) !== "null"
@@ -546,7 +550,8 @@ $(document).ready(
 				{
 					tags: tags,
 					search_mode: 'words',
-					sort: 'asc',
+					sort: 'priorities-desc',
+					priorities_tags: priorities_tags,
 					default_tags: default_tags,
 					separators: ',',
 					only_unique: true

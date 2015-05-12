@@ -156,36 +156,35 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String getSpendingTags() {
-		SQLiteDatabase database = Utils.getDatabase(context);
-		Cursor spendings_cursor = database.query(
-			"spendings",
-			new String[]{"comment"},
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
 		JSONArray tags = new JSONArray();
-		boolean moved = spendings_cursor.moveToFirst();
-		while (moved) {
-			String comment = spendings_cursor.getString(0);
-			if (!comment.isEmpty()) {
-				String[] comment_parts = comment.split(",");
-				for (String part: comment_parts) {
-					String trimmed_part = part.trim();
-					if (!trimmed_part.isEmpty()) {
-						tags.put(trimmed_part);
-					}
-				}
-			}
-
-			moved = spendings_cursor.moveToNext();
+		List<String> tag_list = getTagList();
+		for (String tag: tag_list) {
+			tags.put(tag);
 		}
 
-		database.close();
 		return tags.toString();
+	}
+
+	@JavascriptInterface
+	public String getPrioritiesTags() {
+		Map<String, Long> tag_map = new HashMap<String, Long>();
+		List<String> tag_list = getTagList();
+		for (String tag: tag_list) {
+			if (tag_map.containsKey(tag)) {
+				tag_map.put(tag, tag_map.get(tag) + 1L);
+			} else {
+				tag_map.put(tag, 1L);
+			}
+		}
+
+		JSONObject serialized_tag_map = new JSONObject();
+		try {
+			for (Map.Entry<String, Long> entry: tag_map.entrySet()) {
+				serialized_tag_map.put(entry.getKey(), entry.getValue());
+			}
+		} catch (JSONException exception) {}
+
+		return serialized_tag_map.toString();
 	}
 
 	@JavascriptInterface
@@ -407,5 +406,38 @@ public class SpendingManager {
 			Locale.US
 		);
 		return date_format.format(date);
+	}
+
+	public List<String> getTagList() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"comment"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		List<String> tags = new ArrayList<String>();
+		boolean moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			String comment = spendings_cursor.getString(0);
+			if (!comment.isEmpty()) {
+				String[] comment_parts = comment.split(",");
+				for (String part: comment_parts) {
+					String trimmed_part = part.trim();
+					if (!trimmed_part.isEmpty()) {
+						tags.add(trimmed_part);
+					}
+				}
+			}
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return tags;
 	}
 }
