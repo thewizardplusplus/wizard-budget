@@ -485,13 +485,13 @@ $(document).ready(
 
 			var edit_spending_button = $('form .edit-spending-button');
 			if ($.type(active_spending) === "null") {
-				$('.title').text('Add');
+				$('.title').text('Add spending');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-save')
 					.addClass('fa-plus');
 				$('.button-text', edit_spending_button).text('Add');
 			} else {
-				$('.title').text('Edit');
+				$('.title').text('Edit spending');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-plus')
 					.addClass('fa-save');
@@ -595,13 +595,13 @@ $(document).ready(
 
 			var edit_buy_button = $('form .edit-buy-button');
 			if ($.type(active_buy) === "null") {
-				$('.title').text('Add');
+				$('.title').text('Add buy');
 				$('.button-icon', edit_buy_button)
 					.removeClass('fa-save')
 					.addClass('fa-plus');
 				$('.button-text', edit_buy_button).text('Add');
 			} else {
-				$('.title').text('Edit');
+				$('.title').text('Edit buy');
 				$('.button-icon', edit_buy_button)
 					.removeClass('fa-plus')
 					.addClass('fa-save');
