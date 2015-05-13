@@ -190,7 +190,8 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStatsSum(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
-		Cursor cursor = database.query(
+		int prefix_length = prefix.length();
+		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"ROUND(SUM(amount), 2)"},
 			"amount > 0 "
@@ -199,7 +200,11 @@ public class SpendingManager {
 						+ "'now',"
 						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
 					+ ")"
-				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%"),
+				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND ("
+					+ "length(comment) == " + String.valueOf(prefix_length) + " "
+					+ "OR substr(comment, " + String.valueOf(prefix_length + 1) + ", 1) == ','"
+				+ ")",
 			null,
 			null,
 			null,
@@ -207,28 +212,35 @@ public class SpendingManager {
 		);
 
 		double spendings_sum = 0.0;
-		boolean moved = cursor.moveToFirst();
+		boolean moved = spendings_cursor.moveToFirst();
 		if (moved) {
-			spendings_sum = cursor.getDouble(0);
+			spendings_sum = spendings_cursor.getDouble(0);
 		}
 
-		database.close();
 		return String.valueOf(spendings_sum);
 	}
 
 	@JavascriptInterface
 	public String getStats(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		int prefix_length = prefix.length();
 		Cursor spendings_cursor = database.query(
 			"spendings",
-			new String[]{"_id", "timestamp", "amount", "comment"},
+			new String[]{
+				"amount",
+				"comment",
+			},
 			"amount > 0 "
 				+ "AND date(timestamp, 'unixepoch')"
 					+ ">= date("
 						+ "'now',"
 						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
 					+ ")"
-				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%"),
+				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND ("
+					+ "length(comment) == " + String.valueOf(prefix_length) + " "
+					+ "OR substr(comment, " + String.valueOf(prefix_length + 1) + ", 1) == ','"
+				+ ")",
 			null,
 			null,
 			null,
@@ -408,7 +420,7 @@ public class SpendingManager {
 		return date_format.format(date);
 	}
 
-	public List<String> getTagList() {
+	private List<String> getTagList() {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor spendings_cursor = database.query(
 			"spendings",
@@ -439,5 +451,47 @@ public class SpendingManager {
 
 		database.close();
 		return tags;
+	}
+
+	private Map<String, Double> getSpendingsByQuery(int number_of_last_days, String prefix) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"comment", "amount"},
+			"amount > 0 "
+				+ "AND date(timestamp, 'unixepoch')"
+					+ ">= date("
+						+ "'now',"
+						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
+					+ ")",
+			null,
+			null,
+			null,
+			null
+		);
+
+		Map<String, Double> spendings = new HashMap<String, Double>();
+		boolean moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			String comment = spendings_cursor.getString(0);
+			if (!comment.startsWith(prefix)) {
+				continue;
+			}
+			int prefix_length = prefix.length();
+			if (
+				comment.length() > prefix_length
+				&& comment.codePointAt(prefix_length) != ','
+			) {
+				continue;
+			}
+
+			double amount = spendings_cursor.getDouble(1);
+			spendings.put(comment, amount);
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return spendings;
 	}
 }
