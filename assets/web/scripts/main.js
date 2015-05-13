@@ -446,19 +446,8 @@ $(document).ready(
 			debug_view.empty();
 
 			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
-			var stats = JSON.parse(raw_stats);
-			stats.map(
-				function(row) {
-					var dump = JSON.stringify(row);
-					dump = dump.replace(/,/g, ', ');
-					debug_view.append(
-						'<p class = "content-padded">'
-							+ dump
-							+ '<hr />'
-						+ '</p>'
-					);
-				}
-			);
+			//var stats = JSON.parse(raw_stats);
+			debug_view.text(raw_stats);
 		}
 		function UpdateStats() {
 			var number_of_last_days = activity.getSetting('stats_range');
