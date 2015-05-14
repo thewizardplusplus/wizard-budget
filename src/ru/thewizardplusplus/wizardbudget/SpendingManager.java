@@ -202,7 +202,8 @@ public class SpendingManager {
 					+ ")"
 				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
-					+ "length(comment) == " + prefix_length + " "
+					+ prefix_length + " == 0 "
+					+ "OR length(comment) == " + prefix_length + " "
 					+ "OR substr(comment, " + prefix_length + " + 1, 1) == ','"
 				+ ")",
 			null,
@@ -223,13 +224,11 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStats(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
-		String prefix_length = String.valueOf(prefix.length());
+		int prefix_length = prefix.length();
+		String prefix_length_in_string = String.valueOf(prefix_length);
 		Cursor spendings_cursor = database.query(
 			"spendings",
-			new String[]{
-				"trim(substr(comment, " + prefix_length + " + 2))",
-				"amount"
-			},
+			new String[]{"comment", "amount"},
 			"amount > 0 "
 				+ "AND date(timestamp, 'unixepoch')"
 					+ ">= date("
@@ -238,8 +237,9 @@ public class SpendingManager {
 					+ ")"
 				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
-					+ "length(comment) == " + prefix_length + " "
-					+ "OR substr(comment, " + prefix_length + " + 1, 1) == ','"
+					+ prefix_length_in_string + " == 0 "
+					+ "OR length(comment) == " + prefix_length_in_string + " "
+					+ "OR substr(comment, " + prefix_length_in_string + " + 1, 1) == ','"
 				+ ")",
 			null,
 			null,
@@ -251,6 +251,14 @@ public class SpendingManager {
 		boolean moved = spendings_cursor.moveToFirst();
 		while (moved) {
 			String comment = spendings_cursor.getString(0);
+			if (prefix_length != 0) {
+				if (comment.length() > prefix_length) {
+					comment = comment.substring(prefix_length + 1).trim();
+				} else if (comment.length() == prefix_length) {
+					comment = "";
+				}
+			}
+
 			if (comment.isEmpty()) {
 				comment = "rest";
 			} else {

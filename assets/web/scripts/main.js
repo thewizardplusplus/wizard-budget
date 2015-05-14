@@ -463,6 +463,8 @@ $(document).ready(
 			var number_of_last_days = activity.getSetting('stats_range');
 			var range_editor = $('.stats-range-editor');
 			range_editor.val(number_of_last_days);
+			var comment_prefix = "test 1, test 2, test 3";
+			//var comment_prefix = "";
 
 			var range_update_timer = null;
 			range_editor.on(
@@ -474,14 +476,14 @@ $(document).ready(
 							var number_of_last_days = range_editor.val();
 							activity.setSetting('stats_range', number_of_last_days);
 
-							DrawStatsView(parseInt(number_of_last_days), "test 1, test 2, test 3");
+							DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 						},
 						500
 					);
 				}
 			);
 
-			DrawStatsView(parseInt(number_of_last_days), "test 1, test 2, test 3");
+			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
