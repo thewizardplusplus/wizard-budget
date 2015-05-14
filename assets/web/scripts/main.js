@@ -456,8 +456,38 @@ $(document).ready(
 			debug_view.empty();
 
 			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
-			//var stats = JSON.parse(raw_stats);
-			debug_view.text(raw_stats);
+			var stats = JSON.parse(raw_stats);
+
+			var rows = [];
+			var maximal_sum = 0;
+			Object.keys(stats).map(
+				function(tag) {
+					var sum = stats[tag];
+					rows.push({tag: tag, sum: sum});
+
+					if (sum > maximal_sum) {
+						maximal_sum = sum;
+					}
+				}
+			);
+
+			rows
+				.sort(
+					function(first, second) {
+						return second.sum - first.sum;
+					}
+				)
+				.map(
+					function(row) {
+						debug_view.append(
+							'<p>'
+								+ '<progress max = "' + maximal_sum + '" value = "' + row.sum + '">'
+									+ row.tag + ': ' + row.sum + '<i class = "fa fa-ruble"></i>'
+								+ '</progress>'
+							+ '</p>'
+						);
+					}
+				);
 		}
 		function UpdateStats() {
 			var number_of_last_days = activity.getSetting('stats_range');
