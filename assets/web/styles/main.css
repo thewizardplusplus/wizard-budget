@@ -142,22 +142,30 @@ ol {
 	border-bottom: 1px solid #d9d9d9;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 14px;
+	color: #777;
 }
 
 .stats-view tr:first-child td {
 	border-top: 1px solid #d9d9d9;
 }
 
-.stats-view .tag-column {
-	width: 25%;
+.stats-view td button {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
+.stats-view .tag-column,
 .stats-view .sum-column {
-	width: 25%;
+	width: 100px;
+	max-width: 100px;
+	text-align: center;
 }
 
-.stats-view .view-column {
-	width: 50%;
+.stats-view td progress {
+	display: block;
+	width: 100%;
 }
 
 .debug {
