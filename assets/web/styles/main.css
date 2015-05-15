@@ -32,6 +32,8 @@
 
 .media-body p {
 	margin-right: 55px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .table-view-cell > .second-list-button {
@@ -129,6 +131,33 @@ ol {
 	border: 1px solid #a9a9a9;
 	border-radius: 2px;
 	opacity: 1 !important;
+}
+
+.stats-view {
+	width: 100%;
+}
+
+.stats-view td {
+	padding: 10px;
+	border-bottom: 1px solid #d9d9d9;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.stats-view tr:first-child td {
+	border-top: 1px solid #d9d9d9;
+}
+
+.stats-view .tag-column {
+	width: 25%;
+}
+
+.stats-view .sum-column {
+	width: 25%;
+}
+
+.stats-view .view-column {
+	width: 50%;
 }
 
 .debug {

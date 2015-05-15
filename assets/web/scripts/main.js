@@ -452,8 +452,8 @@ $(document).ready(
 			var spendings_sum = spending_manager.getStatsSum(number_of_last_days, comment_prefix);
 			spendings_sum_view.text(spendings_sum);
 
-			var debug_view = $('.debug');
-			debug_view.empty();
+			var stats_view = $('.stats-view tbody');
+			stats_view.empty();
 
 			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
 			var stats = JSON.parse(raw_stats);
@@ -479,12 +479,20 @@ $(document).ready(
 				)
 				.map(
 					function(row) {
-						debug_view.append(
-							'<p>'
-								+ '<progress max = "' + maximal_sum + '" value = "' + row.sum + '">'
-									+ row.tag + ': ' + row.sum + '<i class = "fa fa-ruble"></i>'
-								+ '</progress>'
-							+ '</p>'
+						stats_view.append(
+							'<tr>'
+								+ '<td class = "tag-column">'
+									+ '<button class = "btn btn-info">' + row.tag + '</button>'
+								+ '</td>'
+								+ '<td class = "sum-column">'
+									+ row.sum + ' '
+									+ '<i class = "fa fa-ruble"></i>'
+								+ '</td>'
+								+ '<td class = "view-column">'
+									+ '<progress max = "' + maximal_sum + '" value = "' + row.sum + '">'
+									+ '</progress>'
+								+ '</td>'
+							+ '</tr>'
 						);
 					}
 				);
