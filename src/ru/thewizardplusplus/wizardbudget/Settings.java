@@ -11,6 +11,7 @@ public class Settings {
 	public static final String SETTING_NAME_ACTIVE_SPENDING = "active_spending";
 	public static final String SETTING_NAME_ACTIVE_BUY = "active_buy";
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
+	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
 
 	public static Settings getCurrent(Context context) {
@@ -38,6 +39,10 @@ public class Settings {
 		settings.stats_range = preferences.getLong(
 			SETTING_NAME_STATS_RANGE,
 			DEFAULT_STATS_RANGE
+		);
+		settings.stats_tags = preferences.getString(
+			SETTING_NAME_STATS_TAGS,
+			""
 		);
 		settings.dropbox_token = preferences.getString(
 			SETTING_NAME_DROPBOX_TOKEN,
@@ -176,6 +181,14 @@ public class Settings {
 		this.stats_range = stats_range;
 	}
 
+	public String getStatsTags() {
+		return stats_tags;
+	}
+
+	public void setStatsTags(String stats_tags) {
+		this.stats_tags = stats_tags;
+	}
+
 	public String getDropboxToken() {
 		return dropbox_token;
 	}
@@ -254,6 +267,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_ACTIVE_SPENDING, active_spending);
 		editor.putString(SETTING_NAME_ACTIVE_BUY, active_buy);
 		editor.putLong(SETTING_NAME_STATS_RANGE, stats_range);
+		editor.putString(SETTING_NAME_STATS_TAGS, stats_tags);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
 		editor.commit();
 	}
@@ -271,6 +285,7 @@ public class Settings {
 	private String active_spending = DEFAULT_SPENDING;
 	private String active_buy = DEFAULT_BUY;
 	private long stats_range = DEFAULT_STATS_RANGE;
+	private String stats_tags = "";
 	private String dropbox_token = "";
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean save_backup_to_dropbox = true;

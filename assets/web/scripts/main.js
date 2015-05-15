@@ -484,7 +484,9 @@ $(document).ready(
 						stats_view.append(
 							'<tr>'
 								+ '<td class = "tag-column">'
-									+ '<button class = "btn btn-info">' + row.tag + '</button>'
+									+ '<button class = "btn btn-info tag-button" data-tag = "' + row.tag + '">'
+										+ row.tag
+									+ '</button>'
 								+ '</td>'
 								+ '<td class = "sum-column">'
 									+ row.sum + ' '
@@ -499,13 +501,21 @@ $(document).ready(
 						);
 					}
 				);
+
+			$('.tag-button', stats_view).click(
+				function() {
+					var self = $(this);
+					var tag = self.data('tag');
+					$('.debug').text(tag);
+				}
+			);
 		}
 		function UpdateStats() {
 			var number_of_last_days = activity.getSetting('stats_range');
 			var range_editor = $('.stats-range-editor');
 			range_editor.val(number_of_last_days);
-			var comment_prefix = "test 1, test 2, test 3";
-			//var comment_prefix = "";
+
+			var comment_prefix = activity.getSetting('stats_tags');
 
 			var range_update_timer = null;
 			range_editor.on(
