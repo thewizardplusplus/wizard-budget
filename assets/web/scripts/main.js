@@ -479,6 +479,8 @@ $(document).ready(
 				)
 				.map(
 					function(row) {
+						var percents = 100 * row.sum / maximal_sum;
+						var percents_string = percents.toFixed(2).replace(/(\.0)?0+$/g, '$1');
 						stats_view.append(
 							'<tr>'
 								+ '<td class = "tag-column">'
@@ -486,7 +488,8 @@ $(document).ready(
 								+ '</td>'
 								+ '<td class = "sum-column">'
 									+ row.sum + ' '
-									+ '<i class = "fa fa-ruble"></i>'
+										+ '<i class = "fa fa-ruble"></i> '
+									+ '(' + percents_string + '%)'
 								+ '</td>'
 								+ '<td class = "view-column">'
 									+ '<progress max = "' + maximal_sum + '" value = "' + row.sum + '">'
