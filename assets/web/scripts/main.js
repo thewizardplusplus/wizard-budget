@@ -540,7 +540,8 @@ $(document).ready(
 								+ '<td class = "tag-column">'
 									+ '<button '
 										+ 'class = "btn btn-info select-tag-button"'
-										+ 'data-tag = "' + escape(row.tag) + '">'
+										+ 'data-tag = "' + escape(row.tag) + '"'
+										+ (row.tag == 'rest' ? 'disabled = "disabled"' : '') + '>'
 										+ row.tag
 									+ '</button>'
 								+ '</td>'
