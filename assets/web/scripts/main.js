@@ -468,6 +468,7 @@ $(document).ready(
 						return tag.length != 0;
 					}
 				);
+			var selected_tags_copy = selected_tags.slice();
 			selected_tags.unshift('root');
 			selected_tags.map(
 				function(tag, index) {
@@ -477,7 +478,9 @@ $(document).ready(
 					}
 					if (index < selected_tags.length - 1) {
 						list_item +=
-							'<button class = "btn btn-info">'
+							'<button '
+								+ 'class = "btn btn-info unselect-tag-button"'
+								+ 'data-tag = "' + escape(tag) + '">'
 								+ tag
 							+ '</button>';
 					} else {
@@ -485,6 +488,21 @@ $(document).ready(
 					}
 
 					selected_tag_list.append(list_item);
+				}
+			);
+			$('.unselect-tag-button', selected_tag_list).click(
+				function() {
+					var self = $(this);
+					var tag = unescape(self.data('tag'));
+
+					var new_comment_prefix = '';
+					var index = selected_tags_copy.lastIndexOf(tag);
+					if (index != -1) {
+						new_comment_prefix = selected_tags_copy.slice(0, index + 1).join(', ');
+					}
+					activity.setSetting('stats_tags', new_comment_prefix);
+
+					DrawStatsView(number_of_last_days, new_comment_prefix);
 				}
 			);
 
@@ -520,7 +538,9 @@ $(document).ready(
 						stats_view.append(
 							'<tr>'
 								+ '<td class = "tag-column">'
-									+ '<button class = "btn btn-info tag-button" data-tag = "' + escape(row.tag) + '">'
+									+ '<button '
+										+ 'class = "btn btn-info select-tag-button"'
+										+ 'data-tag = "' + escape(row.tag) + '">'
 										+ row.tag
 									+ '</button>'
 								+ '</td>'
@@ -538,7 +558,7 @@ $(document).ready(
 					}
 				);
 
-			$('.tag-button', stats_view).click(
+			$('.select-tag-button', stats_view).click(
 				function() {
 					var self = $(this);
 					var tag = unescape(self.data('tag'));
@@ -550,7 +570,6 @@ $(document).ready(
 					new_comment_prefix += tag;
 					activity.setSetting('stats_tags', new_comment_prefix);
 
-					$('.debug').text(new_comment_prefix);
 					DrawStatsView(number_of_last_days, new_comment_prefix);
 				}
 			);
