@@ -484,7 +484,7 @@ $(document).ready(
 						stats_view.append(
 							'<tr>'
 								+ '<td class = "tag-column">'
-									+ '<button class = "btn btn-info tag-button" data-tag = "' + row.tag + '">'
+									+ '<button class = "btn btn-info tag-button" data-tag = "' + escape(row.tag) + '">'
 										+ row.tag
 									+ '</button>'
 								+ '</td>'
@@ -505,8 +505,17 @@ $(document).ready(
 			$('.tag-button', stats_view).click(
 				function() {
 					var self = $(this);
-					var tag = self.data('tag');
-					$('.debug').text(tag);
+					var tag = unescape(self.data('tag'));
+
+					var new_comment_prefix = comment_prefix;
+					if (new_comment_prefix.length) {
+						new_comment_prefix += ', ';
+					}
+					new_comment_prefix += tag;
+					activity.setSetting('stats_tags', new_comment_prefix);
+
+					$('.debug').text(new_comment_prefix);
+					DrawStatsView(number_of_last_days, new_comment_prefix);
 				}
 			);
 		}
