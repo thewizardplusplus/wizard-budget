@@ -452,6 +452,42 @@ $(document).ready(
 			var spendings_sum = spending_manager.getStatsSum(number_of_last_days, comment_prefix);
 			spendings_sum_view.text(spendings_sum);
 
+			var selected_tag_list = $('.selected-tag-list');
+			selected_tag_list.empty();
+
+			var selected_tags =
+				comment_prefix
+				.split(',')
+				.map(
+					function(tag) {
+						return tag.trim();
+					}
+				)
+				.filter(
+					function(tag) {
+						return tag.length != 0;
+					}
+				);
+			selected_tags.unshift('root');
+			selected_tags.map(
+				function(tag, index) {
+					var list_item = '';
+					if (index != 0) {
+						list_item += ' / ';
+					}
+					if (index < selected_tags.length - 1) {
+						list_item +=
+							'<button class = "btn btn-info">'
+								+ tag
+							+ '</button>';
+					} else {
+						list_item += tag;
+					}
+
+					selected_tag_list.append(list_item);
+				}
+			);
+
 			var stats_view = $('.stats-view tbody');
 			stats_view.empty();
 
