@@ -523,64 +523,60 @@ $(document).ready(
 				comment_prefix
 			);
 			var stats = JSON.parse(raw_stats);
-
-			var rows = [];
-			var maximal_sum = 0;
-			Object.keys(stats).map(
-				function(tag) {
-					var sum = stats[tag];
-					rows.push({tag: tag, sum: sum});
-
-					if (sum > maximal_sum) {
-						maximal_sum = sum;
-					}
+			stats = stats.sort(
+				function(first, second) {
+					return second.sum - first.sum;
 				}
 			);
 
-			rows
-				.sort(
-					function(first, second) {
-						return second.sum - first.sum;
+			var maximal_sum = 0;
+			stats.forEach(
+				function(row) {
+					if (row.sum > maximal_sum) {
+						maximal_sum = row.sum;
 					}
-				)
-				.map(
-					function(row) {
-						var percents = 100 * row.sum / maximal_sum;
-						var percents_string =
-							percents
-							.toFixed(2)
-							.replace(/(\.0)?0+$/g, '$1');
-						stats_view.append(
-							'<tr>'
-								+ '<td class = "tag-column">'
-									+ '<button '
-										+ 'class = "'
-											+ 'btn '
-											+ 'btn-info '
-											+ 'select-tag-button'
-										+ '"'
-										+ 'data-tag = "' + escape(row.tag) + '"'
-										+ (row.tag == 'rest'
-											? 'disabled = "disabled"'
-											: '') + '>'
-										+ row.tag
-									+ '</button>'
-								+ '</td>'
-								+ '<td class = "sum-column">'
-									+ row.sum + ' '
-										+ '<i class = "fa fa-ruble"></i><br />'
-									+ '<em>(' + percents_string + '%)</em>'
-								+ '</td>'
-								+ '<td class = "view-column">'
-									+ '<progress '
-										+ 'max = "' + maximal_sum + '"'
-										+ 'value = "' + row.sum + '">'
-									+ '</progress>'
-								+ '</td>'
-							+ '</tr>'
-						);
-					}
-				);
+				}
+			);
+			stats.forEach(
+				function(row) {
+					var percents = 100 * row.sum / maximal_sum;
+					var percents_string =
+						percents
+						.toFixed(2)
+						.replace(/(\.0)?0+$/g, '$1');
+					stats_view.append(
+						'<tr>'
+							+ '<td class = "tag-column">'
+								+ '<button '
+									+ 'class = "'
+										+ 'btn '
+										+ 'btn-info '
+										+ 'select-tag-button'
+									+ '"'
+									+ 'data-tag = "' + escape(row.tag) + '"'
+									+ (row.is_rest
+										? 'disabled = "disabled"'
+										: '') + '>'
+									+ (row.is_rest
+										? '<em>rest</em>'
+										: row.tag)
+								+ '</button>'
+							+ '</td>'
+							+ '<td class = "sum-column">'
+								+ row.sum + ' '
+									+ '<i class = "fa fa-ruble"></i><br />'
+								+ '<em>(' + percents_string + '%)</em>'
+							+ '</td>'
+							+ '<td class = "view-column">'
+								+ '<progress '
+									+ 'max = "' + maximal_sum + '"'
+									+ 'value = "' + row.sum + '">'
+								+ '</progress>'
+							+ '</td>'
+						+ '</tr>'
+					);
+				}
+			);
 
 			$('.select-tag-button', stats_view).click(
 				function() {

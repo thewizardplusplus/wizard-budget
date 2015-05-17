@@ -268,10 +268,7 @@ public class SpendingManager {
 					comment = "";
 				}
 			}
-
-			if (comment.isEmpty()) {
-				comment = UUID.randomUUID().toString();
-			} else {
+			if (!comment.isEmpty()) {
 				int separator_index = comment.indexOf(",");
 				if (separator_index != -1) {
 					comment = comment.substring(0, separator_index).trim();
@@ -288,12 +285,24 @@ public class SpendingManager {
 			moved = spendings_cursor.moveToNext();
 		}
 
-		JSONObject serialized_spendings = new JSONObject();
+		JSONArray serialized_spendings = new JSONArray();
+		String empty_comment_replacement = UUID.randomUUID().toString();
 		for (Map.Entry<String, Double> entry: spendings.entrySet()) {
 			try {
+				JSONObject spending = new JSONObject();
 				String comment = entry.getKey();
+				if (comment.isEmpty()) {
+					comment = empty_comment_replacement;
+					spending.put("is_rest", true);
+				} else {
+					spending.put("is_rest", false);
+				}
+				spending.put("tag", comment);
+
 				double amount = entry.getValue();
-				serialized_spendings.put(comment, amount);
+				spending.put("sum", amount);
+
+				serialized_spendings.put(spending);
 			} catch (JSONException exception) {}
 		}
 
