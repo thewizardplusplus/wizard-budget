@@ -270,7 +270,7 @@ public class SpendingManager {
 			}
 
 			if (comment.isEmpty()) {
-				comment = "rest";
+				comment = UUID.randomUUID().toString();
 			} else {
 				int separator_index = comment.indexOf(",");
 				if (separator_index != -1) {
