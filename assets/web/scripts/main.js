@@ -449,7 +449,10 @@ $(document).ready(
 		}
 		function DrawStatsView(number_of_last_days, comment_prefix) {
 			var spendings_sum_view = $('.stats-sum-view');
-			var spendings_sum = spending_manager.getStatsSum(number_of_last_days, comment_prefix);
+			var spendings_sum = spending_manager.getStatsSum(
+				number_of_last_days,
+				comment_prefix
+			);
 			spendings_sum_view.text(spendings_sum);
 
 			var selected_tag_list = $('.selected-tag-list');
@@ -498,7 +501,13 @@ $(document).ready(
 					var new_comment_prefix = '';
 					var index = selected_tags_copy.lastIndexOf(tag);
 					if (index != -1) {
-						new_comment_prefix = selected_tags_copy.slice(0, index + 1).join(', ');
+						new_comment_prefix =
+							selected_tags_copy
+							.slice(
+								0,
+								index + 1
+							)
+							.join(', ');
 					}
 					activity.setSetting('stats_tags', new_comment_prefix);
 
@@ -509,7 +518,10 @@ $(document).ready(
 			var stats_view = $('.stats-view tbody');
 			stats_view.empty();
 
-			var raw_stats = spending_manager.getStats(number_of_last_days, comment_prefix);
+			var raw_stats = spending_manager.getStats(
+				number_of_last_days,
+				comment_prefix
+			);
 			var stats = JSON.parse(raw_stats);
 
 			var rows = [];
@@ -534,14 +546,23 @@ $(document).ready(
 				.map(
 					function(row) {
 						var percents = 100 * row.sum / maximal_sum;
-						var percents_string = percents.toFixed(2).replace(/(\.0)?0+$/g, '$1');
+						var percents_string =
+							percents
+							.toFixed(2)
+							.replace(/(\.0)?0+$/g, '$1');
 						stats_view.append(
 							'<tr>'
 								+ '<td class = "tag-column">'
 									+ '<button '
-										+ 'class = "btn btn-info select-tag-button"'
+										+ 'class = "'
+											+ 'btn '
+											+ 'btn-info '
+											+ 'select-tag-button'
+										+ '"'
 										+ 'data-tag = "' + escape(row.tag) + '"'
-										+ (row.tag == 'rest' ? 'disabled = "disabled"' : '') + '>'
+										+ (row.tag == 'rest'
+											? 'disabled = "disabled"'
+											: '') + '>'
 										+ row.tag
 									+ '</button>'
 								+ '</td>'
@@ -551,7 +572,9 @@ $(document).ready(
 									+ '<em>(' + percents_string + '%)</em>'
 								+ '</td>'
 								+ '<td class = "view-column">'
-									+ '<progress max = "' + maximal_sum + '" value = "' + row.sum + '">'
+									+ '<progress '
+										+ 'max = "' + maximal_sum + '"'
+										+ 'value = "' + row.sum + '">'
 									+ '</progress>'
 								+ '</td>'
 							+ '</tr>'
@@ -590,9 +613,15 @@ $(document).ready(
 					range_update_timer = setTimeout(
 						function() {
 							var number_of_last_days = range_editor.val();
-							activity.setSetting('stats_range', number_of_last_days);
+							activity.setSetting(
+								'stats_range',
+								number_of_last_days
+							);
 
-							DrawStatsView(parseInt(number_of_last_days), comment_prefix);
+							DrawStatsView(
+								parseInt(number_of_last_days),
+								comment_prefix
+							);
 						},
 						500
 					);

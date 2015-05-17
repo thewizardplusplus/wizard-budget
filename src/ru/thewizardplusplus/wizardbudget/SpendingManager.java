@@ -198,9 +198,12 @@ public class SpendingManager {
 				+ "AND date(timestamp, 'unixepoch')"
 					+ ">= date("
 						+ "'now',"
-						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
+						+ "'-"
+							+ String.valueOf(Math.abs(number_of_last_days))
+							+ " days'"
 					+ ")"
-				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND comment LIKE "
+					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
 					+ prefix_length + " == 0 "
 					+ "OR length(comment) == " + prefix_length + " "
@@ -233,13 +236,20 @@ public class SpendingManager {
 				+ "AND date(timestamp, 'unixepoch')"
 					+ ">= date("
 						+ "'now',"
-						+ "'-" + String.valueOf(Math.abs(number_of_last_days)) + " days'"
+						+ "'-"
+							+ String.valueOf(Math.abs(number_of_last_days))
+							+ " days'"
 					+ ")"
-				+ "AND comment LIKE " + DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND comment LIKE "
+					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
 					+ prefix_length_in_string + " == 0 "
 					+ "OR length(comment) == " + prefix_length_in_string + " "
-					+ "OR substr(comment, " + prefix_length_in_string + " + 1, 1) == ','"
+					+ "OR substr("
+						+ "comment,"
+						+ prefix_length_in_string + " + 1,"
+						+ "1"
+					+ ") == ','"
 				+ ")",
 			null,
 			null,
