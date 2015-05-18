@@ -595,6 +595,14 @@ $(document).ready(
 			);
 		}
 		function UpdateStats() {
+			$('.stats-range-form').on(
+				'submit',
+				function(event) {
+					event.preventDefault();
+					return false;
+				}
+			);
+
 			var number_of_last_days = activity.getSetting('stats_range');
 			var range_editor = $('.stats-range-editor');
 			range_editor.val(number_of_last_days);
