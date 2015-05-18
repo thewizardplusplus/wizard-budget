@@ -75,6 +75,10 @@ public class MainActivity extends Activity {
 			return settings.getActiveSpending();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			return settings.getActiveBuy();
+		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+			return String.valueOf(settings.getStatsRange());
+		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
+			return settings.getStatsTags();
 		} else {
 			return "";
 		}
@@ -91,6 +95,10 @@ public class MainActivity extends Activity {
 			settings.setActiveSpending(value);
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			settings.setActiveBuy(value);
+		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+			settings.setStatsRange(Long.valueOf(value));
+		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
+			settings.setStatsTags(value);
 		}
 		settings.save();
 	}
@@ -121,15 +129,15 @@ public class MainActivity extends Activity {
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
-		web_view.loadUrl("file:///android_asset/web/index.html");
-
+		web_view.addJavascriptInterface(this, "activity");
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
 		BuyManager buy_manager = new BuyManager(this);
 		web_view.addJavascriptInterface(buy_manager, "buy_manager");
 		BackupManager backup_manager = new BackupManager(this);
 		web_view.addJavascriptInterface(backup_manager, "backup_manager");
-		web_view.addJavascriptInterface(this, "activity");
+
+		web_view.loadUrl("file:///android_asset/web/index.html");
 	}
 
 	@Override

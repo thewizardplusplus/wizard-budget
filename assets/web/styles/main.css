@@ -32,6 +32,8 @@
 
 .media-body p {
 	margin-right: 55px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .table-view-cell > .second-list-button {
@@ -99,8 +101,17 @@ ol {
 	opacity: 0.5;
 }
 
+.segmented-control {
+	position: fixed;
+	z-index: 10;
+}
+
 .segmented-control .control-item.active {
 	font-weight: bold;
+}
+
+.control-content {
+	padding-top: 35px;
 }
 
 .buy-list .placeholder {
@@ -120,4 +131,43 @@ ol {
 	border: 1px solid #a9a9a9;
 	border-radius: 2px;
 	opacity: 1 !important;
+}
+
+.stats-view {
+	width: 100%;
+}
+
+.stats-view td {
+	padding: 10px;
+	border-bottom: 1px solid #d9d9d9;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
+	color: #777;
+}
+
+.stats-view tr:first-child td {
+	border-top: 1px solid #d9d9d9;
+}
+
+.stats-view td button {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.stats-view .tag-column,
+.stats-view .sum-column {
+	width: 100px;
+	max-width: 100px;
+	text-align: center;
+}
+
+.stats-view td progress {
+	display: block;
+	width: 100%;
+}
+
+.debug {
+	font-family: monospace;
 }

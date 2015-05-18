@@ -423,36 +423,236 @@ $(document).ready(
 			var current_segment = activity.getSetting('current_segment');
 			$('.' + current_segment + '-segment').addClass('active');
 
+			var add_button = $('.add-button');
+			if (current_segment == 'stats') {
+				add_button.hide();
+			} else {
+				add_button.show();
+			}
+
 			$('.control-item').on(
 				'touchend',
 				function() {
 					var self = $(this);
 					if (self.hasClass('buys-segment')) {
 						activity.setSetting('current_segment', 'buys');
+						add_button.show();
+					} else if (self.hasClass('stats-segment')) {
+						activity.setSetting('current_segment', 'stats');
+						add_button.hide();
 					} else {
 						activity.setSetting('current_segment', 'history');
+						add_button.show();
 					}
 				}
 			);
+		}
+		function DrawStatsView(number_of_last_days, comment_prefix) {
+			var spendings_sum_view = $('.stats-sum-view');
+			var spendings_sum = spending_manager.getStatsSum(
+				number_of_last_days,
+				comment_prefix
+			);
+			spendings_sum_view.text(spendings_sum);
+
+			var selected_tag_list = $('.selected-tag-list');
+			selected_tag_list.empty();
+
+			var selected_tags =
+				comment_prefix
+				.split(',')
+				.map(
+					function(tag) {
+						return tag.trim();
+					}
+				)
+				.filter(
+					function(tag) {
+						return tag.length != 0;
+					}
+				);
+			var selected_tags_copy = selected_tags.slice();
+			selected_tags.unshift('root');
+			selected_tags.map(
+				function(tag, index) {
+					var list_item = '';
+					if (index != 0) {
+						list_item += ' / ';
+					}
+					if (index < selected_tags.length - 1) {
+						list_item +=
+							'<button '
+								+ 'class = "btn btn-info unselect-tag-button"'
+								+ 'data-tag = "' + escape(tag) + '">'
+								+ tag
+							+ '</button>';
+					} else {
+						list_item += tag;
+					}
+
+					selected_tag_list.append(list_item);
+				}
+			);
+			$('.unselect-tag-button', selected_tag_list).click(
+				function() {
+					var self = $(this);
+					var tag = unescape(self.data('tag'));
+
+					var new_comment_prefix = '';
+					var index = selected_tags_copy.lastIndexOf(tag);
+					if (index != -1) {
+						new_comment_prefix =
+							selected_tags_copy
+							.slice(
+								0,
+								index + 1
+							)
+							.join(', ');
+					}
+					activity.setSetting('stats_tags', new_comment_prefix);
+
+					DrawStatsView(number_of_last_days, new_comment_prefix);
+				}
+			);
+
+			var stats_view = $('.stats-view tbody');
+			stats_view.empty();
+
+			var raw_stats = spending_manager.getStats(
+				number_of_last_days,
+				comment_prefix
+			);
+			var stats = JSON.parse(raw_stats);
+			stats = stats.sort(
+				function(first, second) {
+					return second.sum - first.sum;
+				}
+			);
+
+			var maximal_sum = 0;
+			stats.forEach(
+				function(row) {
+					if (row.sum > maximal_sum) {
+						maximal_sum = row.sum;
+					}
+				}
+			);
+			stats.forEach(
+				function(row) {
+					var percents = 100 * row.sum / maximal_sum;
+					var percents_string =
+						percents
+						.toFixed(2)
+						.replace(/(\.0)?0+$/g, '$1');
+					stats_view.append(
+						'<tr>'
+							+ '<td class = "tag-column">'
+								+ '<button '
+									+ 'class = "'
+										+ 'btn '
+										+ 'btn-info '
+										+ 'select-tag-button'
+									+ '"'
+									+ 'data-tag = "' + escape(row.tag) + '"'
+									+ (row.is_rest
+										? 'disabled = "disabled"'
+										: '') + '>'
+									+ (row.is_rest
+										? '<em>rest</em>'
+										: row.tag)
+								+ '</button>'
+							+ '</td>'
+							+ '<td class = "sum-column">'
+								+ row.sum + ' '
+									+ '<i class = "fa fa-ruble"></i><br />'
+								+ '<em>(' + percents_string + '%)</em>'
+							+ '</td>'
+							+ '<td class = "view-column">'
+								+ '<progress '
+									+ 'max = "' + maximal_sum + '"'
+									+ 'value = "' + row.sum + '">'
+								+ '</progress>'
+							+ '</td>'
+						+ '</tr>'
+					);
+				}
+			);
+
+			$('.select-tag-button', stats_view).click(
+				function() {
+					var self = $(this);
+					var tag = unescape(self.data('tag'));
+
+					var new_comment_prefix = comment_prefix;
+					if (new_comment_prefix.length) {
+						new_comment_prefix += ', ';
+					}
+					new_comment_prefix += tag;
+					activity.setSetting('stats_tags', new_comment_prefix);
+
+					DrawStatsView(number_of_last_days, new_comment_prefix);
+				}
+			);
+		}
+		function UpdateStats() {
+			$('.stats-range-form').on(
+				'submit',
+				function(event) {
+					event.preventDefault();
+					return false;
+				}
+			);
+
+			var number_of_last_days = activity.getSetting('stats_range');
+			var range_editor = $('.stats-range-editor');
+			range_editor.val(number_of_last_days);
+
+			var comment_prefix = activity.getSetting('stats_tags');
+
+			var range_update_timer = null;
+			range_editor.on(
+				'keyup',
+				function() {
+					clearTimeout(range_update_timer);
+					range_update_timer = setTimeout(
+						function() {
+							var number_of_last_days = range_editor.val();
+							activity.setSetting(
+								'stats_range',
+								number_of_last_days
+							);
+
+							DrawStatsView(
+								parseInt(number_of_last_days),
+								comment_prefix
+							);
+						},
+						500
+					);
+				}
+			);
+
+			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
 			UpdateSegments();
 			UpdateSpendingList();
 			UpdateBuyList();
+			UpdateStats();
 		}
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();
 
 			var edit_spending_button = $('form .edit-spending-button');
 			if ($.type(active_spending) === "null") {
-				$('.title').text('Add');
+				$('.title').text('Add spending');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-save')
 					.addClass('fa-plus');
 				$('.button-text', edit_spending_button).text('Add');
 			} else {
-				$('.title').text('Edit');
+				$('.title').text('Edit spending');
 				$('.button-icon', edit_spending_button)
 					.removeClass('fa-plus')
 					.addClass('fa-save');
@@ -483,9 +683,13 @@ $(document).ready(
 
 			var raw_tags = spending_manager.getSpendingTags();
 			var tags = JSON.parse(raw_tags);
+
 			var raw_buy_names = buy_manager.getBuyNames();
 			var buy_names = JSON.parse(raw_buy_names);
 			tags = tags.concat(buy_names);
+
+			var raw_priorities_tags = spending_manager.getPrioritiesTags();
+			var priorities_tags = JSON.parse(raw_priorities_tags);
 
 			var default_tags =
 				$.type(active_spending) !== "null"
@@ -495,7 +699,9 @@ $(document).ready(
 				'.tags-editor',
 				{
 					tags: tags,
-					sort: 'asc',
+					search_mode: 'words',
+					sort: 'priorities-desc',
+					priorities_tags: priorities_tags,
 					default_tags: default_tags,
 					separators: ',',
 					only_unique: true
@@ -512,8 +718,11 @@ $(document).ready(
 			edit_spending_button.click(
 				function() {
 					var amount = Math.abs(parseFloat(amount_editor.val()));
+
+					tags_editor.addCurrentText();
 					var tags = tags_editor.getTags();
 					var comment = tags.join(', ');
+
 					if (income_flag.hasClass('active')) {
 						amount *= -1;
 					}
@@ -547,13 +756,13 @@ $(document).ready(
 
 			var edit_buy_button = $('form .edit-buy-button');
 			if ($.type(active_buy) === "null") {
-				$('.title').text('Add');
+				$('.title').text('Add buy');
 				$('.button-icon', edit_buy_button)
 					.removeClass('fa-save')
 					.addClass('fa-plus');
 				$('.button-text', edit_buy_button).text('Add');
 			} else {
-				$('.title').text('Edit');
+				$('.title').text('Edit buy');
 				$('.button-icon', edit_buy_button)
 					.removeClass('fa-plus')
 					.addClass('fa-save');

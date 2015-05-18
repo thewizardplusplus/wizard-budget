@@ -19,6 +19,7 @@
 		</header>
 
 		<div class = "content">
+			<div class = "debug"></div>
 			<div class = "segmented-control">
 				<a class = "control-item buys-segment" href = "#buys-segment">
 					Buys
@@ -27,6 +28,9 @@
 					class = "control-item history-segment"
 					href = "#history-segment">
 					History
+				</a>
+				<a class = "control-item stats-segment" href = "#stats-segment">
+					Stats
 				</a>
 			</div>
 			<div>
@@ -47,6 +51,33 @@
 						</span> <i class = "fa fa-ruble"></i>.
 					</p>
 					<ul class = "table-view spending-list"></ul>
+				</div>
+				<div
+					id = "stats-segment"
+					class = "control-content stats-segment">
+					<form class = "input-group stats-range-form" action = "#">
+						<div class = "input-row">
+							<label>Days:</label>
+							<input
+								class = "stats-range-editor"
+								type = "number"
+								placeholder = "Last days" />
+						</div>
+					</form>
+					<p class = "content-padded">
+						Selected tags:
+						<span class = "selected-tag-list"></span>.
+					</p>
+					<hr />
+
+					<p class = "content-padded">
+						Spendings sum: <span class = "stats-sum-view">
+							0.0
+						</span> <i class = "fa fa-ruble"></i>.
+					</p>
+					<table class = "stats-view">
+						<tbody></tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -101,22 +132,24 @@
 				</a>
 			</header>
 
-			<div class = "content content-padded">
-				<p>
-					Are you sure you want to remove the spending
-					&laquo;<span class = "underline"><strong><span
-						class = "date-view">01.01</span></strong>
-					<span class = "time-view">00:00:00</span>:</span>
-					<span class = "amount-view">0.0</span>
-					<i class = "fa fa-ruble"></i><span class = "comment-view">
-					</span>&raquo;?
-				</p>
+			<div class = "content">
+				<div class = "content-padded">
+					<p>
+						Are you sure you want to remove the spending
+						&laquo;<span class = "underline"><strong><span
+							class = "date-view">01.01</span></strong>
+						<span class = "time-view">00:00:00</span>:</span>
+						<span class = "amount-view">0.0</span>
+						<i class = "fa fa-ruble"></i><span
+							class = "comment-view"></span>&raquo;?
+					</p>
 
-				<button
-					class = "btn btn-block btn-negative remove-spending-button">
-					<i class = "fa fa-trash"></i>
-					Remove
-				</button>
+					<button
+						class = "btn btn-block btn-negative remove-spending-button">
+						<i class = "fa fa-trash"></i>
+						Remove
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -131,20 +164,22 @@
 				</a>
 			</header>
 
-			<div class = "content content-padded">
-				<p>
-					Are you sure you want to remove the buy
-					&laquo;<span class = "underline"><strong><span
-						class = "name-view">Buy</span>:</strong></span>
-					<span class = "cost-view">0.0</span>
-					<i class = "fa fa-ruble"></i>&raquo;?
-				</p>
+			<div class = "content">
+				<div class = "content-padded">
+					<p>
+						Are you sure you want to remove the buy
+						&laquo;<span class = "underline"><strong><span
+							class = "name-view">Buy</span>:</strong></span>
+						<span class = "cost-view">0.0</span>
+						<i class = "fa fa-ruble"></i>&raquo;?
+					</p>
 
-				<button
-					class = "btn btn-block btn-negative remove-buy-button">
-					<i class = "fa fa-trash"></i>
-					Remove
-				</button>
+					<button
+						class = "btn btn-block btn-negative remove-buy-button">
+						<i class = "fa fa-trash"></i>
+						Remove
+					</button>
+				</div>
 			</div>
 		</div>
 	</body>

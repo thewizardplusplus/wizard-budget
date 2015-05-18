@@ -156,36 +156,158 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public String getSpendingTags() {
+		JSONArray tags = new JSONArray();
+		List<String> tag_list = getTagList();
+		for (String tag: tag_list) {
+			tags.put(tag);
+		}
+
+		return tags.toString();
+	}
+
+	@JavascriptInterface
+	public String getPrioritiesTags() {
+		Map<String, Long> tag_map = new HashMap<String, Long>();
+		List<String> tag_list = getTagList();
+		for (String tag: tag_list) {
+			if (tag_map.containsKey(tag)) {
+				tag_map.put(tag, tag_map.get(tag) + 1L);
+			} else {
+				tag_map.put(tag, 1L);
+			}
+		}
+
+		JSONObject serialized_tag_map = new JSONObject();
+		try {
+			for (Map.Entry<String, Long> entry: tag_map.entrySet()) {
+				serialized_tag_map.put(entry.getKey(), entry.getValue());
+			}
+		} catch (JSONException exception) {}
+
+		return serialized_tag_map.toString();
+	}
+
+	@JavascriptInterface
+	public String getStatsSum(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		String prefix_length = String.valueOf(prefix.length());
 		Cursor spendings_cursor = database.query(
 			"spendings",
-			new String[]{"comment"},
-			null,
+			new String[]{"ROUND(SUM(amount), 2)"},
+			"amount > 0 "
+				+ "AND date(timestamp, 'unixepoch')"
+					+ ">= date("
+						+ "'now',"
+						+ "'-"
+							+ String.valueOf(Math.abs(number_of_last_days))
+							+ " days'"
+					+ ")"
+				+ "AND comment LIKE "
+					+ DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND ("
+					+ prefix_length + " == 0 "
+					+ "OR length(comment) == " + prefix_length + " "
+					+ "OR substr(comment, " + prefix_length + " + 1, 1) == ','"
+				+ ")",
 			null,
 			null,
 			null,
 			null
 		);
 
-		JSONArray tags = new JSONArray();
+		double spendings_sum = 0.0;
+		boolean moved = spendings_cursor.moveToFirst();
+		if (moved) {
+			spendings_sum = spendings_cursor.getDouble(0);
+		}
+
+		return String.valueOf(spendings_sum);
+	}
+
+	@JavascriptInterface
+	public String getStats(int number_of_last_days, String prefix) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		int prefix_length = prefix.length();
+		String prefix_length_in_string = String.valueOf(prefix_length);
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"comment", "amount"},
+			"amount > 0 "
+				+ "AND date(timestamp, 'unixepoch')"
+					+ ">= date("
+						+ "'now',"
+						+ "'-"
+							+ String.valueOf(Math.abs(number_of_last_days))
+							+ " days'"
+					+ ")"
+				+ "AND comment LIKE "
+					+ DatabaseUtils.sqlEscapeString(prefix + "%")
+				+ "AND ("
+					+ prefix_length_in_string + " == 0 "
+					+ "OR length(comment) == " + prefix_length_in_string + " "
+					+ "OR substr("
+						+ "comment,"
+						+ prefix_length_in_string + " + 1,"
+						+ "1"
+					+ ") == ','"
+				+ ")",
+			null,
+			null,
+			null,
+			null
+		);
+
+		Map<String, Double> spendings = new HashMap<String, Double>();
 		boolean moved = spendings_cursor.moveToFirst();
 		while (moved) {
 			String comment = spendings_cursor.getString(0);
-			if (!comment.isEmpty()) {
-				String[] comment_parts = comment.split(",");
-				for (String part: comment_parts) {
-					String trimmed_part = part.trim();
-					if (!trimmed_part.isEmpty()) {
-						tags.put(trimmed_part);
-					}
+			if (prefix_length != 0) {
+				if (comment.length() > prefix_length) {
+					comment = comment.substring(prefix_length + 1).trim();
+				} else if (comment.length() == prefix_length) {
+					comment = "";
 				}
+			}
+			if (!comment.isEmpty()) {
+				int separator_index = comment.indexOf(",");
+				if (separator_index != -1) {
+					comment = comment.substring(0, separator_index).trim();
+				}
+			}
+
+			double amount = spendings_cursor.getDouble(1);
+			if (spendings.containsKey(comment)) {
+				spendings.put(comment, spendings.get(comment) + amount);
+			} else {
+				spendings.put(comment, amount);
 			}
 
 			moved = spendings_cursor.moveToNext();
 		}
 
+		JSONArray serialized_spendings = new JSONArray();
+		String empty_comment_replacement = UUID.randomUUID().toString();
+		for (Map.Entry<String, Double> entry: spendings.entrySet()) {
+			try {
+				JSONObject spending = new JSONObject();
+				String comment = entry.getKey();
+				if (comment.isEmpty()) {
+					comment = empty_comment_replacement;
+					spending.put("is_rest", true);
+				} else {
+					spending.put("is_rest", false);
+				}
+				spending.put("tag", comment);
+
+				double amount = entry.getValue();
+				spending.put("sum", amount);
+
+				serialized_spendings.put(spending);
+			} catch (JSONException exception) {}
+		}
+
 		database.close();
-		return tags.toString();
+		return serialized_spendings.toString();
 	}
 
 	@JavascriptInterface
@@ -328,5 +450,38 @@ public class SpendingManager {
 			Locale.US
 		);
 		return date_format.format(date);
+	}
+
+	private List<String> getTagList() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor spendings_cursor = database.query(
+			"spendings",
+			new String[]{"comment"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		List<String> tags = new ArrayList<String>();
+		boolean moved = spendings_cursor.moveToFirst();
+		while (moved) {
+			String comment = spendings_cursor.getString(0);
+			if (!comment.isEmpty()) {
+				String[] comment_parts = comment.split(",");
+				for (String part: comment_parts) {
+					String trimmed_part = part.trim();
+					if (!trimmed_part.isEmpty()) {
+						tags.add(trimmed_part);
+					}
+				}
+			}
+
+			moved = spendings_cursor.moveToNext();
+		}
+
+		database.close();
+		return tags;
 	}
 }
