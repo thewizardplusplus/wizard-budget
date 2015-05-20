@@ -424,7 +424,7 @@ $(document).ready(
 			$('.' + current_segment + '-segment').addClass('active');
 
 			var add_button = $('.add-button');
-			if (current_segment == 'stats') {
+			if (current_segment == 'stats' || current_segment == 'hours') {
 				add_button.hide();
 			} else {
 				add_button.show();
@@ -439,6 +439,9 @@ $(document).ready(
 						add_button.show();
 					} else if (self.hasClass('stats-segment')) {
 						activity.setSetting('current_segment', 'stats');
+						add_button.hide();
+					} else if (self.hasClass('hours-segment')) {
+						activity.setSetting('current_segment', 'hours');
 						add_button.hide();
 					} else {
 						activity.setSetting('current_segment', 'history');
