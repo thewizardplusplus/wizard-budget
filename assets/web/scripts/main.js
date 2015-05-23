@@ -430,6 +430,13 @@ $(document).ready(
 				add_button.show();
 			}
 
+			var refresh_button = $('.refresh-button');
+			if (current_segment == 'hours') {
+				refresh_button.show();
+			} else {
+				refresh_button.hide();
+			}
+
 			$('.control-item').on(
 				'touchend',
 				function() {
@@ -437,15 +444,19 @@ $(document).ready(
 					if (self.hasClass('buys-segment')) {
 						activity.setSetting('current_segment', 'buys');
 						add_button.show();
+						refresh_button.hide();
 					} else if (self.hasClass('stats-segment')) {
 						activity.setSetting('current_segment', 'stats');
 						add_button.hide();
+						refresh_button.hide();
 					} else if (self.hasClass('hours-segment')) {
 						activity.setSetting('current_segment', 'hours');
 						add_button.hide();
+						refresh_button.show();
 					} else {
 						activity.setSetting('current_segment', 'history');
 						add_button.show();
+						refresh_button.hide();
 					}
 				}
 			);
