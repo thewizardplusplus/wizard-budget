@@ -16,11 +16,12 @@ public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 
 	@Override
 	protected String doInBackground(URL... urls) {
+		URL url = urls[0];
 		try {
 			Thread.currentThread().sleep(5000);
 		} catch (InterruptedException exception) {}
 
-		return "test";
+		return "\"" + url.toString() + "\" loaded.";
 	}
 
 	@Override

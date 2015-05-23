@@ -16,6 +16,7 @@ import com.dropbox.client2.*;
 import com.dropbox.client2.android.*;
 import com.dropbox.client2.session.*;
 import com.dropbox.client2.exception.*;
+import org.json.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -105,13 +106,21 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
-	public void httpRequest(String url) {
+	public void httpRequest(String name, String url) {
 		try {
+			final MainActivity self = this;
+			final String name_copy = name;
 			HttpRequestTask task = new HttpRequestTask(
 				new HttpRequestTask.OnSuccessListener() {
 					@Override
 					public void onSuccess(String data) {
-						Log.d("http", data);
+						self.callGuiFunction(
+							"setHttpResult",
+							new String[]{
+								JSONObject.quote(name_copy),
+								JSONObject.quote(data)
+							}
+						);
 					}
 				}
 			);
@@ -121,7 +130,7 @@ public class MainActivity extends Activity {
 
 	@JavascriptInterface
 	public void log(String message) {
-		Log.d("Web", message);
+		Log.d("web", message);
 	}
 
 	@JavascriptInterface
@@ -211,9 +220,22 @@ public class MainActivity extends Activity {
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private String backup_filename = "";
 
-	private void callGuiFunction(String name) {
+	private void callGuiFunction(String name, String[] arguments) {
+		String arguments_string = "";
+		for (int i = 0; i < arguments.length; i++) {
+			if (i > 0) {
+				arguments_string += ",";
+			}
+
+			arguments_string += arguments[i];
+		}
+
 		WebView web_view = (WebView)findViewById(R.id.web_view);
-		web_view.loadUrl("javascript:GUI." + name + "()");
+		web_view.loadUrl("javascript:GUI." + name + "(" + arguments_string + ")");
+	}
+
+	private void callGuiFunction(String name) {
+		callGuiFunction(name, new String[]{});
 	}
 
 	private void restoreBackup(String filename) {

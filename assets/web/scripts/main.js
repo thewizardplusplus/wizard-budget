@@ -1,3 +1,9 @@
+var HTTP_HANDLERS = {
+	test: function(data) {
+		$('.debug').text(data);
+	}
+};
+
 var GUI = {
 	hideMainMenu: function() {
 		var event = new CustomEvent('touchend');
@@ -26,6 +32,12 @@ var GUI = {
 					}
 				}
 			}
+		}
+	},
+	setHttpResult: function(request, data) {
+		var handler = HTTP_HANDLERS[request];
+		if (handler) {
+			handler(data);
 		}
 	}
 };
@@ -648,12 +660,22 @@ $(document).ready(
 
 			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
+		function UpdateHours() {
+			$('.refresh-button').click(
+				function() {
+					var url = 'http://example.com';
+					$('.debug').text('Loading "' + url + '"...');
+					activity.httpRequest('test', url);
+				}
+			);
+		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
 			UpdateSegments();
 			UpdateSpendingList();
 			UpdateBuyList();
 			UpdateStats();
+			UpdateHours();
 		}
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();
