@@ -3,6 +3,7 @@ package ru.thewizardplusplus.wizardbudget;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.net.*;
 
 import android.app.*;
 import android.os.*;
@@ -101,6 +102,21 @@ public class MainActivity extends Activity {
 			settings.setStatsTags(value);
 		}
 		settings.save();
+	}
+
+	@JavascriptInterface
+	public void httpRequest(String url) {
+		try {
+			HttpRequestTask task = new HttpRequestTask(
+				new HttpRequestTask.OnSuccessListener() {
+					@Override
+					public void onSuccess(String data) {
+						Log.d("http", data);
+					}
+				}
+			);
+			task.execute(new URL(url));
+		} catch(MalformedURLException exception) {}
 	}
 
 	@JavascriptInterface

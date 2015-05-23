@@ -7,7 +7,7 @@ import android.os.*;
 
 public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 	public interface OnSuccessListener {
-		public void onClick(String data);
+		public void onSuccess(String data);
 	}
 
 	public HttpRequestTask(OnSuccessListener success_listener) {
@@ -25,7 +25,7 @@ public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		success_listener.onClick(result);
+		success_listener.onSuccess(result);
 	}
 
 	private OnSuccessListener success_listener;
