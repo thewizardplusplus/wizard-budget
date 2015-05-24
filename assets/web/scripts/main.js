@@ -76,9 +76,13 @@ var GUI = {
 	setHttpResult: function(request, data) {
 		LOADING_LOG.addMessage('The "' + request + '" HTTP request has finished.');
 
-		var handler = HTTP_HANDLERS[request];
-		if (handler) {
-			handler(data);
+		if (data.substr(0, 6) != 'error:') {
+			var handler = HTTP_HANDLERS[request];
+			if (handler) {
+				handler(data);
+			}
+		} else {
+			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".');
 		}
 	}
 };
@@ -711,7 +715,7 @@ $(document).ready(
 						return;
 					}
 
-					var url = 'http://example.com';
+					var url = 'http://jsonplaceholder.typicode.com/9posts/1';
 					$('.debug').text('Loading "' + url + '"...');
 					activity.httpRequest('test', url);
 				}

@@ -4,6 +4,11 @@ import java.net.*;
 
 import android.util.*;
 import android.os.*;
+import org.apache.http.client.*;
+import org.apache.http.impl.client.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.*;
+import java.io.*;
 
 public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 	public interface OnSuccessListener {
@@ -16,12 +21,45 @@ public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 
 	@Override
 	protected String doInBackground(URL... urls) {
-		URL url = urls[0];
 		try {
-			Thread.currentThread().sleep(5000);
-		} catch (InterruptedException exception) {}
+			HttpGet request = new HttpGet();
+			request.setURI(urls[0].toURI());
 
-		return "\"" + url.toString() + "\" loaded.";
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(request);
+
+			StatusLine status = response.getStatusLine();
+			int status_code = status.getStatusCode();
+			if (status_code != 200) {
+				return "error:" + String.valueOf(status_code) + " " + status.getReasonPhrase();
+			}
+
+			BufferedReader in = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent())
+			);
+			StringBuffer buffer = new StringBuffer();
+			try {
+				while (true) {
+					String line = in.readLine();
+					if (line == null) {
+						break;
+					}
+					buffer.append(line);
+				}
+			} catch (IOException exception) {
+				return "error:" + exception.getMessage();
+			} finally {
+				in.close();
+			}
+
+			return buffer.toString();
+		} catch (URISyntaxException exception) {
+			return "error:" + exception.getMessage();
+		} catch (ClientProtocolException exception) {
+			return "error:" + exception.getMessage();
+		} catch (IOException exception) {
+			return "error:" + exception.getMessage();
+		}
 	}
 
 	@Override
