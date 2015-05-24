@@ -108,6 +108,15 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public void httpRequest(String name, String url) {
 		try {
+			callGuiFunction(
+				"addLoadingLogMessage",
+				new String[]{
+					JSONObject.quote(
+						"Start the " + JSONObject.quote(name) + " HTTP request."
+					)
+				}
+			);
+
 			final MainActivity self = this;
 			final String name_copy = name;
 			HttpRequestTask task = new HttpRequestTask(

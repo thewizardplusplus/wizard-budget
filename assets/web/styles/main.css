@@ -168,6 +168,16 @@ ol {
 	width: 100%;
 }
 
+.loading-log {
+	background-color: #fcf8e3;
+	font-family: monospace;
+}
+
+.refresh-button.disabled {
+	color: grey;
+	opacity: 0.5;
+}
+
 .debug {
 	font-family: monospace;
 }

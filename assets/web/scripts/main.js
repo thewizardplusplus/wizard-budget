@@ -1,5 +1,41 @@
+var LOADING_LOG_CLEAN_DELAY = 2000;
+var LOADING_LOG = {
+	addMessage: function(message) {
+		var loading_log = $('.loading-log');
+		loading_log.show();
+		loading_log.prepend(
+			'<p class = "content-padded">' + message + '</p>'
+		);
+	},
+	finish: function(callback, message) {
+		LOADING_LOG.addMessage(message || 'All done.');
+
+		setTimeout(
+			function() {
+				LOADING_LOG.clean();
+
+				if (callback) {
+					callback();
+				}
+			},
+			LOADING_LOG_CLEAN_DELAY
+		);
+	},
+	clean: function() {
+		var loading_log = $('.loading-log');
+		loading_log.empty();
+		loading_log.hide();
+	}
+};
+
 var HTTP_HANDLERS = {
 	test: function(data) {
+		LOADING_LOG.finish(
+			function() {
+				$('.refresh-button').removeClass('disabled');
+			}
+		);
+
 		$('.debug').text(data);
 	}
 };
@@ -34,7 +70,12 @@ var GUI = {
 			}
 		}
 	},
+	addLoadingLogMessage: function(message) {
+		LOADING_LOG.addMessage(message);
+	},
 	setHttpResult: function(request, data) {
+		LOADING_LOG.addMessage('The "' + request + '" HTTP request has finished.');
+
 		var handler = HTTP_HANDLERS[request];
 		if (handler) {
 			handler(data);
@@ -663,6 +704,13 @@ $(document).ready(
 		function UpdateHours() {
 			$('.refresh-button').click(
 				function() {
+					var self = $(this);
+					if (!self.hasClass('disabled')) {
+						self.addClass('disabled');
+					} else {
+						return;
+					}
+
 					var url = 'http://example.com';
 					$('.debug').text('Loading "' + url + '"...');
 					activity.httpRequest('test', url);
