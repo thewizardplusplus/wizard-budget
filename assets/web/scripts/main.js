@@ -1,22 +1,44 @@
 var LOADING_LOG_CLEAN_DELAY = 2000;
 var LOADING_LOG = {
-	addMessage: function(message) {
+	getTypeMark: function(type) {
+		if (type == 'success') {
+			return '<i class = "fa fa-check-circle"></i>';
+		} else if (type == 'error') {
+			return '<i class = "fa fa-times-circle"></i>';
+		} else {
+			return '<i class = "fa fa-info-circle"></i>';
+		}
+	},
+	getTypeClass: function(type) {
+		if (type == 'success' || type == 'error') {
+			return type;
+		} else {
+			return '';
+		}
+	},
+	addMessage: function(message, type) {
+		type = type || 'info';
+
 		var loading_log = $('.loading-log');
 		loading_log.show();
 		loading_log.prepend(
-			'<p class = "content-padded">' + message + '</p>'
+			'<p class = "content-padded ' + LOADING_LOG.getTypeClass(type) + '">'
+				+ LOADING_LOG.getTypeMark(type) + ' '
+				+ message
+			+ '</p>'
 		);
 	},
-	finish: function(callback, message) {
-		LOADING_LOG.addMessage(message || 'All done.');
+	finish: function(callback, message, type) {
+		callback = callback || function() {};
+		message = message || 'All done.'
+		type = type || 'success';
+
+		LOADING_LOG.addMessage(message, type);
 
 		setTimeout(
 			function() {
 				LOADING_LOG.clean();
-
-				if (callback) {
-					callback();
-				}
+				callback();
 			},
 			LOADING_LOG_CLEAN_DELAY
 		);
@@ -74,15 +96,15 @@ var GUI = {
 		LOADING_LOG.addMessage(message);
 	},
 	setHttpResult: function(request, data) {
-		LOADING_LOG.addMessage('The "' + request + '" HTTP request has finished.');
-
 		if (data.substr(0, 6) != 'error:') {
+			LOADING_LOG.addMessage('The "' + request + '" HTTP request has finished.', 'success');
+
 			var handler = HTTP_HANDLERS[request];
 			if (handler) {
 				handler(data);
 			}
 		} else {
-			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".');
+			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".', 'error');
 		}
 	}
 };
@@ -715,7 +737,7 @@ $(document).ready(
 						return;
 					}
 
-					var url = 'http://jsonplaceholder.typicode.com/9posts/1';
+					var url = 'http://jsonplaceholder.typicode.com/posts/1';
 					$('.debug').text('Loading "' + url + '"...');
 					activity.httpRequest('test', url);
 				}

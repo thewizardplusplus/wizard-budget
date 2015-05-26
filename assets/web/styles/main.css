@@ -173,6 +173,14 @@ ol {
 	font-family: monospace;
 }
 
+.loading-log .success {
+	color: #3c763d;
+}
+
+.loading-log .error {
+	color: #a94442;
+}
+
 .refresh-button.disabled {
 	color: grey;
 	opacity: 0.5;
