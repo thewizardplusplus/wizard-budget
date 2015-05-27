@@ -55,10 +55,6 @@ public class Settings {
 				DEFAULT_CREDIT_CARD_TAG
 			)
 			.trim();
-		settings.save_backup_to_dropbox = preferences.getBoolean(
-			"preference_save_backup_to_dropbox",
-			true
-		);
 
 		settings.parse_sms = preferences.getBoolean(
 			"preference_parse_sms",
@@ -112,6 +108,10 @@ public class Settings {
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
+		settings.save_backup_to_dropbox = preferences.getBoolean(
+			"preference_save_backup_to_dropbox",
+			false
+		);
 		settings.dropbox_app_key = preferences.getString(
 			"preference_dropbox_app_key",
 			context.getString(R.string.preference_dropbox_app_key_default)
@@ -119,6 +119,29 @@ public class Settings {
 		settings.dropbox_app_secret = preferences.getString(
 			"preference_dropbox_app_secret",
 			context.getString(R.string.preference_dropbox_app_secret_default)
+		);
+
+		settings.analysis_harvest = preferences.getBoolean(
+			"preference_analysis_harvest",
+			false
+		);
+		settings.harvest_username = preferences.getString(
+			"preference_harvest_username",
+			""
+		);
+		settings.harvest_password = preferences.getString(
+			"preference_harvest_password",
+			""
+		);
+		settings.harvest_subdomain = preferences.getString(
+			"preference_harvest_subdomain",
+			""
+		);
+		settings.salary = Long.valueOf(
+			preferences.getString(
+				"preference_salary",
+				"0"
+			)
 		);
 
 		settings.backup_notification = preferences.getBoolean(
@@ -201,10 +224,6 @@ public class Settings {
 		return credit_card_tag;
 	}
 
-	public boolean isSaveBackupToDropbox() {
-		return save_backup_to_dropbox;
-	}
-
 	public boolean isParseSms() {
 		return parse_sms;
 	}
@@ -229,12 +248,36 @@ public class Settings {
 		return sms_income_comment;
 	}
 
+	public boolean isSaveBackupToDropbox() {
+		return save_backup_to_dropbox;
+	}
+
 	public String getDropboxAppKey() {
 		return dropbox_app_key;
 	}
 
 	public String getDropboxAppSecret() {
 		return dropbox_app_secret;
+	}
+
+	public boolean isAnalysisHarvest() {
+		return analysis_harvest;
+	}
+
+	public String getHarvestUsername() {
+		return harvest_username;
+	}
+
+	public String getHarvestPassword() {
+		return harvest_password;
+	}
+
+	public String getHarvestSubdomain() {
+		return harvest_subdomain;
+	}
+
+	public long getSalary() {
+		return salary;
 	}
 
 	public boolean isBackupNotification() {
@@ -288,15 +331,20 @@ public class Settings {
 	private String stats_tags = "";
 	private String dropbox_token = "";
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
-	private boolean save_backup_to_dropbox = true;
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
 	private Pattern sms_spending_pattern;
 	private Pattern sms_income_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
+	private boolean save_backup_to_dropbox = false;
 	private String dropbox_app_key = "";
 	private String dropbox_app_secret = "";
+	private boolean analysis_harvest = false;
+	private String harvest_username = "";
+	private String harvest_password = "";
+	private String harvest_subdomain = "";
+	private long salary = 0;
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;

@@ -81,6 +81,16 @@ public class MainActivity extends Activity {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			return settings.getStatsTags();
+		} else if (name.equals("analysis_harvest")) {
+			return settings.isAnalysisHarvest() ? "true" : "false";
+		} else if (name.equals("harvest_username")) {
+			return settings.getHarvestUsername();
+		} else if (name.equals("harvest_password")) {
+			return settings.getHarvestPassword();
+		} else if (name.equals("harvest_subdomain")) {
+			return settings.getHarvestSubdomain();
+		} else if (name.equals("salary")) {
+			return String.valueOf(settings.getSalary());
 		} else {
 			return "";
 		}
