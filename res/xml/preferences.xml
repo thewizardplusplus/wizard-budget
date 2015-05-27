@@ -66,6 +66,34 @@
 			android:title = "@string/preference_dropbox_passwords_reset_button_title"
 			android:summary = "@string/preference_dropbox_passwords_reset_button_summary" />
 	</PreferenceCategory>
+	<PreferenceCategory android:title = "@string/harvest_preferences">
+		<CheckBoxPreference
+			android:key = "preference_analysis_harvest"
+			android:title = "@string/preference_analysis_harvest_title"
+			android:summary = "@string/preference_analysis_harvest_summary"
+			android:defaultValue = "false" />
+		<EditTextPreference
+			android:key = "preference_harvest_username"
+			android:dependency = "preference_analysis_harvest"
+			android:title = "@string/preference_harvest_username_title"
+			android:summary = "@string/preference_harvest_username_summary" />
+		<EditTextPreference
+			android:key = "preference_harvest_password"
+			android:dependency = "preference_analysis_harvest"
+			android:title = "@string/preference_harvest_password_title"
+			android:summary = "@string/preference_harvest_password_summary" />
+		<EditTextPreference
+			android:key = "preference_harvest_subdomain"
+			android:dependency = "preference_analysis_harvest"
+			android:title = "@string/preference_harvest_subdomain_title"
+			android:summary = "@string/preference_harvest_subdomain_summary" />
+		<EditTextPreference
+			android:key = "preference_harvest_salary"
+			android:dependency = "preference_analysis_harvest"
+			android:title = "@string/preference_harvest_salary_title"
+			android:summary = "@string/preference_harvest_salary_summary"
+			android:defaultValue = "0"/>
+	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/notifications_preferences">
 		<CheckBoxPreference
 			android:key = "preference_backup_notification"

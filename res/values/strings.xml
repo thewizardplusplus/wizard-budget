@@ -35,6 +35,17 @@
 	<string name = "preference_dropbox_app_secret_default">ahg9sdct9vtmxxb</string>
 	<string name = "preference_dropbox_passwords_reset_button_title">Reset passwords</string>
 	<string name = "preference_dropbox_passwords_reset_button_summary">Reset Dropbox app access passwords to defaults.</string>
+	<string name = "harvest_preferences">Harvest access</string>
+	<string name = "preference_analysis_harvest_title">Analysis Harvest</string>
+	<string name = "preference_analysis_harvest_summary">Calculate worked hours and its cost.</string>
+	<string name = "preference_harvest_username_title">Harvest username</string>
+	<string name = "preference_harvest_username_summary">Username of Harvest account.</string>
+	<string name = "preference_harvest_password_title">Harvest password</string>
+	<string name = "preference_harvest_password_summary">Password of Harvest account.</string>
+	<string name = "preference_harvest_subdomain_title">Harvest subdomain</string>
+	<string name = "preference_harvest_subdomain_summary">Subdomain of organization in Harvest.</string>
+	<string name = "preference_harvest_salary_title">Salary</string>
+	<string name = "preference_harvest_salary_summary">Salary in organization.</string>
 	<string name = "notifications_preferences">Notifications</string>
 	<string name = "preference_backup_notification_title">Backup notification</string>
 	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>
