@@ -497,10 +497,26 @@ $(document).ready(
 				}
 			);
 		}
-		function UpdateSegments() {
+		function SetCurrentSegment(current_segment) {
 			$('.control-item, .control-content').removeClass('active');
-			var current_segment = activity.getSetting('current_segment');
 			$('.' + current_segment + '-segment').addClass('active');
+		}
+		function UpdateSegments() {
+			var RESET_SEGMENT_TIMEOUT = 100;
+
+			var current_segment = activity.getSetting('current_segment');
+			if (
+				current_segment == 'hours'
+				&& activity.getSetting('analysis_harvest') !== 'true'
+			) {
+				current_segment = 'history';
+				activity.setSetting('current_segment', 'history');
+			}
+			SetCurrentSegment(current_segment);
+
+			if (activity.getSetting('analysis_harvest') !== 'true') {
+				$('.hours-segment').hide();
+			}
 
 			var add_button = $('.add-button');
 			if (current_segment == 'stats' || current_segment == 'hours') {
@@ -529,9 +545,22 @@ $(document).ready(
 						add_button.hide();
 						refresh_button.hide();
 					} else if (self.hasClass('hours-segment')) {
-						activity.setSetting('current_segment', 'hours');
-						add_button.hide();
-						refresh_button.show();
+						if (activity.getSetting('analysis_harvest') === 'true') {
+							activity.setSetting('current_segment', 'hours');
+							add_button.hide();
+							refresh_button.show();
+						} else {
+							activity.setSetting('current_segment', 'history');
+							add_button.show();
+							refresh_button.hide();
+
+							setTimeout(
+								function() {
+									SetCurrentSegment('history');
+								},
+								RESET_SEGMENT_TIMEOUT
+							);
+						}
 					} else {
 						activity.setSetting('current_segment', 'history');
 						add_button.show();
