@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
-	public void httpRequest(String name, String url) {
+	public void httpRequest(String name, String url, String headers) {
 		try {
 			callGuiFunction(
 				"addLoadingLogMessage",
@@ -127,9 +127,21 @@ public class MainActivity extends Activity {
 				}
 			);
 
+			Map<String, String> header_map = new HashMap<String, String>();
+			try {
+				JSONObject headers_json = new JSONObject(headers);
+				Iterator<String> i = headers_json.keys();
+				while (i.hasNext()) {
+					String header_name = i.next();
+					String header_value = headers_json.optString(header_name);
+					header_map.put(header_name, header_value.toString());
+				}
+			} catch(JSONException exception) {}
+
 			final MainActivity self = this;
 			final String name_copy = name;
 			HttpRequestTask task = new HttpRequestTask(
+				header_map,
 				new HttpRequestTask.OnSuccessListener() {
 					@Override
 					public void onSuccess(String data) {

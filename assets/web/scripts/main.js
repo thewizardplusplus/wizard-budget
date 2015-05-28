@@ -767,8 +767,9 @@ $(document).ready(
 					}
 
 					var url = 'http://jsonplaceholder.typicode.com/posts/1';
-					$('.debug').text('Loading "' + url + '"...');
-					activity.httpRequest('test', url);
+					var headers = {test: 'ololo'};
+					$('.debug').text(JSON.stringify(headers));
+					activity.httpRequest('test', url, JSON.stringify(headers));
 				}
 			);
 		}
