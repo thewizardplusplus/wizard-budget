@@ -58,7 +58,9 @@ var HTTP_HANDLERS = {
 			}
 		);
 
-		$('.debug').text(data);
+		var parsed_data = JSON.parse(data);
+		var user_id = parsed_data.user.id;
+		$('.debug').text(user_id);
 	}
 };
 
@@ -777,7 +779,6 @@ $(document).ready(
 						Authorization: 'Basic ' + Base64.encode(harvest_username + ':' + harvest_password)
 					};
 
-					$('.debug').text(JSON.stringify(headers));
 					activity.httpRequest('user_id', url, JSON.stringify(headers));
 				}
 			);
