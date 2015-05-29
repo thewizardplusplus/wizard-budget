@@ -768,7 +768,8 @@ $(document).ready(
 
 					var url = 'http://jsonplaceholder.typicode.com/posts/1';
 					var headers = {test: 'ololo'};
-					$('.debug').text(JSON.stringify(headers));
+					//$('.debug').text(JSON.stringify(headers));
+					$('.debug').text(Base64.encode('test'));
 					activity.httpRequest('test', url, JSON.stringify(headers));
 				}
 			);
