@@ -51,7 +51,7 @@ var LOADING_LOG = {
 };
 
 var HTTP_HANDLERS = {
-	test: function(data) {
+	user_id: function(data) {
 		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
@@ -766,11 +766,19 @@ $(document).ready(
 						return;
 					}
 
-					var url = 'http://jsonplaceholder.typicode.com/posts/1';
-					var headers = {test: 'ololo'};
-					//$('.debug').text(JSON.stringify(headers));
-					$('.debug').text(Base64.encode('test'));
-					activity.httpRequest('test', url, JSON.stringify(headers));
+					var harvest_subdomain = activity.getSetting('harvest_subdomain');
+					var url = 'https://' + harvest_subdomain + '.harvestapp.com/account/who_am_i';
+
+					var harvest_username = activity.getSetting('harvest_username');
+					var harvest_password = activity.getSetting('harvest_password');
+					var headers = {
+						'Content-Type': 'application/json',
+						Accept: 'application/json',
+						Authorization: 'Basic ' + Base64.encode(harvest_username + ':' + harvest_password)
+					};
+
+					$('.debug').text(JSON.stringify(headers));
+					activity.httpRequest('user_id', url, JSON.stringify(headers));
 				}
 			);
 		}
