@@ -50,6 +50,20 @@ var LOADING_LOG = {
 	}
 };
 
+function RequestToHarvest(request_name, path) {
+	var harvest_subdomain = activity.getSetting('harvest_subdomain');
+	var url = 'https://' + harvest_subdomain + '.harvestapp.com' + path;
+
+	var harvest_username = activity.getSetting('harvest_username');
+	var harvest_password = activity.getSetting('harvest_password');
+	var headers = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json',
+		Authorization: 'Basic ' + Base64.encode(harvest_username + ':' + harvest_password)
+	};
+
+	activity.httpRequest(request_name, url, JSON.stringify(headers));
+}
 var HTTP_HANDLERS = {
 	user_id: function(data) {
 		LOADING_LOG.finish(
@@ -768,18 +782,7 @@ $(document).ready(
 						return;
 					}
 
-					var harvest_subdomain = activity.getSetting('harvest_subdomain');
-					var url = 'https://' + harvest_subdomain + '.harvestapp.com/account/who_am_i';
-
-					var harvest_username = activity.getSetting('harvest_username');
-					var harvest_password = activity.getSetting('harvest_password');
-					var headers = {
-						'Content-Type': 'application/json',
-						Accept: 'application/json',
-						Authorization: 'Basic ' + Base64.encode(harvest_username + ':' + harvest_password)
-					};
-
-					activity.httpRequest('user_id', url, JSON.stringify(headers));
+					RequestToHarvest('user_id', '/account/who_am_i');
 				}
 			);
 		}
