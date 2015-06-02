@@ -68,8 +68,10 @@ var HTTP_HANDLERS = {
 	user_id: function(data) {
 		var parsed_data = JSON.parse(data);
 		var user_id = parsed_data.user.id;
-		var start = moment().startOf('month').format('YYYYMMDD');
-		var end = moment().format('YYYYMMDD');
+		//var start = moment().startOf('month').format('YYYYMMDD');
+		var start = '20150501';
+		//var end = moment().format('YYYYMMDD');
+		var end = '20150531';
 		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
 		RequestToHarvest('time_entries', path);
 	},
@@ -80,7 +82,19 @@ var HTTP_HANDLERS = {
 			}
 		);
 
-		$('.debug').text(data);
+		var entries = Object.create(null);
+		var parsed_data = JSON.parse(data);
+		for (var i = 0; i < parsed_data.length; i++) {
+			var entry = parsed_data[i].day_entry;
+			var date = entry.spent_at;
+			if (!entries[date]) {
+				entries[date] = 0;
+			}
+
+			entries[date] += entry.hours;
+		}
+
+		$('.debug').text(JSON.stringify(entries));
 	}
 };
 
