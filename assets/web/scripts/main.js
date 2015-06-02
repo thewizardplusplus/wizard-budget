@@ -66,15 +66,21 @@ function RequestToHarvest(request_name, path) {
 }
 var HTTP_HANDLERS = {
 	user_id: function(data) {
+		var parsed_data = JSON.parse(data);
+		var user_id = parsed_data.user.id;
+		var start = moment().startOf('month').format('YYYYMMDD');
+		var end = moment().format('YYYYMMDD');
+		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
+		RequestToHarvest('time_entries', path);
+	},
+	time_entries: function(data) {
 		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
 			}
 		);
 
-		var parsed_data = JSON.parse(data);
-		var user_id = parsed_data.user.id;
-		$('.debug').text(user_id);
+		$('.debug').text(data);
 	}
 };
 
