@@ -68,10 +68,8 @@ var HTTP_HANDLERS = {
 	user_id: function(data) {
 		var parsed_data = JSON.parse(data);
 		var user_id = parsed_data.user.id;
-		//var start = moment().startOf('month').format('YYYYMMDD');
-		var start = '20150501';
-		//var end = moment().format('YYYYMMDD');
-		var end = '20150531';
+		var start = moment().startOf('month').format('YYYYMMDD');
+		var end = moment().format('YYYYMMDD');
 		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
 		RequestToHarvest('time_entries', path);
 	},
@@ -94,7 +92,8 @@ var HTTP_HANDLERS = {
 			entries[date] += entry.hours;
 		}
 
-		$('.debug').text(JSON.stringify(entries));
+		activity.setSetting('worked_hours', JSON.stringify(entries));
+		$('.debug').text(activity.getSetting('worked_hours'));
 	}
 };
 

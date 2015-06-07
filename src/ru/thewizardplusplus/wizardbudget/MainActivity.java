@@ -91,6 +91,8 @@ public class MainActivity extends Activity {
 			return settings.getHarvestSubdomain();
 		} else if (name.equals("salary")) {
 			return String.valueOf(settings.getSalary());
+		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
+			return settings.getWorkedHours();
 		} else {
 			return "";
 		}
@@ -111,6 +113,8 @@ public class MainActivity extends Activity {
 			settings.setStatsRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
+		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
+			settings.setWorkedHours(value);
 		}
 		settings.save();
 	}

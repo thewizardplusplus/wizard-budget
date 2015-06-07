@@ -13,6 +13,7 @@ public class Settings {
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
 	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
+	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -47,6 +48,10 @@ public class Settings {
 		settings.dropbox_token = preferences.getString(
 			SETTING_NAME_DROPBOX_TOKEN,
 			""
+		);
+		settings.worked_hours = preferences.getString(
+			SETTING_NAME_WORKED_HOURS,
+			DEFAULT_WORKED_HOURS
 		);
 
 		settings.credit_card_tag =
@@ -220,6 +225,14 @@ public class Settings {
 		this.dropbox_token = dropbox_token;
 	}
 
+	public String getWorkedHours() {
+		return worked_hours;
+	}
+
+	public void setWorkedHours(String worked_hours) {
+		this.worked_hours = worked_hours;
+	}
+
 	public String getCreditCardTag() {
 		return credit_card_tag;
 	}
@@ -312,6 +325,7 @@ public class Settings {
 		editor.putLong(SETTING_NAME_STATS_RANGE, stats_range);
 		editor.putString(SETTING_NAME_STATS_TAGS, stats_tags);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
+		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.commit();
 	}
 
@@ -319,6 +333,7 @@ public class Settings {
 	private static final String DEFAULT_SEGMENT = "history";
 	private static final String DEFAULT_SPENDING = "null";
 	private static final String DEFAULT_BUY = "null";
+	private static final String DEFAULT_WORKED_HOURS = "null";
 	private static final long DEFAULT_STATS_RANGE = 30;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
@@ -330,6 +345,7 @@ public class Settings {
 	private long stats_range = DEFAULT_STATS_RANGE;
 	private String stats_tags = "";
 	private String dropbox_token = "";
+	private String worked_hours = DEFAULT_WORKED_HOURS;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
