@@ -93,6 +93,8 @@ public class MainActivity extends Activity {
 			return String.valueOf(settings.getSalary());
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			return settings.getWorkedHours();
+		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
+			return settings.getWorkCalendar();
 		} else {
 			return "";
 		}
@@ -115,6 +117,8 @@ public class MainActivity extends Activity {
 			settings.setStatsTags(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			settings.setWorkedHours(value);
+		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
+			settings.setWorkCalendar(value);
 		}
 		settings.save();
 	}

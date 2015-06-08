@@ -124,7 +124,8 @@ var HTTP_HANDLERS = {
 		);
 
 		var serialized_work_hours = JSON.stringify(work_hours);
-		$('.debug').text(serialized_work_hours);
+		activity.setSetting('worked_hours', serialized_work_hours);
+		$('.debug').text(activity.getSetting('worked_hours'));
 		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
 
 		LOADING_LOG.finish(
