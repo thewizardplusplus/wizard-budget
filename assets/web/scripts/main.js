@@ -1,4 +1,4 @@
-var LOADING_LOG_CLEAN_DELAY = 2000;
+var LOADING_LOG_CLEAN_DELAY = 5000;
 var LOADING_LOG = {
 	getTypeMark: function(type) {
 		if (type == 'success') {
@@ -90,13 +90,16 @@ var HTTP_HANDLERS = {
 		activity.httpRequest('work_calendar', 'http://www.calend.ru/work/', JSON.stringify(null));
 	},
 	work_calendar: function(data) {
+		LOADING_LOG.addMessage('Start the work calendar parsing.');
+		var dom = $(data);
+		$('.debug').text($('table', dom).length);
+		LOADING_LOG.addMessage('The work calendar parsing has finished.', 'success');
+
 		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
 			}
 		);
-
-		$('.debug').text(data);
 	}
 };
 
