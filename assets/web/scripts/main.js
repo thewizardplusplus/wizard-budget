@@ -65,21 +65,15 @@ function RequestToHarvest(request_name, path) {
 	activity.httpRequest(request_name, url, JSON.stringify(headers));
 }
 var HTTP_HANDLERS = {
-	user_id: function(data) {
+	harvest_user_id: function(data) {
 		var parsed_data = JSON.parse(data);
 		var user_id = parsed_data.user.id;
 		var start = moment().startOf('month').format('YYYYMMDD');
 		var end = moment().format('YYYYMMDD');
 		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
-		RequestToHarvest('time_entries', path);
+		RequestToHarvest('harvest_time_entries', path);
 	},
-	time_entries: function(data) {
-		LOADING_LOG.finish(
-			function() {
-				$('.refresh-button').removeClass('disabled');
-			}
-		);
-
+	harvest_time_entries: function(data) {
 		var entries = Object.create(null);
 		var parsed_data = JSON.parse(data);
 		for (var i = 0; i < parsed_data.length; i++) {
@@ -91,9 +85,18 @@ var HTTP_HANDLERS = {
 
 			entries[date] += entry.hours;
 		}
-
 		activity.setSetting('worked_hours', JSON.stringify(entries));
-		$('.debug').text(activity.getSetting('worked_hours'));
+
+		activity.httpRequest('work_calendar', 'http://www.calend.ru/work/', JSON.stringify(null));
+	},
+	work_calendar: function(data) {
+		LOADING_LOG.finish(
+			function() {
+				$('.refresh-button').removeClass('disabled');
+			}
+		);
+
+		$('.debug').text(data);
 	}
 };
 
@@ -801,7 +804,7 @@ $(document).ready(
 						return;
 					}
 
-					RequestToHarvest('user_id', '/account/who_am_i');
+					RequestToHarvest('harvest_user_id', '/account/who_am_i');
 				}
 			);
 		}
