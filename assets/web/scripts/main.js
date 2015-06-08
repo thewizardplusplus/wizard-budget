@@ -92,7 +92,31 @@ var HTTP_HANDLERS = {
 	work_calendar: function(data) {
 		LOADING_LOG.addMessage('Start the work calendar parsing.');
 		var dom = $(data);
-		$('.debug').text($('table', dom).length);
+
+		var work_hours = [];
+		$('.time_of_death > tbody > tr:not(:first-child) > td', dom).each(
+			function() {
+				var month = [];
+				$('tr:nth-child(n+3) .day', $(this)).each(
+					function() {
+						var element = $(this);
+						var day_type = 'ordinary';
+						if (element.hasClass('col5')) {
+							day_type = 'holiday';
+						} else if (element.hasClass('col6')) {
+							day_type = 'short';
+						}
+
+						month.push(day_type);
+					}
+				);
+
+				work_hours.push(month);
+			}
+		);
+
+		var serialized_work_hours = JSON.stringify(work_hours);
+		$('.debug').text(serialized_work_hours);
 		LOADING_LOG.addMessage('The work calendar parsing has finished.', 'success');
 
 		LOADING_LOG.finish(
