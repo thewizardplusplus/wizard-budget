@@ -66,16 +66,22 @@ function RequestToHarvest(request_name, path) {
 }
 var HTTP_HANDLERS = {
 	harvest_user_id: function(data) {
+		LOADING_LOG.addMessage('Start the Harvest user ID processing.');
 		var parsed_data = JSON.parse(data);
+
 		var user_id = parsed_data.user.id;
 		var start = moment().startOf('month').format('YYYYMMDD');
 		var end = moment().format('YYYYMMDD');
 		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
+		LOADING_LOG.addMessage('The Harvest user ID processing has finished.', 'success');
+
 		RequestToHarvest('harvest_time_entries', path);
 	},
 	harvest_time_entries: function(data) {
-		var entries = Object.create(null);
+		LOADING_LOG.addMessage('Start the Harvest time entries processing.');
 		var parsed_data = JSON.parse(data);
+
+		var entries = Object.create(null);
 		for (var i = 0; i < parsed_data.length; i++) {
 			var entry = parsed_data[i].day_entry;
 			var date = entry.spent_at;
@@ -85,12 +91,14 @@ var HTTP_HANDLERS = {
 
 			entries[date] += entry.hours;
 		}
+
 		activity.setSetting('worked_hours', JSON.stringify(entries));
+		LOADING_LOG.addMessage('The Harvest time entries processing has finished.', 'success');
 
 		activity.httpRequest('work_calendar', 'http://www.calend.ru/work/', JSON.stringify(null));
 	},
 	work_calendar: function(data) {
-		LOADING_LOG.addMessage('Start the work calendar parsing.');
+		LOADING_LOG.addMessage('Start the work calendar processing.');
 		var dom = $(data);
 
 		var work_hours = [];
@@ -117,7 +125,7 @@ var HTTP_HANDLERS = {
 
 		var serialized_work_hours = JSON.stringify(work_hours);
 		$('.debug').text(serialized_work_hours);
-		LOADING_LOG.addMessage('The work calendar parsing has finished.', 'success');
+		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
 
 		LOADING_LOG.finish(
 			function() {
