@@ -105,17 +105,29 @@ var HTTP_HANDLERS = {
 		$('.time_of_death > tbody > tr:not(:first-child) > td', dom).each(
 			function() {
 				var month = [];
-				$('tr:nth-child(n+3) .day', $(this)).each(
+				$('tr:nth-child(n+3)', $(this)).each(
 					function() {
-						var element = $(this);
-						var day_type = 'ordinary';
-						if (element.hasClass('col5')) {
-							day_type = 'holiday';
-						} else if (element.hasClass('col6')) {
-							day_type = 'short';
-						}
+						$('td', $(this)).each(
+							function(index) {
+								var element = $(this);
+								if (!element.hasClass('day')) {
+									return;
+								}
 
-						month.push(day_type);
+								var day_type = 'ordinary';
+								if (element.hasClass('col5')) {
+									if (index < 6) {
+										day_type = 'holiday';
+									} else {
+										day_type = 'weekend';
+									}
+								} else if (element.hasClass('col6')) {
+									day_type = 'short';
+								}
+
+								month.push(day_type);
+							}
+						);
 					}
 				);
 
@@ -123,9 +135,7 @@ var HTTP_HANDLERS = {
 			}
 		);
 
-		var serialized_work_hours = JSON.stringify(work_hours);
-		activity.setSetting('work_calendar', serialized_work_hours);
-		$('.debug').text(activity.getSetting('work_calendar'));
+		activity.setSetting('work_calendar', JSON.stringify(work_hours));
 		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
 
 		LOADING_LOG.finish(
