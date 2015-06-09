@@ -1,4 +1,4 @@
-var LOADING_LOG_CLEAN_DELAY = 5000;
+var LOADING_LOG_CLEAN_DELAY = 2000;
 var LOADING_LOG = {
 	getTypeMark: function(type) {
 		if (type == 'success') {
@@ -72,12 +72,21 @@ function ProcessHours() {
 		}
 	}
 
-	var processed_data = {
+	var hours_data = {
+		month: moment().format('MMMM'),
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: expected_hours - month_worked_hours
 	};
-	$('.debug').text(JSON.stringify(processed_data));
+	ShowHours(hours_data);
+}
+function ShowHours(hours_data) {
+	$('#hours-segment .month-view').text(hours_data.month);
+
+	var hours_view = $('#hours-segment .hours-view');
+	$('.expected-hours-view', hours_view).text(hours_data.expected_hours);
+	$('.hours-worked-view', hours_view).text(hours_data.month_worked_hours);
+	$('.difference-view', hours_view).text(hours_data.difference);
 }
 
 function RequestToHarvest(request_name, path) {
@@ -170,11 +179,11 @@ var HTTP_HANDLERS = {
 
 		ProcessHours();
 
-		/*LOADING_LOG.finish(
+		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
 			}
-		);*/
+		);
 	}
 };
 
@@ -885,6 +894,8 @@ $(document).ready(
 					RequestToHarvest('harvest_user_id', '/account/who_am_i');
 				}
 			);
+
+			ProcessHours();
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
