@@ -50,6 +50,36 @@ var LOADING_LOG = {
 	}
 };
 
+function ProcessHours() {
+	var current_date = new Date();
+	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
+	var month_date = work_calendar[current_date.getMonth()];
+	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
+
+	var expected_hours = 0;
+	var month_worked_hours = 0;
+	for (var day = 1; day <= current_date.getDate(); day++) {
+		var day_type = month_date[day - 1];
+		if (day_type == 'ordinary') {
+			expected_hours += 8;
+		} else if (day_type == 'short') {
+			expected_hours += 7;
+		}
+
+		var day_worked_hours = worked_hours[day.toString()];
+		if (typeof day_worked_hours !== 'undefined') {
+			month_worked_hours += day_worked_hours;
+		}
+	}
+
+	var processed_data = {
+		expected_hours: expected_hours,
+		month_worked_hours: month_worked_hours,
+		difference: expected_hours - month_worked_hours
+	};
+	$('.debug').text(JSON.stringify(processed_data));
+}
+
 function RequestToHarvest(request_name, path) {
 	var harvest_subdomain = activity.getSetting('harvest_subdomain');
 	var url = 'https://' + harvest_subdomain + '.harvestapp.com' + path;
@@ -138,11 +168,13 @@ var HTTP_HANDLERS = {
 		activity.setSetting('work_calendar', JSON.stringify(work_hours));
 		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
 
-		LOADING_LOG.finish(
+		ProcessHours();
+
+		/*LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
 			}
-		);
+		);*/
 	}
 };
 
