@@ -84,12 +84,12 @@ var HTTP_HANDLERS = {
 		var entries = Object.create(null);
 		for (var i = 0; i < parsed_data.length; i++) {
 			var entry = parsed_data[i].day_entry;
-			var date = entry.spent_at;
-			if (!entries[date]) {
-				entries[date] = 0;
+			var day = entry.spent_at.split('-')[2].replace(/^0/, '');
+			if (!entries[day]) {
+				entries[day] = 0;
 			}
 
-			entries[date] += entry.hours;
+			entries[day] += entry.hours;
 		}
 
 		activity.setSetting('worked_hours', JSON.stringify(entries));
@@ -124,8 +124,8 @@ var HTTP_HANDLERS = {
 		);
 
 		var serialized_work_hours = JSON.stringify(work_hours);
-		activity.setSetting('worked_hours', serialized_work_hours);
-		$('.debug').text(activity.getSetting('worked_hours'));
+		activity.setSetting('work_calendar', serialized_work_hours);
+		$('.debug').text(activity.getSetting('work_calendar'));
 		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
 
 		LOADING_LOG.finish(
