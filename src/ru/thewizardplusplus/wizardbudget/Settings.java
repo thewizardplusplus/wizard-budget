@@ -147,12 +147,6 @@ public class Settings {
 			"preference_harvest_subdomain",
 			""
 		);
-		settings.salary = Long.valueOf(
-			preferences.getString(
-				"preference_salary",
-				"0"
-			)
-		);
 
 		settings.backup_notification = preferences.getBoolean(
 			"preference_backup_notification",
@@ -302,10 +296,6 @@ public class Settings {
 		return harvest_subdomain;
 	}
 
-	public long getSalary() {
-		return salary;
-	}
-
 	public boolean isBackupNotification() {
 		return backup_notification;
 	}
@@ -376,7 +366,6 @@ public class Settings {
 	private String harvest_username = "";
 	private String harvest_password = "";
 	private String harvest_subdomain = "";
-	private long salary = 0;
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;

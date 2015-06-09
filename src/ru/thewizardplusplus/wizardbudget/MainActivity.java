@@ -89,8 +89,6 @@ public class MainActivity extends Activity {
 			return settings.getHarvestPassword();
 		} else if (name.equals("harvest_subdomain")) {
 			return settings.getHarvestSubdomain();
-		} else if (name.equals("salary")) {
-			return String.valueOf(settings.getSalary());
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			return settings.getWorkedHours();
 		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {

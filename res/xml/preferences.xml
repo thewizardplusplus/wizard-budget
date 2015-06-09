@@ -87,12 +87,6 @@
 			android:dependency = "preference_analysis_harvest"
 			android:title = "@string/preference_harvest_subdomain_title"
 			android:summary = "@string/preference_harvest_subdomain_summary" />
-		<EditTextPreference
-			android:key = "preference_salary"
-			android:dependency = "preference_analysis_harvest"
-			android:title = "@string/preference_salary_title"
-			android:summary = "@string/preference_salary_summary"
-			android:defaultValue = "0"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/notifications_preferences">
 		<CheckBoxPreference

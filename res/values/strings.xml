@@ -44,8 +44,6 @@
 	<string name = "preference_harvest_password_summary">Password of Harvest account.</string>
 	<string name = "preference_harvest_subdomain_title">Harvest subdomain</string>
 	<string name = "preference_harvest_subdomain_summary">Subdomain of organization in Harvest.</string>
-	<string name = "preference_salary_title">Salary</string>
-	<string name = "preference_salary_summary">Salary in organization.</string>
 	<string name = "notifications_preferences">Notifications</string>
 	<string name = "preference_backup_notification_title">Backup notification</string>
 	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>
