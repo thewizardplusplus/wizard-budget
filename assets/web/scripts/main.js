@@ -79,6 +79,8 @@ function ProcessHours() {
 		month_worked_hours: month_worked_hours,
 		difference: expected_hours - month_worked_hours
 	};
+	activity.setSetting('hours_data', JSON.stringify(hours_data));
+
 	ShowHours(hours_data);
 }
 function ShowHours(hours_data) {

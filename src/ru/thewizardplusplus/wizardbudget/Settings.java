@@ -15,6 +15,7 @@ public class Settings {
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
 	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
+	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -57,6 +58,10 @@ public class Settings {
 		settings.work_calendar = preferences.getString(
 			SETTING_NAME_WORK_CALENDAR,
 			DEFAULT_WORK_CALENDAR
+		);
+		settings.hours_data = preferences.getString(
+			SETTING_NAME_HOURS_DATA,
+			DEFAULT_HOURS_DATA
 		);
 
 		settings.credit_card_tag =
@@ -240,6 +245,14 @@ public class Settings {
 		this.work_calendar = work_calendar;
 	}
 
+	public String getHoursData() {
+		return hours_data;
+	}
+
+	public void setHoursData(String hours_data) {
+		this.hours_data = hours_data;
+	}
+
 	public String getCreditCardTag() {
 		return credit_card_tag;
 	}
@@ -330,6 +343,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
 		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
+		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
 		editor.commit();
 	}
 
@@ -339,6 +353,7 @@ public class Settings {
 	private static final String DEFAULT_BUY = "null";
 	private static final String DEFAULT_WORKED_HOURS = "null";
 	private static final String DEFAULT_WORK_CALENDAR = "null";
+	private static final String DEFAULT_HOURS_DATA = "null";
 	private static final long DEFAULT_STATS_RANGE = 30;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
@@ -352,6 +367,7 @@ public class Settings {
 	private String dropbox_token = "";
 	private String worked_hours = DEFAULT_WORKED_HOURS;
 	private String work_calendar = DEFAULT_WORK_CALENDAR;
+	private String hours_data = DEFAULT_HOURS_DATA;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
