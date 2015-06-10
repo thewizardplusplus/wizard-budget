@@ -37,7 +37,7 @@
 				android:layout_height = "wrap_content"
 				android:textStyle = "bold"
 				android:text = "@string/zero"
-				android:drawableRight = "@drawable/ruble_widget_icon" />
+				android:drawableRight = "@drawable/clock_widget_icon" />
 		</LinearLayout>
 		<ImageView
 			android:id = "@+id/widget_add_button_small"
