@@ -4,11 +4,13 @@
 	font-weight: bold;
 }
 
-.spendings-sum-view.excess {
+.spendings-sum-view.excess,
+.hours-view .excess {
 	color: #2baa2b;
 }
 
-.spendings-sum-view.lack {
+.spendings-sum-view.lack,
+.hours-view .lack {
 	color: #f44;
 }
 
@@ -184,6 +186,12 @@ ol {
 .refresh-button.disabled {
 	color: grey;
 	opacity: 0.5;
+}
+
+.hours-view td {
+    padding: 5px 10px;
+	font-size: 14px;
+	color: #777;
 }
 
 .debug {

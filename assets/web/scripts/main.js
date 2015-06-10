@@ -50,6 +50,7 @@ var LOADING_LOG = {
 	}
 };
 
+var HOURS_VIEW_PRECISION = 2;
 function ProcessHours() {
 	var current_date = new Date();
 	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
@@ -84,9 +85,22 @@ function ShowHours(hours_data) {
 	$('#hours-segment .month-view').text(hours_data.month);
 
 	var hours_view = $('#hours-segment .hours-view');
-	$('.expected-hours-view', hours_view).text(hours_data.expected_hours);
-	$('.hours-worked-view', hours_view).text(hours_data.month_worked_hours);
-	$('.difference-view', hours_view).text(hours_data.difference);
+	$('.expected-hours-view', hours_view).text(
+		hours_data.expected_hours
+	);
+	$('.hours-worked-view', hours_view).text(
+		hours_data.month_worked_hours.toFixed(HOURS_VIEW_PRECISION)
+	);
+
+	var difference_view = $('.difference-view', hours_view);
+	difference_view.text(
+		hours_data.difference.toFixed(HOURS_VIEW_PRECISION)
+	);
+	if (hours_data.difference < 0) {
+		difference_view.removeClass('lack').addClass('excess');
+	} else {
+		difference_view.removeClass('excess').addClass('lack');
+	}
 }
 
 function RequestToHarvest(request_name, path) {
