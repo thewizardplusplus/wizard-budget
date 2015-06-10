@@ -82,6 +82,7 @@ function ProcessHours() {
 	activity.setSetting('hours_data', JSON.stringify(hours_data));
 
 	ShowHours(hours_data);
+	activity.updateWidget();
 }
 function ShowHours(hours_data) {
 	$('#hours-segment .month-view').text(hours_data.month);
