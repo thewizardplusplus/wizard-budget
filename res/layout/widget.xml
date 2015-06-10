@@ -21,7 +21,7 @@
 			android:layout_height = "wrap_content"
 			android:layout_centerHorizontal = "true"
 			android:layout_centerVertical = "true"
-			android:orientation = "horizontal">
+			android:orientation = "vertical">
 			<TextView
 				android:id = "@+id/widget_spendings_sum"
 				style = "@style/widget_label_style"
@@ -29,7 +29,15 @@
 				android:layout_height = "wrap_content"
 				android:textStyle = "bold"
 				android:text = "@string/zero"
-				android:drawableRight = "@drawable/ruble_widget_icon"/>
+				android:drawableRight = "@drawable/ruble_widget_icon" />
+			<TextView
+				android:id = "@+id/widget_lack_hours"
+				style = "@style/widget_label_style"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:textStyle = "bold"
+				android:text = "@string/zero"
+				android:drawableRight = "@drawable/ruble_widget_icon" />
 		</LinearLayout>
 		<ImageView
 			android:id = "@+id/widget_add_button_small"
