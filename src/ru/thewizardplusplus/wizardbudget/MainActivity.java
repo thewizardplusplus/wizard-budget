@@ -194,6 +194,15 @@ public class MainActivity extends Activity {
 			settings.save();
 		}
 
+		String current_segment =
+			getIntent()
+			.getStringExtra(Settings.SETTING_NAME_CURRENT_SEGMENT);
+		if (current_segment != null) {
+			Settings settings = Settings.getCurrent(this);
+			settings.setCurrentSegment(current_segment);
+			settings.save();
+		}
+
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
 		web_view.setWebViewClient(
