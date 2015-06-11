@@ -14,10 +14,10 @@
 	<string name = "preference_sms_number_pattern_default">.*</string>
 	<string name = "preference_sms_spending_pattern_title">Spending pattern</string>
 	<string name = "preference_sms_spending_pattern_summary">Regular expression for parse of spending notifications. Must have one group that contains spending. E.g. \u00abSpending: (\\d+(?:\\.\\d+)?) RUB\\.\u00bb.</string>
-	<string name = "preference_sms_spending_pattern_default">Spending: (\\d+(?:\\.\\d+)?) RUB\\.</string>
+	<string name = "preference_sms_spending_pattern_default">Spending: (\b(?:\d?\d?\d)(?:\s?\d\d\d)*(?:\.\d+)?\b) RUB\\.</string>
 	<string name = "preference_sms_income_pattern_title">Income pattern</string>
 	<string name = "preference_sms_income_pattern_summary">Regular expression for parse of income notifications. Must have one group that contains income. E.g. \u00abIncome: (\\d+(?:\\.\\d+)?) RUB\\.\u00bb.</string>
-	<string name = "preference_sms_income_pattern_default">Income: (\\d+(?:\\.\\d+)?) RUB\\.</string>
+	<string name = "preference_sms_income_pattern_default">Income: (\b(?:\d?\d?\d)(?:\s?\d\d\d)*(?:\.\d+)?\b) RUB\\.</string>
 	<string name = "preference_sms_spending_comment_title">Spending comment</string>
 	<string name = "preference_sms_spending_comment_summary">Spending comment text.</string>
 	<string name = "preference_sms_spending_comment_default">spending</string>
