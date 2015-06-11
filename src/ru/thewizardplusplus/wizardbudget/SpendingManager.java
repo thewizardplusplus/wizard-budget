@@ -313,7 +313,10 @@ public class SpendingManager {
 	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
 		ContentValues values = new ContentValues();
-		long current_timestamp = resetSeconds(System.currentTimeMillis() / 1000L);
+		long current_timestamp = resetSeconds(
+			System.currentTimeMillis()
+			/ 1000L
+		);
 		values.put("timestamp", current_timestamp);
 		values.put("amount", amount);
 		values.put("comment", comment);

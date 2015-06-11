@@ -22,7 +22,11 @@ var LOADING_LOG = {
 		var loading_log = $('.loading-log');
 		loading_log.show();
 		loading_log.prepend(
-			'<p class = "content-padded ' + LOADING_LOG.getTypeClass(type) + '">'
+			'<p '
+				+ 'class = "'
+					+ 'content-padded '
+					+ LOADING_LOG.getTypeClass(type)
+				+ '">'
 				+ LOADING_LOG.getTypeMark(type) + ' '
 				+ message
 			+ '</p>'
@@ -115,7 +119,9 @@ function RequestToHarvest(request_name, path) {
 	var headers = {
 		'Content-Type': 'application/json',
 		Accept: 'application/json',
-		Authorization: 'Basic ' + Base64.encode(harvest_username + ':' + harvest_password)
+		Authorization:
+			'Basic '
+			+ Base64.encode(harvest_username + ':' + harvest_password)
 	};
 
 	activity.httpRequest(request_name, url, JSON.stringify(headers));
@@ -128,8 +134,17 @@ var HTTP_HANDLERS = {
 		var user_id = parsed_data.user.id;
 		var start = moment().startOf('month').format('YYYYMMDD');
 		var end = moment().format('YYYYMMDD');
-		var path = '/people/' + user_id + '/entries?from=' + start + '&to=' + end;
-		LOADING_LOG.addMessage('The Harvest user ID processing has finished.', 'success');
+		var path =
+			'/people/'
+			+ user_id
+			+ '/entries?from='
+			+ start
+			+ '&to='
+			+ end;
+		LOADING_LOG.addMessage(
+			'The Harvest user ID processing has finished.',
+			'success'
+		);
 
 		RequestToHarvest('harvest_time_entries', path);
 	},
@@ -149,9 +164,16 @@ var HTTP_HANDLERS = {
 		}
 
 		activity.setSetting('worked_hours', JSON.stringify(entries));
-		LOADING_LOG.addMessage('The Harvest time entries processing has finished.', 'success');
+		LOADING_LOG.addMessage(
+			'The Harvest time entries processing has finished.',
+			'success'
+		);
 
-		activity.httpRequest('work_calendar', 'http://www.calend.ru/work/', JSON.stringify(null));
+		activity.httpRequest(
+			'work_calendar',
+			'http://www.calend.ru/work/',
+			JSON.stringify(null)
+		);
 	},
 	work_calendar: function(data) {
 		LOADING_LOG.addMessage('Start the work calendar processing.');
@@ -192,7 +214,10 @@ var HTTP_HANDLERS = {
 		);
 
 		activity.setSetting('work_calendar', JSON.stringify(work_hours));
-		LOADING_LOG.addMessage('The work calendar processing has finished.', 'success');
+		LOADING_LOG.addMessage(
+			'The work calendar processing has finished.',
+			'success'
+		);
 
 		ProcessHours();
 
@@ -239,7 +264,10 @@ var GUI = {
 	},
 	setHttpResult: function(request, data) {
 		if (data.substr(0, 6) != 'error:') {
-			LOADING_LOG.addMessage('The "' + request + '" HTTP request has finished.', 'success');
+			LOADING_LOG.addMessage(
+				'The "' + request + '" HTTP request has finished.',
+				'success'
+			);
 
 			var handler = HTTP_HANDLERS[request];
 			if (handler) {
@@ -687,7 +715,9 @@ $(document).ready(
 						add_button.hide();
 						refresh_button.hide();
 					} else if (self.hasClass('hours-segment')) {
-						if (activity.getSetting('analysis_harvest') === 'true') {
+						if (
+							activity.getSetting('analysis_harvest') === 'true'
+						) {
 							activity.setSetting('current_segment', 'hours');
 							add_button.hide();
 							refresh_button.show();

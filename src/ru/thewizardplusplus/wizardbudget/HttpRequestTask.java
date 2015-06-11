@@ -4,13 +4,13 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-import android.util.*;
-import android.os.*;
-
 import org.apache.http.client.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.client.methods.*;
 import org.apache.http.*;
+
+import android.util.*;
+import android.os.*;
 
 public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 	public interface OnSuccessListener {
@@ -40,7 +40,11 @@ public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 			StatusLine status = response.getStatusLine();
 			int status_code = status.getStatusCode();
 			if (status_code != 200) {
-				return "error:" + String.valueOf(status_code) + " " + status.getReasonPhrase();
+				return
+					"error:"
+					+ String.valueOf(status_code)
+					+ " "
+					+ status.getReasonPhrase();
 			}
 
 			BufferedReader in = new BufferedReader(

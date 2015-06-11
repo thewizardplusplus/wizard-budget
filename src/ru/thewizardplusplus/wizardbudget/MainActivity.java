@@ -5,6 +5,8 @@ import java.text.*;
 import java.util.*;
 import java.net.*;
 
+import org.json.*;
+
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
@@ -16,7 +18,6 @@ import com.dropbox.client2.*;
 import com.dropbox.client2.android.*;
 import com.dropbox.client2.session.*;
 import com.dropbox.client2.exception.*;
-import org.json.*;
 
 public class MainActivity extends Activity {
 	@Override
@@ -272,7 +273,13 @@ public class MainActivity extends Activity {
 		}
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
-		web_view.loadUrl("javascript:GUI." + name + "(" + arguments_string + ")");
+		web_view.loadUrl(
+			"javascript:GUI."
+			+ name
+			+ "("
+			+ arguments_string
+			+ ")"
+		);
 	}
 
 	private void callGuiFunction(String name) {

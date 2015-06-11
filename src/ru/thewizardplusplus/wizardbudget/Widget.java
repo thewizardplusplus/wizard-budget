@@ -1,16 +1,15 @@
 package ru.thewizardplusplus.wizardbudget;
 
-import org.json.*;
-
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.widget.RemoteViews;
 import java.text.*;
 import java.util.*;
+
+import org.json.*;
+
+import android.app.*;
+import android.appwidget.*;
+import android.content.*;
+import android.graphics.*;
+import android.widget.*;
 
 public class Widget extends AppWidgetProvider {
 	public static RemoteViews getUpdatedViews(Context context) {
