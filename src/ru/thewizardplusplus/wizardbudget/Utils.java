@@ -81,6 +81,7 @@ public class Utils {
 				return null;
 			}
 		}
+		spending_string = spending_string.replaceAll("[^\\d-\\.,]", "");
 
 		double spending = 0.0;
 		try {
