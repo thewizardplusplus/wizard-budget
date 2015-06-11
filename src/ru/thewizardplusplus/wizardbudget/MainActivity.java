@@ -196,6 +196,24 @@ public class MainActivity extends Activity {
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
+		web_view.setWebViewClient(
+			new WebViewClient() {
+				@Override
+				public boolean shouldOverrideUrlLoading(
+					WebView view,
+					String url
+				) {
+					try {
+						Intent intent = new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse(url)
+						);
+						startActivity(intent);
+					} catch(ActivityNotFoundException exception) {}
+				}
+			}
+		);
+
 		web_view.addJavascriptInterface(this, "activity");
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
