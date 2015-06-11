@@ -9,7 +9,6 @@ import org.apache.http.impl.client.*;
 import org.apache.http.client.methods.*;
 import org.apache.http.*;
 
-import android.util.*;
 import android.os.*;
 
 public class HttpRequestTask extends AsyncTask<URL, Void, String> {

@@ -4,16 +4,14 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.net.*;
-
 import org.json.*;
-
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
 import android.content.*;
 import android.net.*;
 import android.util.*;
-
 import com.dropbox.client2.*;
 import com.dropbox.client2.android.*;
 import com.dropbox.client2.session.*;
@@ -141,6 +139,7 @@ public class MainActivity extends Activity {
 			Map<String, String> header_map = new HashMap<String, String>();
 			try {
 				JSONObject headers_json = new JSONObject(headers);
+				@SuppressWarnings("unchecked")
 				Iterator<String> i = headers_json.keys();
 				while (i.hasNext()) {
 					String header_name = i.next();
@@ -181,6 +180,7 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	@SuppressLint("SetJavaScriptEnabled")
 	protected void onCreate(Bundle saved_instance_state) {
 		super.onCreate(saved_instance_state);
 		setContentView(R.layout.main);
