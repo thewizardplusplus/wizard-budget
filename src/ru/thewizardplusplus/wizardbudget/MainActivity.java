@@ -210,6 +210,8 @@ public class MainActivity extends Activity {
 						);
 						startActivity(intent);
 					} catch(ActivityNotFoundException exception) {}
+
+					return true;
 				}
 			}
 		);
