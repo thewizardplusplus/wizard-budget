@@ -51,7 +51,10 @@ public class Widget extends AppWidgetProvider {
 			Settings.SETTING_NAME_CURRENT_SEGMENT,
 			"hours"
 		);
-		widget_update_hours_intent.putExtra("update_hours", true);
+		widget_update_hours_intent.putExtra(
+			Settings.SETTING_NAME_NEED_UPDATE_HOURS,
+			true
+		);
 
 		PendingIntent widget_update_hours_pending_intent = PendingIntent.getActivity(
 			context,

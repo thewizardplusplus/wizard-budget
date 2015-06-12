@@ -98,6 +98,8 @@ public class MainActivity extends Activity {
 			return settings.getWorkCalendar();
 		} else if (name.equals(Settings.SETTING_NAME_HOURS_DATA)) {
 			return settings.getHoursData();
+		} else if (name.equals(Settings.SETTING_NAME_NEED_UPDATE_HOURS)) {
+			return settings.isNeedUpdateHours() ? "true" : "false";
 		} else {
 			return "";
 		}
@@ -124,6 +126,8 @@ public class MainActivity extends Activity {
 			settings.setWorkCalendar(value);
 		} else if (name.equals(Settings.SETTING_NAME_HOURS_DATA)) {
 			settings.setHoursData(value);
+		} else if (name.equals(Settings.SETTING_NAME_NEED_UPDATE_HOURS)) {
+			settings.setNeedUpdateHours(value.equals("true"));
 		}
 		settings.save();
 	}
@@ -204,6 +208,15 @@ public class MainActivity extends Activity {
 		if (current_segment != null) {
 			Settings settings = Settings.getCurrent(this);
 			settings.setCurrentSegment(current_segment);
+			settings.save();
+		}
+
+		boolean need_update_hours =
+			getIntent()
+			.getBooleanExtra(Settings.SETTING_NAME_NEED_UPDATE_HOURS, false);
+		if (need_update_hours) {
+			Settings settings = Settings.getCurrent(this);
+			settings.setNeedUpdateHours(true);
 			settings.save();
 		}
 

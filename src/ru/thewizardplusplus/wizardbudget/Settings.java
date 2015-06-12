@@ -358,7 +358,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
-		editor.putString(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
+		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.commit();
 	}
 

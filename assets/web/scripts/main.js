@@ -671,6 +671,13 @@ $(document).ready(
 			$('.control-item, .control-content').removeClass('active');
 			$('.' + current_segment + '-segment').addClass('active');
 		}
+		function UpdateHoursDataIfNeed(refresh_button) {
+			var need_update_hours = activity.getSetting('need_update_hours');
+			if (need_update_hours === 'true') {
+				activity.setSetting('need_update_hours', 'false');
+				refresh_button.click();
+			}
+		}
 		function UpdateSegments() {
 			var RESET_SEGMENT_TIMEOUT = 100;
 
@@ -698,6 +705,7 @@ $(document).ready(
 			var refresh_button = $('.refresh-button');
 			if (current_segment == 'hours') {
 				refresh_button.show();
+				UpdateHoursDataIfNeed(refresh_button);
 			} else {
 				refresh_button.hide();
 			}
@@ -721,6 +729,7 @@ $(document).ready(
 							activity.setSetting('current_segment', 'hours');
 							add_button.hide();
 							refresh_button.show();
+							UpdateHoursDataIfNeed(refresh_button);
 						} else {
 							activity.setSetting('current_segment', 'history');
 							add_button.show();
