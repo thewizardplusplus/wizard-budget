@@ -56,7 +56,7 @@
 				android:layout_width = "32dp"
 				android:layout_height = "32dp"
 				android:layout_alignParentBottom = "true"
-				android:src = "@drawable/add_widget_icon" />
+				android:src = "@drawable/hours_update_widget_icon" />
 		</RelativeLayout>
 	</RelativeLayout>
 </LinearLayout>
