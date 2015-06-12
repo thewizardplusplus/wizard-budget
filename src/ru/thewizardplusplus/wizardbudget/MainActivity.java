@@ -39,9 +39,12 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public void saveToDropbox(String filename) {
 		backup_filename = filename;
+		Log.d("drop", "start");
 
 		String dropbox_token = Settings.getCurrent(this).getDropboxToken();
 		if (!dropbox_token.isEmpty()) {
+			Log.d("drop", "not empty");
+			Log.d("drop", "\"" + dropbox_token + "\"");
 			AppKeyPair app_keys = getDropboxAppKeys();
 			AndroidAuthSession session = new AndroidAuthSession(
 				app_keys,
@@ -51,6 +54,7 @@ public class MainActivity extends Activity {
 
 			saveBackupToDropbox();
 		} else {
+			Log.d("drop", "empty");
 			startDropboxAuthentication();
 		}
 	}

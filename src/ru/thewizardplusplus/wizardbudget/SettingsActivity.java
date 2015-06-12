@@ -6,6 +6,7 @@ import android.preference.*;
 import android.os.*;
 import android.app.*;
 import android.content.*;
+import android.util.*;
 
 public class SettingsActivity extends PreferenceActivity {
 	@Override
@@ -38,11 +39,13 @@ public class SettingsActivity extends PreferenceActivity {
 			R.string.preference_dropbox_app_secret_default
 		);
 		final EditTextPreference dropbox_app_key =
-			(EditTextPreference)preference_screen.findPreference(
+			addDropboxTokenResetter(
+				preference_screen,
 				"preference_dropbox_app_key"
 			);
 		final EditTextPreference dropbox_app_secret =
-			(EditTextPreference)preference_screen.findPreference(
+			addDropboxTokenResetter(
+				preference_screen,
 				"preference_dropbox_app_secret"
 			);
 		preference_screen
@@ -67,6 +70,8 @@ public class SettingsActivity extends PreferenceActivity {
 									dropbox_app_secret.setText(
 										dropbox_app_secret_default
 									);
+
+									resetDropboxToken();
 								}
 							},
 							true
@@ -117,6 +122,29 @@ public class SettingsActivity extends PreferenceActivity {
 		);
 	}
 
+	private EditTextPreference addDropboxTokenResetter(
+		PreferenceScreen preference_screen,
+		String preference_name
+	) {
+		EditTextPreference preference =
+			(EditTextPreference)preference_screen
+			.findPreference(preference_name);
+		preference.setOnPreferenceChangeListener(
+			new Preference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(
+					Preference preference,
+					Object new_value
+				) {
+					resetDropboxToken();
+					return true;
+				}
+			}
+		);
+
+		return preference;
+	}
+
 	private void showAlert(
 		String title,
 		String message,
@@ -134,5 +162,11 @@ public class SettingsActivity extends PreferenceActivity {
 			builder.setNegativeButton(android.R.string.cancel, null);
 		}
 		builder.show();
+	}
+
+	private void resetDropboxToken() {
+		Settings setting = Settings.getCurrent(this);
+		setting.setDropboxToken("");
+		setting.save();
 	}
 }
