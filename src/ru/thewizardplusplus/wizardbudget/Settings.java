@@ -16,6 +16,8 @@ public class Settings {
 	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
 	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
+	public static final String SETTING_NAME_NEED_UPDATE_HOURS =
+		"need_update_hours";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -62,6 +64,10 @@ public class Settings {
 		settings.hours_data = preferences.getString(
 			SETTING_NAME_HOURS_DATA,
 			DEFAULT_HOURS_DATA
+		);
+		settings.need_update_hours = preferences.getBoolean(
+			SETTING_NAME_NEED_UPDATE_HOURS,
+			false
 		);
 
 		settings.credit_card_tag =
@@ -253,6 +259,14 @@ public class Settings {
 		this.hours_data = hours_data;
 	}
 
+	public boolean isNeedUpdateHours() {
+		return need_update_hours;
+	}
+
+	public void setNeedUpdateHours(boolean need_update_hours) {
+		this.need_update_hours = need_update_hours;
+	}
+
 	public String getCreditCardTag() {
 		return credit_card_tag;
 	}
@@ -344,6 +358,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
+		editor.putString(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.commit();
 	}
 
@@ -368,6 +383,7 @@ public class Settings {
 	private String worked_hours = DEFAULT_WORKED_HOURS;
 	private String work_calendar = DEFAULT_WORK_CALENDAR;
 	private String hours_data = DEFAULT_HOURS_DATA;
+	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
