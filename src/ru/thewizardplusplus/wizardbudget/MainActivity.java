@@ -398,16 +398,27 @@ public class MainActivity extends Activity {
 	}
 
 	private void startDropboxAuthentication() {
+		Log.d("drop", "auth");
 		AppKeyPair app_keys = getDropboxAppKeys();
+		Log.d("drop", "1");
 		AndroidAuthSession session = new AndroidAuthSession(app_keys);
+		Log.d("drop", "2");
 		dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
+		Log.d("drop", "3");
+		try{
 		dropbox_api.getSession().startOAuth2Authentication(this);
+		}catch(Exception e) {
+			Log.d("drop", "error \"" +e.getMessage()+"\"");
+		}
+		Log.d("drop", "4");
 	}
 
 	private AppKeyPair getDropboxAppKeys() {
 		Settings settings = Settings.getCurrent(this);
 		String app_key = settings.getDropboxAppKey();
+		Log.d("drop", "key \"" + app_key + "\"");
 		String app_secret = settings.getDropboxAppSecret();
+		Log.d("drop", "secret \"" + app_secret + "\"");
 		return new AppKeyPair(app_key, app_secret);
 	}
 }
