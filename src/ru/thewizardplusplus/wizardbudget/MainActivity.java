@@ -4,7 +4,9 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.net.*;
+
 import org.json.*;
+
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.os.*;
@@ -12,6 +14,7 @@ import android.webkit.*;
 import android.content.*;
 import android.net.*;
 import android.util.*;
+
 import com.dropbox.client2.*;
 import com.dropbox.client2.android.*;
 import com.dropbox.client2.session.*;
@@ -39,12 +42,9 @@ public class MainActivity extends Activity {
 	@JavascriptInterface
 	public void saveToDropbox(String filename) {
 		backup_filename = filename;
-		Log.d("drop", "start");
 
 		String dropbox_token = Settings.getCurrent(this).getDropboxToken();
 		if (!dropbox_token.isEmpty()) {
-			Log.d("drop", "not empty");
-			Log.d("drop", "\"" + dropbox_token + "\"");
 			AppKeyPair app_keys = getDropboxAppKeys();
 			AndroidAuthSession session = new AndroidAuthSession(
 				app_keys,
@@ -54,7 +54,6 @@ public class MainActivity extends Activity {
 
 			saveBackupToDropbox();
 		} else {
-			Log.d("drop", "empty");
 			startDropboxAuthentication();
 		}
 	}
@@ -304,6 +303,7 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
+	private static final String DROPBOX_APP_KEY = "a3fjeiuyp2gcndt";
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private String backup_filename = "";
@@ -398,27 +398,15 @@ public class MainActivity extends Activity {
 	}
 
 	private void startDropboxAuthentication() {
-		Log.d("drop", "auth");
 		AppKeyPair app_keys = getDropboxAppKeys();
-		Log.d("drop", "1");
 		AndroidAuthSession session = new AndroidAuthSession(app_keys);
-		Log.d("drop", "2");
 		dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
-		Log.d("drop", "3");
-		try{
 		dropbox_api.getSession().startOAuth2Authentication(this);
-		}catch(Exception e) {
-			Log.d("drop", "error \"" +e.getMessage()+"\"");
-		}
-		Log.d("drop", "4");
 	}
 
 	private AppKeyPair getDropboxAppKeys() {
 		Settings settings = Settings.getCurrent(this);
-		String app_key = settings.getDropboxAppKey();
-		Log.d("drop", "key \"" + app_key + "\"");
 		String app_secret = settings.getDropboxAppSecret();
-		Log.d("drop", "secret \"" + app_secret + "\"");
-		return new AppKeyPair(app_key, app_secret);
+		return new AppKeyPair(DROPBOX_APP_KEY, app_secret);
 	}
 }

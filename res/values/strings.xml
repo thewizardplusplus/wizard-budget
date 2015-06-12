@@ -27,14 +27,8 @@
 	<string name = "dropbox_preferences">Dropbox backuping</string>
 	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
 	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
-	<string name = "preference_dropbox_app_key_title">Dropbox app key</string>
-	<string name = "preference_dropbox_app_key_summary">Public key of backuping Dropbox app.</string>
-	<string name = "preference_dropbox_app_key_default">g0395gpeyf78f9o</string>
 	<string name = "preference_dropbox_app_secret_title">Dropbox app secret</string>
 	<string name = "preference_dropbox_app_secret_summary">Private key of backuping Dropbox app.</string>
-	<string name = "preference_dropbox_app_secret_default">ahg9sdct9vtmxxb</string>
-	<string name = "preference_dropbox_passwords_reset_button_title">Reset passwords</string>
-	<string name = "preference_dropbox_passwords_reset_button_summary">Reset Dropbox app access passwords to defaults.</string>
 	<string name = "harvest_preferences">Harvest access</string>
 	<string name = "preference_analysis_harvest_title">Analysis Harvest</string>
 	<string name = "preference_analysis_harvest_summary">Calculate worked hours and its cost.</string>

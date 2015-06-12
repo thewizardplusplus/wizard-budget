@@ -133,13 +133,9 @@ public class Settings {
 			"preference_save_backup_to_dropbox",
 			false
 		);
-		settings.dropbox_app_key = preferences.getString(
-			"preference_dropbox_app_key",
-			context.getString(R.string.preference_dropbox_app_key_default)
-		);
 		settings.dropbox_app_secret = preferences.getString(
 			"preference_dropbox_app_secret",
-			context.getString(R.string.preference_dropbox_app_secret_default)
+			""
 		);
 
 		settings.analysis_harvest = preferences.getBoolean(
@@ -299,10 +295,6 @@ public class Settings {
 		return save_backup_to_dropbox;
 	}
 
-	public String getDropboxAppKey() {
-		return dropbox_app_key;
-	}
-
 	public String getDropboxAppSecret() {
 		return dropbox_app_secret;
 	}
@@ -392,7 +384,6 @@ public class Settings {
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
 	private boolean save_backup_to_dropbox = false;
-	private String dropbox_app_key = "";
 	private String dropbox_app_secret = "";
 	private boolean analysis_harvest = false;
 	private String harvest_username = "";
