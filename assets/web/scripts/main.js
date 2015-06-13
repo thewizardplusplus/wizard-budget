@@ -1,3 +1,234 @@
+var LOADING_LOG_CLEAN_DELAY = 2000;
+var LOADING_LOG = {
+	getTypeMark: function(type) {
+		if (type == 'success') {
+			return '<i class = "fa fa-check-circle"></i>';
+		} else if (type == 'error') {
+			return '<i class = "fa fa-times-circle"></i>';
+		} else {
+			return '<i class = "fa fa-info-circle"></i>';
+		}
+	},
+	getTypeClass: function(type) {
+		if (type == 'success' || type == 'error') {
+			return type;
+		} else {
+			return '';
+		}
+	},
+	addMessage: function(message, type) {
+		type = type || 'info';
+
+		var loading_log = $('.loading-log');
+		loading_log.show();
+		loading_log.prepend(
+			'<p '
+				+ 'class = "'
+					+ 'content-padded '
+					+ LOADING_LOG.getTypeClass(type)
+				+ '">'
+				+ LOADING_LOG.getTypeMark(type) + ' '
+				+ message
+			+ '</p>'
+		);
+	},
+	finish: function(callback, message, type) {
+		callback = callback || function() {};
+		message = message || 'All done.'
+		type = type || 'success';
+
+		LOADING_LOG.addMessage(message, type);
+
+		setTimeout(
+			function() {
+				LOADING_LOG.clean();
+				callback();
+			},
+			LOADING_LOG_CLEAN_DELAY
+		);
+	},
+	clean: function() {
+		var loading_log = $('.loading-log');
+		loading_log.empty();
+		loading_log.hide();
+	}
+};
+
+var HOURS_VIEW_PRECISION = 2;
+function ProcessHours() {
+	var current_date = new Date();
+	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
+	var month_date = work_calendar[current_date.getMonth()];
+	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
+
+	var expected_hours = 0;
+	var month_worked_hours = 0;
+	for (var day = 1; day <= current_date.getDate(); day++) {
+		var day_type = month_date[day - 1];
+		if (day_type == 'ordinary') {
+			expected_hours += 8;
+		} else if (day_type == 'short') {
+			expected_hours += 7;
+		}
+
+		var day_worked_hours = worked_hours[day.toString()];
+		if (typeof day_worked_hours !== 'undefined') {
+			month_worked_hours += day_worked_hours;
+		}
+	}
+
+	var hours_data = {
+		month: moment().format('MMMM'),
+		expected_hours: expected_hours,
+		month_worked_hours: month_worked_hours,
+		difference: expected_hours - month_worked_hours
+	};
+	activity.setSetting('hours_data', JSON.stringify(hours_data));
+
+	ShowHours(hours_data);
+	activity.updateWidget();
+}
+function ShowHours(hours_data) {
+	$('#hours-segment .month-view').text(hours_data.month);
+
+	var hours_view = $('#hours-segment .hours-view');
+	$('.expected-hours-view', hours_view).text(
+		hours_data.expected_hours
+	);
+	$('.hours-worked-view', hours_view).text(
+		hours_data.month_worked_hours.toFixed(HOURS_VIEW_PRECISION)
+	);
+
+	var difference_view = $('.difference-view', hours_view);
+	difference_view.text(
+		hours_data.difference.toFixed(HOURS_VIEW_PRECISION)
+	);
+	if (hours_data.difference < 0) {
+		difference_view.removeClass('lack').addClass('excess');
+	} else {
+		difference_view.removeClass('excess').addClass('lack');
+	}
+}
+
+function RequestToHarvest(request_name, path) {
+	var harvest_subdomain = activity.getSetting('harvest_subdomain');
+	var url = 'https://' + harvest_subdomain + '.harvestapp.com' + path;
+
+	var harvest_username = activity.getSetting('harvest_username');
+	var harvest_password = activity.getSetting('harvest_password');
+	var headers = {
+		'Content-Type': 'application/json',
+		Accept: 'application/json',
+		Authorization:
+			'Basic '
+			+ Base64.encode(harvest_username + ':' + harvest_password)
+	};
+
+	activity.httpRequest(request_name, url, JSON.stringify(headers));
+}
+var HTTP_HANDLERS = {
+	harvest_user_id: function(data) {
+		LOADING_LOG.addMessage('Start the Harvest user ID processing.');
+		var parsed_data = JSON.parse(data);
+
+		var user_id = parsed_data.user.id;
+		var start = moment().startOf('month').format('YYYYMMDD');
+		var end = moment().format('YYYYMMDD');
+		var path =
+			'/people/'
+			+ user_id
+			+ '/entries?from='
+			+ start
+			+ '&to='
+			+ end;
+		LOADING_LOG.addMessage(
+			'The Harvest user ID processing has finished.',
+			'success'
+		);
+
+		RequestToHarvest('harvest_time_entries', path);
+	},
+	harvest_time_entries: function(data) {
+		LOADING_LOG.addMessage('Start the Harvest time entries processing.');
+		var parsed_data = JSON.parse(data);
+
+		var entries = Object.create(null);
+		for (var i = 0; i < parsed_data.length; i++) {
+			var entry = parsed_data[i].day_entry;
+			var day = entry.spent_at.split('-')[2].replace(/^0/, '');
+			if (!entries[day]) {
+				entries[day] = 0;
+			}
+
+			entries[day] += entry.hours;
+		}
+
+		activity.setSetting('worked_hours', JSON.stringify(entries));
+		LOADING_LOG.addMessage(
+			'The Harvest time entries processing has finished.',
+			'success'
+		);
+
+		activity.httpRequest(
+			'work_calendar',
+			'http://www.calend.ru/work/',
+			JSON.stringify(null)
+		);
+	},
+	work_calendar: function(data) {
+		LOADING_LOG.addMessage('Start the work calendar processing.');
+		var dom = $(data);
+
+		var work_hours = [];
+		$('.time_of_death > tbody > tr:not(:first-child) > td', dom).each(
+			function() {
+				var month = [];
+				$('tr:nth-child(n+3)', $(this)).each(
+					function() {
+						$('td', $(this)).each(
+							function(index) {
+								var element = $(this);
+								if (!element.hasClass('day')) {
+									return;
+								}
+
+								var day_type = 'ordinary';
+								if (element.hasClass('col5')) {
+									if (index < 6) {
+										day_type = 'holiday';
+									} else {
+										day_type = 'weekend';
+									}
+								} else if (element.hasClass('col6')) {
+									day_type = 'short';
+								}
+
+								month.push(day_type);
+							}
+						);
+					}
+				);
+
+				work_hours.push(month);
+			}
+		);
+
+		activity.setSetting('work_calendar', JSON.stringify(work_hours));
+		LOADING_LOG.addMessage(
+			'The work calendar processing has finished.',
+			'success'
+		);
+
+		ProcessHours();
+
+		LOADING_LOG.finish(
+			function() {
+				$('.refresh-button').removeClass('disabled');
+			}
+		);
+	}
+};
+
 var GUI = {
 	hideMainMenu: function() {
 		var event = new CustomEvent('touchend');
@@ -26,6 +257,24 @@ var GUI = {
 					}
 				}
 			}
+		}
+	},
+	addLoadingLogMessage: function(message) {
+		LOADING_LOG.addMessage(message);
+	},
+	setHttpResult: function(request, data) {
+		if (data.substr(0, 6) != 'error:') {
+			LOADING_LOG.addMessage(
+				'The "' + request + '" HTTP request has finished.',
+				'success'
+			);
+
+			var handler = HTTP_HANDLERS[request];
+			if (handler) {
+				handler(data);
+			}
+		} else {
+			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".', 'error');
 		}
 	}
 };
@@ -418,16 +667,50 @@ $(document).ready(
 				}
 			);
 		}
-		function UpdateSegments() {
+		function SetCurrentSegment(current_segment) {
 			$('.control-item, .control-content').removeClass('active');
-			var current_segment = activity.getSetting('current_segment');
 			$('.' + current_segment + '-segment').addClass('active');
+		}
+		function UpdateHoursDataIfNeed() {
+			if (
+				activity.getSetting('current_segment') == 'hours'
+				&& activity.getSetting('analysis_harvest') === 'true'
+			) {
+				if (activity.getSetting('need_update_hours') === 'true') {
+					activity.setSetting('need_update_hours', 'false');
+					$('.refresh-button').click();
+				}
+			}
+		}
+		function UpdateSegments() {
+			var RESET_SEGMENT_TIMEOUT = 100;
+
+			var current_segment = activity.getSetting('current_segment');
+			if (
+				current_segment == 'hours'
+				&& activity.getSetting('analysis_harvest') !== 'true'
+			) {
+				current_segment = 'history';
+				activity.setSetting('current_segment', 'history');
+			}
+			SetCurrentSegment(current_segment);
+
+			if (activity.getSetting('analysis_harvest') !== 'true') {
+				$('.hours-segment').hide();
+			}
 
 			var add_button = $('.add-button');
-			if (current_segment == 'stats') {
+			if (current_segment == 'stats' || current_segment == 'hours') {
 				add_button.hide();
 			} else {
 				add_button.show();
+			}
+
+			var refresh_button = $('.refresh-button');
+			if (current_segment == 'hours') {
+				refresh_button.show();
+			} else {
+				refresh_button.hide();
 			}
 
 			$('.control-item').on(
@@ -437,12 +720,34 @@ $(document).ready(
 					if (self.hasClass('buys-segment')) {
 						activity.setSetting('current_segment', 'buys');
 						add_button.show();
+						refresh_button.hide();
 					} else if (self.hasClass('stats-segment')) {
 						activity.setSetting('current_segment', 'stats');
 						add_button.hide();
+						refresh_button.hide();
+					} else if (self.hasClass('hours-segment')) {
+						if (
+							activity.getSetting('analysis_harvest') === 'true'
+						) {
+							activity.setSetting('current_segment', 'hours');
+							add_button.hide();
+							refresh_button.show();
+						} else {
+							activity.setSetting('current_segment', 'history');
+							add_button.show();
+							refresh_button.hide();
+
+							setTimeout(
+								function() {
+									SetCurrentSegment('history');
+								},
+								RESET_SEGMENT_TIMEOUT
+							);
+						}
 					} else {
 						activity.setSetting('current_segment', 'history');
 						add_button.show();
+						refresh_button.hide();
 					}
 				}
 			);
@@ -634,12 +939,30 @@ $(document).ready(
 
 			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
+		function UpdateHours() {
+			$('.refresh-button').click(
+				function() {
+					var self = $(this);
+					if (!self.hasClass('disabled')) {
+						self.addClass('disabled');
+					} else {
+						return;
+					}
+
+					RequestToHarvest('harvest_user_id', '/account/who_am_i');
+				}
+			);
+
+			ProcessHours();
+		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
 			UpdateSegments();
 			UpdateSpendingList();
 			UpdateBuyList();
 			UpdateStats();
+			UpdateHours();
+			UpdateHoursDataIfNeed();
 		}
 		function UpdateEditorPage() {
 			var active_spending = LoadActiveSpending();

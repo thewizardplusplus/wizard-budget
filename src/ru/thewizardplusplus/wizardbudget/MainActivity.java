@@ -3,7 +3,11 @@ package ru.thewizardplusplus.wizardbudget;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.net.*;
 
+import org.json.*;
+
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.os.*;
 import android.webkit.*;
@@ -79,6 +83,22 @@ public class MainActivity extends Activity {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			return settings.getStatsTags();
+		} else if (name.equals("analysis_harvest")) {
+			return settings.isAnalysisHarvest() ? "true" : "false";
+		} else if (name.equals("harvest_username")) {
+			return settings.getHarvestUsername();
+		} else if (name.equals("harvest_password")) {
+			return settings.getHarvestPassword();
+		} else if (name.equals("harvest_subdomain")) {
+			return settings.getHarvestSubdomain();
+		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
+			return settings.getWorkedHours();
+		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
+			return settings.getWorkCalendar();
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_DATA)) {
+			return settings.getHoursData();
+		} else if (name.equals(Settings.SETTING_NAME_NEED_UPDATE_HOURS)) {
+			return settings.isNeedUpdateHours() ? "true" : "false";
 		} else {
 			return "";
 		}
@@ -99,13 +119,66 @@ public class MainActivity extends Activity {
 			settings.setStatsRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
+		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
+			settings.setWorkedHours(value);
+		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
+			settings.setWorkCalendar(value);
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_DATA)) {
+			settings.setHoursData(value);
+		} else if (name.equals(Settings.SETTING_NAME_NEED_UPDATE_HOURS)) {
+			settings.setNeedUpdateHours(value.equals("true"));
 		}
 		settings.save();
 	}
 
 	@JavascriptInterface
+	public void httpRequest(String name, String url, String headers) {
+		try {
+			callGuiFunction(
+				"addLoadingLogMessage",
+				new String[]{
+					JSONObject.quote(
+						"Start the " + JSONObject.quote(name) + " HTTP request."
+					)
+				}
+			);
+
+			Map<String, String> header_map = new HashMap<String, String>();
+			try {
+				JSONObject headers_json = new JSONObject(headers);
+				@SuppressWarnings("unchecked")
+				Iterator<String> i = headers_json.keys();
+				while (i.hasNext()) {
+					String header_name = i.next();
+					String header_value = headers_json.optString(header_name);
+					header_map.put(header_name, header_value.toString());
+				}
+			} catch(JSONException exception) {}
+
+			final MainActivity self = this;
+			final String name_copy = name;
+			HttpRequestTask task = new HttpRequestTask(
+				header_map,
+				new HttpRequestTask.OnSuccessListener() {
+					@Override
+					public void onSuccess(String data) {
+						self.callGuiFunction(
+							"setHttpResult",
+							new String[]{
+								JSONObject.quote(name_copy),
+								JSONObject.quote(data)
+							}
+						);
+					}
+				}
+			);
+			task.execute(new URL(url));
+		} catch(MalformedURLException exception) {}
+	}
+
+	@JavascriptInterface
 	public void log(String message) {
-		Log.d("Web", message);
+		Log.d("web", message);
 	}
 
 	@JavascriptInterface
@@ -114,6 +187,7 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	@SuppressLint("SetJavaScriptEnabled")
 	protected void onCreate(Bundle saved_instance_state) {
 		super.onCreate(saved_instance_state);
 		setContentView(R.layout.main);
@@ -127,8 +201,46 @@ public class MainActivity extends Activity {
 			settings.save();
 		}
 
+		String current_segment =
+			getIntent()
+			.getStringExtra(Settings.SETTING_NAME_CURRENT_SEGMENT);
+		if (current_segment != null) {
+			Settings settings = Settings.getCurrent(this);
+			settings.setCurrentSegment(current_segment);
+			settings.save();
+		}
+
+		boolean need_update_hours =
+			getIntent()
+			.getBooleanExtra(Settings.SETTING_NAME_NEED_UPDATE_HOURS, false);
+		if (need_update_hours) {
+			Settings settings = Settings.getCurrent(this);
+			settings.setNeedUpdateHours(true);
+			settings.save();
+		}
+
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
+		web_view.setWebViewClient(
+			new WebViewClient() {
+				@Override
+				public boolean shouldOverrideUrlLoading(
+					WebView view,
+					String url
+				) {
+					try {
+						Intent intent = new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse(url)
+						);
+						startActivity(intent);
+					} catch(ActivityNotFoundException exception) {}
+
+					return true;
+				}
+			}
+		);
+
 		web_view.addJavascriptInterface(this, "activity");
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
@@ -191,13 +303,33 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
+	private static final String DROPBOX_APP_KEY = "a3fjeiuyp2gcndt";
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private String backup_filename = "";
 
-	private void callGuiFunction(String name) {
+	private void callGuiFunction(String name, String[] arguments) {
+		String arguments_string = "";
+		for (int i = 0; i < arguments.length; i++) {
+			if (i > 0) {
+				arguments_string += ",";
+			}
+
+			arguments_string += arguments[i];
+		}
+
 		WebView web_view = (WebView)findViewById(R.id.web_view);
-		web_view.loadUrl("javascript:GUI." + name + "()");
+		web_view.loadUrl(
+			"javascript:GUI."
+			+ name
+			+ "("
+			+ arguments_string
+			+ ")"
+		);
+	}
+
+	private void callGuiFunction(String name) {
+		callGuiFunction(name, new String[]{});
 	}
 
 	private void restoreBackup(String filename) {
@@ -274,8 +406,7 @@ public class MainActivity extends Activity {
 
 	private AppKeyPair getDropboxAppKeys() {
 		Settings settings = Settings.getCurrent(this);
-		String app_key = settings.getDropboxAppKey();
 		String app_secret = settings.getDropboxAppSecret();
-		return new AppKeyPair(app_key, app_secret);
+		return new AppKeyPair(DROPBOX_APP_KEY, app_secret);
 	}
 }

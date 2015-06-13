@@ -4,11 +4,13 @@
 	font-weight: bold;
 }
 
-.spendings-sum-view.excess {
+.spendings-sum-view.excess,
+.hours-view .excess {
 	color: #2baa2b;
 }
 
-.spendings-sum-view.lack {
+.spendings-sum-view.lack,
+.hours-view .lack {
 	color: #f44;
 }
 
@@ -24,7 +26,7 @@
 	position: absolute;
 	width: auto;
 	top: 0;
-	right: 0;
+	left: -25%;
 	padding: 0 1px;
 	background: white;
 	border-radius: 3px;
@@ -166,6 +168,30 @@ ol {
 .stats-view td progress {
 	display: block;
 	width: 100%;
+}
+
+.loading-log {
+	background-color: #fcf8e3;
+	font-family: monospace;
+}
+
+.loading-log .success {
+	color: #3c763d;
+}
+
+.loading-log .error {
+	color: #a94442;
+}
+
+.refresh-button.disabled {
+	color: grey;
+	opacity: 0.5;
+}
+
+.hours-view td {
+	padding: 5px 10px;
+	font-size: 14px;
+	color: #777;
 }
 
 .debug {

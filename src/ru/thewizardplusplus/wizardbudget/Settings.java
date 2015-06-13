@@ -13,6 +13,11 @@ public class Settings {
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
 	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
+	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
+	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
+	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
+	public static final String SETTING_NAME_NEED_UPDATE_HOURS =
+		"need_update_hours";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -48,6 +53,22 @@ public class Settings {
 			SETTING_NAME_DROPBOX_TOKEN,
 			""
 		);
+		settings.worked_hours = preferences.getString(
+			SETTING_NAME_WORKED_HOURS,
+			DEFAULT_WORKED_HOURS
+		);
+		settings.work_calendar = preferences.getString(
+			SETTING_NAME_WORK_CALENDAR,
+			DEFAULT_WORK_CALENDAR
+		);
+		settings.hours_data = preferences.getString(
+			SETTING_NAME_HOURS_DATA,
+			DEFAULT_HOURS_DATA
+		);
+		settings.need_update_hours = preferences.getBoolean(
+			SETTING_NAME_NEED_UPDATE_HOURS,
+			false
+		);
 
 		settings.credit_card_tag =
 			preferences.getString(
@@ -55,10 +76,6 @@ public class Settings {
 				DEFAULT_CREDIT_CARD_TAG
 			)
 			.trim();
-		settings.save_backup_to_dropbox = preferences.getBoolean(
-			"preference_save_backup_to_dropbox",
-			true
-		);
 
 		settings.parse_sms = preferences.getBoolean(
 			"preference_parse_sms",
@@ -112,13 +129,30 @@ public class Settings {
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
-		settings.dropbox_app_key = preferences.getString(
-			"preference_dropbox_app_key",
-			context.getString(R.string.preference_dropbox_app_key_default)
+		settings.save_backup_to_dropbox = preferences.getBoolean(
+			"preference_save_backup_to_dropbox",
+			false
 		);
 		settings.dropbox_app_secret = preferences.getString(
 			"preference_dropbox_app_secret",
-			context.getString(R.string.preference_dropbox_app_secret_default)
+			""
+		);
+
+		settings.analysis_harvest = preferences.getBoolean(
+			"preference_analysis_harvest",
+			false
+		);
+		settings.harvest_username = preferences.getString(
+			"preference_harvest_username",
+			""
+		);
+		settings.harvest_password = preferences.getString(
+			"preference_harvest_password",
+			""
+		);
+		settings.harvest_subdomain = preferences.getString(
+			"preference_harvest_subdomain",
+			""
 		);
 
 		settings.backup_notification = preferences.getBoolean(
@@ -197,12 +231,40 @@ public class Settings {
 		this.dropbox_token = dropbox_token;
 	}
 
-	public String getCreditCardTag() {
-		return credit_card_tag;
+	public String getWorkedHours() {
+		return worked_hours;
 	}
 
-	public boolean isSaveBackupToDropbox() {
-		return save_backup_to_dropbox;
+	public void setWorkedHours(String worked_hours) {
+		this.worked_hours = worked_hours;
+	}
+
+	public String getWorkCalendar() {
+		return work_calendar;
+	}
+
+	public void setWorkCalendar(String work_calendar) {
+		this.work_calendar = work_calendar;
+	}
+
+	public String getHoursData() {
+		return hours_data;
+	}
+
+	public void setHoursData(String hours_data) {
+		this.hours_data = hours_data;
+	}
+
+	public boolean isNeedUpdateHours() {
+		return need_update_hours;
+	}
+
+	public void setNeedUpdateHours(boolean need_update_hours) {
+		this.need_update_hours = need_update_hours;
+	}
+
+	public String getCreditCardTag() {
+		return credit_card_tag;
 	}
 
 	public boolean isParseSms() {
@@ -229,12 +291,28 @@ public class Settings {
 		return sms_income_comment;
 	}
 
-	public String getDropboxAppKey() {
-		return dropbox_app_key;
+	public boolean isSaveBackupToDropbox() {
+		return save_backup_to_dropbox;
 	}
 
 	public String getDropboxAppSecret() {
 		return dropbox_app_secret;
+	}
+
+	public boolean isAnalysisHarvest() {
+		return analysis_harvest;
+	}
+
+	public String getHarvestUsername() {
+		return harvest_username;
+	}
+
+	public String getHarvestPassword() {
+		return harvest_password;
+	}
+
+	public String getHarvestSubdomain() {
+		return harvest_subdomain;
 	}
 
 	public boolean isBackupNotification() {
@@ -269,6 +347,10 @@ public class Settings {
 		editor.putLong(SETTING_NAME_STATS_RANGE, stats_range);
 		editor.putString(SETTING_NAME_STATS_TAGS, stats_tags);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
+		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
+		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
+		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
+		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.commit();
 	}
 
@@ -276,6 +358,9 @@ public class Settings {
 	private static final String DEFAULT_SEGMENT = "history";
 	private static final String DEFAULT_SPENDING = "null";
 	private static final String DEFAULT_BUY = "null";
+	private static final String DEFAULT_WORKED_HOURS = "null";
+	private static final String DEFAULT_WORK_CALENDAR = "null";
+	private static final String DEFAULT_HOURS_DATA = "null";
 	private static final long DEFAULT_STATS_RANGE = 30;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 
@@ -287,16 +372,23 @@ public class Settings {
 	private long stats_range = DEFAULT_STATS_RANGE;
 	private String stats_tags = "";
 	private String dropbox_token = "";
+	private String worked_hours = DEFAULT_WORKED_HOURS;
+	private String work_calendar = DEFAULT_WORK_CALENDAR;
+	private String hours_data = DEFAULT_HOURS_DATA;
+	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
-	private boolean save_backup_to_dropbox = true;
 	private boolean parse_sms = false;
 	private Pattern sms_number_pattern;
 	private Pattern sms_spending_pattern;
 	private Pattern sms_income_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
-	private String dropbox_app_key = "";
+	private boolean save_backup_to_dropbox = false;
 	private String dropbox_app_secret = "";
+	private boolean analysis_harvest = false;
+	private String harvest_username = "";
+	private String harvest_password = "";
+	private String harvest_subdomain = "";
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;
