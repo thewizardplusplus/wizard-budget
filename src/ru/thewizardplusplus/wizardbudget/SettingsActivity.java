@@ -6,7 +6,6 @@ import android.preference.*;
 import android.os.*;
 import android.app.*;
 import android.content.*;
-import android.util.*;
 
 public class SettingsActivity extends PreferenceActivity {
 	@Override

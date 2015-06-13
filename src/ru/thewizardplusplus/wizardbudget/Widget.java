@@ -46,7 +46,10 @@ public class Widget extends AppWidgetProvider {
 			widget_add_pending_intent
 		);
 
-		Intent widget_update_hours_intent = new Intent(context, MainActivity.class);
+		Intent widget_update_hours_intent = new Intent(
+			context,
+			MainActivity.class
+		);
 		widget_update_hours_intent.putExtra(
 			Settings.SETTING_NAME_CURRENT_SEGMENT,
 			"hours"
@@ -56,12 +59,13 @@ public class Widget extends AppWidgetProvider {
 			true
 		);
 
-		PendingIntent widget_update_hours_pending_intent = PendingIntent.getActivity(
-			context,
-			HOURS_PAGE_REQUEST_CODE,
-			widget_update_hours_intent,
-			PendingIntent.FLAG_UPDATE_CURRENT
-		);
+		PendingIntent widget_update_hours_pending_intent =
+			PendingIntent.getActivity(
+				context,
+				HOURS_PAGE_REQUEST_CODE,
+				widget_update_hours_intent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+			);
 		views.setOnClickPendingIntent(
 			R.id.widget_update_hours_button_small,
 			widget_update_hours_pending_intent
