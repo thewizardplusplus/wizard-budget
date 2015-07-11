@@ -64,6 +64,89 @@ public class BackupManager {
 					String.valueOf(BACKUP_VERSION)
 				);
 
+				Settings settings = Settings.getCurrent(context);
+				serializer.startTag("", "preferences");
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "credit_card_tag");
+				serializer.attribute("", "value", settings.getCreditCardTag());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "parse_sms");
+				serializer.attribute("", "value", settings.isParseSms() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_number_pattern");
+				serializer.attribute("", "value", settings.getSmsNumberPatternString());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_spending_pattern");
+				serializer.attribute("", "value", settings.getSmsSpendingPatternString());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_income_pattern");
+				serializer.attribute("", "value", settings.getSmsIncomePatternString());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_spending_comment");
+				serializer.attribute("", "value", settings.getSmsSpendingComment());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_income_comment");
+				serializer.attribute("", "value", settings.getSmsIncomeComment());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "save_backup_to_dropbox");
+				serializer.attribute("", "value", settings.isSaveBackupToDropbox() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "analysis_harvest");
+				serializer.attribute("", "value", settings.isAnalysisHarvest() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "harvest_username");
+				serializer.attribute("", "value", settings.getHarvestUsername());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "harvest_subdomain");
+				serializer.attribute("", "value", settings.getHarvestSubdomain());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "backup_notification");
+				serializer.attribute("", "value", settings.isBackupNotification() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "restore_notification");
+				serializer.attribute("", "value", settings.isRestoreNotification() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_parsing_notification");
+				serializer.attribute("", "value", settings.isSmsParsingNotification() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "sms_import_notification");
+				serializer.attribute("", "value", settings.isSmsImportNotification() ? "true" : "false");
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", "dropbox_notification");
+				serializer.attribute("", "value", settings.isDropboxNotification() ? "true" : "false");
+				serializer.endTag("", "preference");
+				serializer.endTag("", "preferences");
+
 				SQLiteDatabase database = Utils.getDatabase(context);
 				serializer.startTag("", "spendings");
 				Cursor cursor = database.query(
@@ -294,7 +377,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
-	private static final long BACKUP_VERSION = 2;
+	private static final long BACKUP_VERSION = 3;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",
