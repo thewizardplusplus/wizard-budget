@@ -383,6 +383,7 @@ public class SpendingManager {
 				}
 
 				JSONObject spending = spendings.getJSONObject(i);
+				long timestamp = resetSeconds(spending.getLong("timestamp"));
 				double amount = spending.getDouble("amount");
 
 				String comment =
@@ -398,7 +399,7 @@ public class SpendingManager {
 				}
 
 				sql += "("
-						+ String.valueOf(spending.getLong("timestamp")) + ","
+						+ String.valueOf(timestamp) + ","
 						+ String.valueOf(amount) + ","
 						+ DatabaseUtils.sqlEscapeString(comment)
 					+ ")";
