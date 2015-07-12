@@ -63,8 +63,11 @@
 	width: 25%;
 }
 
-select {
-	height: 40px;
+.spending-type-label {
+    margin-top: 13px;
+}
+
+.spending-type {
 	font-size: 17px;
 }
 
