@@ -445,6 +445,21 @@ public class Settings {
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
 		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
+		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
+		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
+		editor.putString(SETTING_NAME_SMS_NUMBER_PATTERN, sms_number_pattern_string);
+		editor.putString(SETTING_NAME_SMS_SPENDING_PATTERN, sms_spending_pattern_string);
+		editor.putString(SETTING_NAME_SMS_INCOME_PATTERN, sms_income_pattern_string);
+		editor.putString(SETTING_NAME_SMS_SPENDING_COMMENT, sms_spending_comment);
+		editor.putString(SETTING_NAME_SMS_INCOME_COMMENT, sms_income_comment);
+		editor.putBoolean(SETTING_NAME_SAVE_BACKUP_TO_DROPBOX, save_backup_to_dropbox);
+		editor.putBoolean(SETTING_NAME_ANALYSIS_HARVEST, analysis_harvest);
+		editor.putString(SETTING_NAME_HARVEST_USERNAME, harvest_username);
+		editor.putString(SETTING_NAME_HARVEST_SUBDOMAIN, harvest_subdomain);
+		editor.putBoolean(SETTING_NAME_BACKUP_NOTIFICATION, backup_notification);
+		editor.putBoolean(SETTING_NAME_RESTORE_NOTIFICATION, restore_notification);
+		editor.putBoolean(SETTING_NAME_SMS_PARSING_NOTIFICATION, sms_parsing_notification);
+		editor.putBoolean(SETTING_NAME_IMPORT_NOTIFICATION, sms_import_notification);
 		editor.commit();
 	}
 
