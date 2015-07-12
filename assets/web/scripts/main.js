@@ -965,6 +965,8 @@ $(document).ready(
 			UpdateHoursDataIfNeed();
 		}
 		function UpdateEditorPage() {
+			var CORRECT_SPENDING_PRECISION = 6;
+
 			var active_spending = LoadActiveSpending();
 
 			var edit_spending_button = $('form .edit-spending-button');
@@ -1052,6 +1054,10 @@ $(document).ready(
 
 					if (spending_type.val() == 'income') {
 						amount *= -1;
+					} else if (spending_type.val() == 'sum') {
+						var sum = Math.abs(parseFloat(spending_manager.getSpendingsSum()));
+						var difference = sum - amount;
+						amount = parseFloat(difference.toFixed(CORRECT_SPENDING_PRECISION));
 					}
 
 					if ($.type(active_spending) === "null") {
