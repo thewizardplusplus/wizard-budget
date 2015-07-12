@@ -63,6 +63,10 @@
 	width: 25%;
 }
 
+.spending-type-container {
+    margin-top: 15px;
+}
+
 .spending-type-label {
     margin-top: 13px;
 }

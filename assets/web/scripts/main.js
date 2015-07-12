@@ -968,6 +968,7 @@ $(document).ready(
 			var active_spending = LoadActiveSpending();
 
 			var edit_spending_button = $('form .edit-spending-button');
+			var spending_type = $('form .spending-type');
 			if ($.type(active_spending) === "null") {
 				$('.title').text('Add spending');
 				$('.button-icon', edit_spending_button)
@@ -980,6 +981,7 @@ $(document).ready(
 					.removeClass('fa-plus')
 					.addClass('fa-save');
 				$('.button-text', edit_spending_button).text('Save');
+				$('option[value=sum]', spending_type).hide();
 			}
 
 			var date_editor = $('.date-editor');
@@ -1031,11 +1033,13 @@ $(document).ready(
 				}
 			);
 
-			var income_flag = $('.income-flag');
-			if ($.type(active_spending) !== "null") {
-				if (active_spending.income_flag) {
-					income_flag.addClass('active');
-				}
+			if (
+				$.type(active_spending) !== "null"
+				&& active_spending.income_flag
+			) {
+				spending_type.val('income');
+			} else {
+				spending_type.val('spending');
 			}
 
 			edit_spending_button.click(
@@ -1046,7 +1050,7 @@ $(document).ready(
 					var tags = tags_editor.getTags();
 					var comment = tags.join(', ');
 
-					if (income_flag.hasClass('active')) {
+					if (spending_type.val() == 'income') {
 						amount *= -1;
 					}
 
