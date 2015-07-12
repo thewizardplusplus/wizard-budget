@@ -67,82 +67,82 @@ public class BackupManager {
 				Settings settings = Settings.getCurrent(context);
 				serializer.startTag("", "preferences");
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "credit_card_tag");
+				serializer.attribute("", "name", Settings.SETTING_NAME_CREDIT_CARD_TAG);
 				serializer.attribute("", "value", settings.getCreditCardTag());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "parse_sms");
+				serializer.attribute("", "name", Settings.SETTING_NAME_PARSE_SMS);
 				serializer.attribute("", "value", settings.isParseSms() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_number_pattern");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_NUMBER_PATTERN);
 				serializer.attribute("", "value", settings.getSmsNumberPatternString());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_spending_pattern");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_SPENDING_PATTERN);
 				serializer.attribute("", "value", settings.getSmsSpendingPatternString());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_income_pattern");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_INCOME_PATTERN);
 				serializer.attribute("", "value", settings.getSmsIncomePatternString());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_spending_comment");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_SPENDING_COMMENT);
 				serializer.attribute("", "value", settings.getSmsSpendingComment());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_income_comment");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_INCOME_COMMENT);
 				serializer.attribute("", "value", settings.getSmsIncomeComment());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "save_backup_to_dropbox");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX);
 				serializer.attribute("", "value", settings.isSaveBackupToDropbox() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "analysis_harvest");
+				serializer.attribute("", "name", Settings.SETTING_NAME_ANALYSIS_HARVEST);
 				serializer.attribute("", "value", settings.isAnalysisHarvest() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "harvest_username");
+				serializer.attribute("", "name", Settings.SETTING_NAME_HARVEST_USERNAME);
 				serializer.attribute("", "value", settings.getHarvestUsername());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "harvest_subdomain");
+				serializer.attribute("", "name", Settings.SETTING_NAME_HARVEST_SUBDOMAIN);
 				serializer.attribute("", "value", settings.getHarvestSubdomain());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "backup_notification");
+				serializer.attribute("", "name", Settings.SETTING_NAME_BACKUP_NOTIFICATION);
 				serializer.attribute("", "value", settings.isBackupNotification() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "restore_notification");
+				serializer.attribute("", "name", Settings.SETTING_NAME_RESTORE_NOTIFICATION);
 				serializer.attribute("", "value", settings.isRestoreNotification() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_parsing_notification");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_PARSING_NOTIFICATION);
 				serializer.attribute("", "value", settings.isSmsParsingNotification() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "sms_import_notification");
+				serializer.attribute("", "name", Settings.SETTING_NAME_SMS_IMPORT_NOTIFICATION);
 				serializer.attribute("", "value", settings.isSmsImportNotification() ? "true" : "false");
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
-				serializer.attribute("", "name", "dropbox_notification");
+				serializer.attribute("", "name", Settings.SETTING_NAME_DROPBOX_NOTIFICATION);
 				serializer.attribute("", "value", settings.isDropboxNotification() ? "true" : "false");
 				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
