@@ -32,7 +32,8 @@ public class Settings {
 	public static final String SETTING_NAME_BACKUP_NOTIFICATION = "preference_backup_notification";
 	public static final String SETTING_NAME_RESTORE_NOTIFICATION = "preference_restore_notification";
 	public static final String SETTING_NAME_SMS_PARSING_NOTIFICATION = "preference_sms_parsing_notification";
-	public static final String SETTING_NAME_IMPORT_NOTIFICATION = "preference_sms_import_notification";
+	public static final String SETTING_NAME_SMS_IMPORT_NOTIFICATION = "preference_sms_import_notification";
+	public static final String SETTING_NAME_DROPBOX_NOTIFICATION = "preference_dropbox_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -186,7 +187,11 @@ public class Settings {
 			true
 		);
 		settings.sms_import_notification = preferences.getBoolean(
-			SETTING_NAME_IMPORT_NOTIFICATION,
+			SETTING_NAME_SMS_IMPORT_NOTIFICATION,
+			true
+		);
+		settings.dropbox_notification = preferences.getBoolean(
+			SETTING_NAME_DROPBOX_NOTIFICATION,
 			true
 		);
 
@@ -459,7 +464,8 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_BACKUP_NOTIFICATION, backup_notification);
 		editor.putBoolean(SETTING_NAME_RESTORE_NOTIFICATION, restore_notification);
 		editor.putBoolean(SETTING_NAME_SMS_PARSING_NOTIFICATION, sms_parsing_notification);
-		editor.putBoolean(SETTING_NAME_IMPORT_NOTIFICATION, sms_import_notification);
+		editor.putBoolean(SETTING_NAME_SMS_IMPORT_NOTIFICATION, sms_import_notification);
+		editor.putBoolean(SETTING_NAME_DROPBOX_NOTIFICATION, dropbox_notification);
 		editor.commit();
 	}
 
