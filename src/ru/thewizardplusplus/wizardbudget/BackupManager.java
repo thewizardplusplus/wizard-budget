@@ -261,6 +261,58 @@ public class BackupManager {
 				.getDocumentElement();
 			budget.normalize();
 
+			Settings settings = Settings.getCurrent(context);
+			NodeList preference_list = budget.getElementsByTagName("preference");
+			for (int i = 0; i < preference_list.getLength(); i++) {
+				if (preference_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element preference = (Element)preference_list.item(i);
+					if (
+						!preference.hasAttribute("name")
+						|| !preference.hasAttribute("value")
+					) {
+						continue;
+					}
+
+					String name = preference.getAttribute("name");
+					String value = preference.getAttribute("value");
+					boolean boolean_value = value.equals("true");
+					if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
+						settings.setCreditCardTag(value);
+					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
+						settings.setParseSms(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_NUMBER_PATTERN)) {
+						settings.setSmsNumberPattern(value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_SPENDING_PATTERN)) {
+						settings.setSmsSpendingPattern(value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)) {
+						settings.setSmsIncomePattern(value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_SPENDING_COMMENT)) {
+						settings.setSmsSpendingComment(value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_INCOME_COMMENT)) {
+						settings.setSmsIncomeComment(value);
+					} else if (name.equals(Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX)) {
+						settings.setSaveBackupToDropbox(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_ANALYSIS_HARVEST)) {
+						settings.setAnalysisHarvest(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_HARVEST_USERNAME)) {
+						settings.setHarvestUsername(value);
+					} else if (name.equals(Settings.SETTING_NAME_HARVEST_SUBDOMAIN)) {
+						settings.setHarvestSubdomain(value);
+					} else if (name.equals(Settings.SETTING_NAME_BACKUP_NOTIFICATION)) {
+						settings.setBackupNotification(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_RESTORE_NOTIFICATION)) {
+						settings.setRestoreNotification(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_PARSING_NOTIFICATION)) {
+						settings.setSmsParsingNotification(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_SMS_IMPORT_NOTIFICATION)) {
+						settings.setSmsImportNotification(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_DROPBOX_NOTIFICATION)) {
+						settings.setDropboxNotification(boolean_value);
+					}
+				}
+			}
+			settings.save();
+
 			NodeList spending_list = budget.getElementsByTagName("spending");
 			for (int i = 0; i < spending_list.getLength(); i++) {
 				if (spending_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
