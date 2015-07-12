@@ -270,44 +270,76 @@ public class Settings {
 		return credit_card_tag;
 	}
 
+	public void setCreditCardTag(String credit_card_tag) {
+		this.credit_card_tag = credit_card_tag;
+	}
+
 	public boolean isParseSms() {
 		return parse_sms;
 	}
 
-	public Pattern getSmsNumberPattern() {
-		return sms_number_pattern;
-	}
-
-	public Pattern getSmsSpendingPattern() {
-		return sms_spending_pattern;
-	}
-
-	public Pattern getSmsIncomePattern() {
-		return sms_income_pattern;
+	public void setParseSms(boolean parse_sms) {
+		this.parse_sms = parse_sms;
 	}
 
 	public String getSmsNumberPatternString() {
 		return sms_number_pattern_string;
 	}
 
+	public Pattern getSmsNumberPattern() {
+		return sms_number_pattern;
+	}
+
+	public void setSmsNumberPattern(String sms_number_pattern) {
+		sms_number_pattern_string = sms_number_pattern;
+	}
+
 	public String getSmsSpendingPatternString() {
 		return sms_spending_pattern_string;
+	}
+
+	public Pattern getSmsSpendingPattern() {
+		return sms_spending_pattern;
+	}
+
+	public void setSmsSpendingPattern(String sms_spending_pattern) {
+		sms_spending_pattern_string = sms_spending_pattern;
 	}
 
 	public String getSmsIncomePatternString() {
 		return sms_income_pattern_string;
 	}
 
+	public Pattern getSmsIncomePattern() {
+		return sms_income_pattern;
+	}
+
+	public void setSmsIncomePattern(String sms_income_pattern) {
+		sms_income_pattern_string = sms_income_pattern;
+	}
+
 	public String getSmsSpendingComment() {
 		return sms_spending_comment;
+	}
+
+	public void setSmsSpendingComment(String sms_spending_comment) {
+		this.sms_spending_comment = sms_spending_comment;
 	}
 
 	public String getSmsIncomeComment() {
 		return sms_income_comment;
 	}
 
+	public void setSmsIncomeComment(String sms_income_comment) {
+		this.sms_income_comment = sms_income_comment;
+	}
+
 	public boolean isSaveBackupToDropbox() {
 		return save_backup_to_dropbox;
+	}
+
+	public void setSaveBackupToDropbox(boolean save_backup_to_dropbox) {
+		this.save_backup_to_dropbox = save_backup_to_dropbox;
 	}
 
 	public String getDropboxAppSecret() {
@@ -318,8 +350,16 @@ public class Settings {
 		return analysis_harvest;
 	}
 
+	public void setAnalysisHarvest(boolean analysis_harvest) {
+		this.analysis_harvest = analysis_harvest;
+	}
+
 	public String getHarvestUsername() {
 		return harvest_username;
+	}
+
+	public void setHarvestUsername(String harvest_username) {
+		this.harvest_username = harvest_username;
 	}
 
 	public String getHarvestPassword() {
@@ -330,24 +370,48 @@ public class Settings {
 		return harvest_subdomain;
 	}
 
+	public void setHarvestSubdomain(String harvest_subdomain) {
+		this.harvest_subdomain = harvest_subdomain;
+	}
+
 	public boolean isBackupNotification() {
 		return backup_notification;
+	}
+
+	public void setBackupNotification(boolean backup_notification) {
+		this.backup_notification = backup_notification;
 	}
 
 	public boolean isRestoreNotification() {
 		return restore_notification;
 	}
 
+	public void setRestoreNotification(boolean restore_notification) {
+		this.restore_notification = restore_notification;
+	}
+
 	public boolean isSmsParsingNotification() {
 		return sms_parsing_notification;
+	}
+
+	public void setSmsParsingNotification(boolean sms_parsing_notification) {
+		this.sms_parsing_notification = sms_parsing_notification;
 	}
 
 	public boolean isSmsImportNotification() {
 		return sms_import_notification;
 	}
 
+	public void setSmsImportNotification(boolean sms_import_notification) {
+		this.sms_import_notification = sms_import_notification;
+	}
+
 	public boolean isDropboxNotification() {
 		return dropbox_notification;
+	}
+
+	public void setDropboxNotification(boolean dropbox_notification) {
+		this.dropbox_notification = dropbox_notification;
 	}
 
 	public void save() {
@@ -393,12 +457,12 @@ public class Settings {
 	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean parse_sms = false;
+	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;
+	private String sms_spending_pattern_string = "";
 	private Pattern sms_spending_pattern;
+	private String sms_income_pattern_string = "";
 	private Pattern sms_income_pattern;
-	private String sms_number_pattern_string;
-	private String sms_spending_pattern_string;
-	private String sms_income_pattern_string;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
 	private boolean save_backup_to_dropbox = false;
