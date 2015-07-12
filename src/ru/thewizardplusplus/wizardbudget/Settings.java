@@ -18,6 +18,21 @@ public class Settings {
 	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
 	public static final String SETTING_NAME_NEED_UPDATE_HOURS =
 		"need_update_hours";
+	public static final String SETTING_NAME_CREDIT_CARD_TAG = "preference_credit_card_tag";
+	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
+	public static final String SETTING_NAME_SMS_NUMBER_PATTERN = "preference_sms_number_pattern";
+	public static final String SETTING_NAME_SMS_SPENDING_PATTERN = "preference_sms_spending_pattern";
+	public static final String SETTING_NAME_SMS_INCOME_PATTERN = "preference_sms_income_pattern";
+	public static final String SETTING_NAME_SMS_SPENDING_COMMENT = "preference_sms_spending_comment";
+	public static final String SETTING_NAME_SMS_INCOME_COMMENT = "preference_sms_income_comment";
+	public static final String SETTING_NAME_SAVE_BACKUP_TO_DROPBOX = "preference_save_backup_to_dropbox";
+	public static final String SETTING_NAME_ANALYSIS_HARVEST = "preference_analysis_harvest";
+	public static final String SETTING_NAME_HARVEST_USERNAME = "preference_harvest_username";
+	public static final String SETTING_NAME_HARVEST_SUBDOMAIN = "preference_harvest_subdomain";
+	public static final String SETTING_NAME_BACKUP_NOTIFICATION = "preference_backup_notification";
+	public static final String SETTING_NAME_RESTORE_NOTIFICATION = "preference_restore_notification";
+	public static final String SETTING_NAME_SMS_PARSING_NOTIFICATION = "preference_sms_parsing_notification";
+	public static final String SETTING_NAME_IMPORT_NOTIFICATION = "preference_sms_import_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -72,17 +87,17 @@ public class Settings {
 
 		settings.credit_card_tag =
 			preferences.getString(
-				"preference_credit_card_tag",
+				SETTING_NAME_CREDIT_CARD_TAG,
 				DEFAULT_CREDIT_CARD_TAG
 			)
 			.trim();
 
 		settings.parse_sms = preferences.getBoolean(
-			"preference_parse_sms",
+			SETTING_NAME_PARSE_SMS,
 			false
 		);
 		settings.sms_number_pattern_string = preferences.getString(
-			"preference_sms_number_pattern",
+			SETTING_NAME_SMS_NUMBER_PATTERN,
 			context.getString(
 				R.string.preference_sms_number_pattern_default
 			)
@@ -96,7 +111,7 @@ public class Settings {
 			settings.parse_sms = false;
 		}
 		settings.sms_spending_pattern_string = preferences.getString(
-			"preference_sms_spending_pattern",
+			SETTING_NAME_SMS_SPENDING_PATTERN,
 			context.getString(
 				R.string.preference_sms_spending_pattern_default
 			)
@@ -110,7 +125,7 @@ public class Settings {
 			settings.parse_sms = false;
 		}
 		settings.sms_income_pattern_string = preferences.getString(
-			"preference_sms_income_pattern",
+			SETTING_NAME_SMS_INCOME_PATTERN,
 			context.getString(
 				R.string.preference_sms_income_pattern_default
 			)
@@ -124,16 +139,16 @@ public class Settings {
 			settings.parse_sms = false;
 		}
 		settings.sms_spending_comment = preferences.getString(
-			"preference_sms_spending_comment",
+			SETTING_NAME_SMS_SPENDING_COMMENT,
 			context.getString(R.string.preference_sms_spending_comment_default)
 		);
 		settings.sms_income_comment = preferences.getString(
-			"preference_sms_income_comment",
+			SETTING_NAME_SMS_INCOME_COMMENT,
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
 		settings.save_backup_to_dropbox = preferences.getBoolean(
-			"preference_save_backup_to_dropbox",
+			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
 			false
 		);
 		settings.dropbox_app_secret = preferences.getString(
@@ -142,11 +157,11 @@ public class Settings {
 		);
 
 		settings.analysis_harvest = preferences.getBoolean(
-			"preference_analysis_harvest",
+			SETTING_NAME_ANALYSIS_HARVEST,
 			false
 		);
 		settings.harvest_username = preferences.getString(
-			"preference_harvest_username",
+			SETTING_NAME_HARVEST_USERNAME,
 			""
 		);
 		settings.harvest_password = preferences.getString(
@@ -154,24 +169,24 @@ public class Settings {
 			""
 		);
 		settings.harvest_subdomain = preferences.getString(
-			"preference_harvest_subdomain",
+			SETTING_NAME_HARVEST_SUBDOMAIN,
 			""
 		);
 
 		settings.backup_notification = preferences.getBoolean(
-			"preference_backup_notification",
+			SETTING_NAME_BACKUP_NOTIFICATION,
 			true
 		);
 		settings.restore_notification = preferences.getBoolean(
-			"preference_restore_notification",
+			SETTING_NAME_RESTORE_NOTIFICATION,
 			true
 		);
 		settings.sms_parsing_notification = preferences.getBoolean(
-			"preference_sms_parsing_notification",
+			SETTING_NAME_SMS_PARSING_NOTIFICATION,
 			true
 		);
 		settings.sms_import_notification = preferences.getBoolean(
-			"preference_sms_import_notification",
+			SETTING_NAME_IMPORT_NOTIFICATION,
 			true
 		);
 

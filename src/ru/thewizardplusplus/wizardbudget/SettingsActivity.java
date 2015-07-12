@@ -17,17 +17,17 @@ public class SettingsActivity extends PreferenceActivity {
 		PreferenceScreen preference_screen = getPreferenceScreen();
 		addRegexpValidator(
 			preference_screen,
-			"preference_sms_number_pattern",
+			Settings.SETTING_NAME_SMS_NUMBER_PATTERN,
 			"Invalid syntax of SMS number pattern."
 		);
 		addRegexpValidator(
 			preference_screen,
-			"preference_sms_spending_pattern",
+			Settings.SETTING_NAME_SMS_SPENDING_PATTERN,
 			"Invalid syntax of SMS spending pattern."
 		);
 		addRegexpValidator(
 			preference_screen,
-			"preference_sms_income_pattern",
+			Settings.SETTING_NAME_SMS_INCOME_PATTERN,
 			"Invalid syntax of SMS income pattern."
 		);
 	}
