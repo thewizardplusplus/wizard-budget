@@ -138,7 +138,9 @@ public class MainActivity extends Activity {
 				"addLoadingLogMessage",
 				new String[]{
 					JSONObject.quote(
-						"Start the " + JSONObject.quote(name) + " HTTP request."
+						"Start the "
+							+ JSONObject.quote(name)
+							+ " HTTP request."
 					)
 				}
 			);
@@ -292,8 +294,8 @@ public class MainActivity extends Activity {
 					String[] path_parts = path.split(":");
 					restoreBackup(
 						Environment.getExternalStorageDirectory()
-						+ "/"
-						+ path_parts[path_parts.length > 1 ? 1 : 0]
+							+ "/"
+							+ path_parts[path_parts.length > 1 ? 1 : 0]
 					);
 
 					callGuiFunction("refresh");

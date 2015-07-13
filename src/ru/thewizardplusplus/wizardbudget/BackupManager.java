@@ -64,6 +64,213 @@ public class BackupManager {
 					String.valueOf(BACKUP_VERSION)
 				);
 
+				Settings settings = Settings.getCurrent(context);
+				serializer.startTag("", "preferences");
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_CREDIT_CARD_TAG
+				);
+				serializer.attribute("", "value", settings.getCreditCardTag());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_PARSE_SMS
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isParseSms() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_NUMBER_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsNumberPatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_SPENDING_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsSpendingPatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_INCOME_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsIncomePatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_SPENDING_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsSpendingComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_INCOME_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsIncomeComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isSaveBackupToDropbox() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_ANALYSIS_HARVEST
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isAnalysisHarvest() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_HARVEST_USERNAME
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getHarvestUsername()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_HARVEST_SUBDOMAIN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getHarvestSubdomain()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_BACKUP_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isBackupNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_RESTORE_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isRestoreNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_PARSING_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isSmsParsingNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_IMPORT_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isSmsImportNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_DROPBOX_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isDropboxNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+				serializer.endTag("", "preferences");
+
 				SQLiteDatabase database = Utils.getDatabase(context);
 				serializer.startTag("", "spendings");
 				Cursor cursor = database.query(
@@ -177,6 +384,96 @@ public class BackupManager {
 				.parse(in)
 				.getDocumentElement();
 			budget.normalize();
+
+			Settings settings = Settings.getCurrent(context);
+			NodeList preference_list = budget.getElementsByTagName(
+				"preference"
+			);
+			for (int i = 0; i < preference_list.getLength(); i++) {
+				if (
+					preference_list.item(i).getNodeType() == Node.ELEMENT_NODE
+				) {
+					Element preference = (Element)preference_list.item(i);
+					if (
+						!preference.hasAttribute("name")
+						|| !preference.hasAttribute("value")
+					) {
+						continue;
+					}
+
+					String name = preference.getAttribute("name");
+					String value = preference.getAttribute("value");
+					boolean boolean_value = value.equals("true");
+					if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
+						settings.setCreditCardTag(value);
+					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
+						settings.setParseSms(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_NUMBER_PATTERN)
+					) {
+						settings.setSmsNumberPattern(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_SPENDING_PATTERN)
+					) {
+						settings.setSmsSpendingPattern(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)
+					) {
+						settings.setSmsIncomePattern(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_SPENDING_COMMENT)
+					) {
+						settings.setSmsSpendingComment(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_INCOME_COMMENT)
+					) {
+						settings.setSmsIncomeComment(value);
+					} else if (
+						name.equals(
+							Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX
+						)
+					) {
+						settings.setSaveBackupToDropbox(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_ANALYSIS_HARVEST)
+					) {
+						settings.setAnalysisHarvest(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_HARVEST_USERNAME)
+					) {
+						settings.setHarvestUsername(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_HARVEST_SUBDOMAIN)
+					) {
+						settings.setHarvestSubdomain(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_BACKUP_NOTIFICATION)
+					) {
+						settings.setBackupNotification(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_RESTORE_NOTIFICATION)
+					) {
+						settings.setRestoreNotification(boolean_value);
+					} else if (
+						name.equals(
+							Settings.SETTING_NAME_SMS_PARSING_NOTIFICATION
+						)
+					) {
+						settings.setSmsParsingNotification(boolean_value);
+					} else if (
+						name.equals(
+							Settings.SETTING_NAME_SMS_IMPORT_NOTIFICATION
+						)
+					) {
+						settings.setSmsImportNotification(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_DROPBOX_NOTIFICATION)
+					) {
+						settings.setDropboxNotification(boolean_value);
+					}
+				}
+			}
+			settings.save();
 
 			NodeList spending_list = budget.getElementsByTagName("spending");
 			for (int i = 0; i < spending_list.getLength(); i++) {
@@ -294,7 +591,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
-	private static final long BACKUP_VERSION = 2;
+	private static final long BACKUP_VERSION = 3;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",

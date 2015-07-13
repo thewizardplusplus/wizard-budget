@@ -18,6 +18,37 @@ public class Settings {
 	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
 	public static final String SETTING_NAME_NEED_UPDATE_HOURS =
 		"need_update_hours";
+	public static final String SETTING_NAME_CREDIT_CARD_TAG =
+		"preference_credit_card_tag";
+	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
+	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
+		"preference_sms_number_pattern";
+	public static final String SETTING_NAME_SMS_SPENDING_PATTERN =
+		"preference_sms_spending_pattern";
+	public static final String SETTING_NAME_SMS_INCOME_PATTERN =
+		"preference_sms_income_pattern";
+	public static final String SETTING_NAME_SMS_SPENDING_COMMENT =
+		"preference_sms_spending_comment";
+	public static final String SETTING_NAME_SMS_INCOME_COMMENT =
+		"preference_sms_income_comment";
+	public static final String SETTING_NAME_SAVE_BACKUP_TO_DROPBOX =
+		"preference_save_backup_to_dropbox";
+	public static final String SETTING_NAME_ANALYSIS_HARVEST =
+		"preference_analysis_harvest";
+	public static final String SETTING_NAME_HARVEST_USERNAME =
+		"preference_harvest_username";
+	public static final String SETTING_NAME_HARVEST_SUBDOMAIN =
+		"preference_harvest_subdomain";
+	public static final String SETTING_NAME_BACKUP_NOTIFICATION =
+		"preference_backup_notification";
+	public static final String SETTING_NAME_RESTORE_NOTIFICATION =
+		"preference_restore_notification";
+	public static final String SETTING_NAME_SMS_PARSING_NOTIFICATION =
+		"preference_sms_parsing_notification";
+	public static final String SETTING_NAME_SMS_IMPORT_NOTIFICATION =
+		"preference_sms_import_notification";
+	public static final String SETTING_NAME_DROPBOX_NOTIFICATION =
+		"preference_dropbox_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -72,65 +103,68 @@ public class Settings {
 
 		settings.credit_card_tag =
 			preferences.getString(
-				"preference_credit_card_tag",
+				SETTING_NAME_CREDIT_CARD_TAG,
 				DEFAULT_CREDIT_CARD_TAG
 			)
 			.trim();
 
 		settings.parse_sms = preferences.getBoolean(
-			"preference_parse_sms",
+			SETTING_NAME_PARSE_SMS,
 			false
+		);
+		settings.sms_number_pattern_string = preferences.getString(
+			SETTING_NAME_SMS_NUMBER_PATTERN,
+			context.getString(
+				R.string.preference_sms_number_pattern_default
+			)
 		);
 		try {
 			settings.sms_number_pattern = Pattern.compile(
-				preferences.getString(
-					"preference_sms_number_pattern",
-					context.getString(
-						R.string.preference_sms_number_pattern_default
-					)
-				),
+				settings.sms_number_pattern_string,
 				Pattern.CASE_INSENSITIVE
 			);
 		} catch (PatternSyntaxException exception) {
 			settings.parse_sms = false;
 		}
+		settings.sms_spending_pattern_string = preferences.getString(
+			SETTING_NAME_SMS_SPENDING_PATTERN,
+			context.getString(
+				R.string.preference_sms_spending_pattern_default
+			)
+		);
 		try {
 			settings.sms_spending_pattern = Pattern.compile(
-				preferences.getString(
-					"preference_sms_spending_pattern",
-					context.getString(
-						R.string.preference_sms_spending_pattern_default
-					)
-				),
+				settings.sms_spending_pattern_string,
 				Pattern.CASE_INSENSITIVE
 			);
 		} catch (PatternSyntaxException exception) {
 			settings.parse_sms = false;
 		}
+		settings.sms_income_pattern_string = preferences.getString(
+			SETTING_NAME_SMS_INCOME_PATTERN,
+			context.getString(
+				R.string.preference_sms_income_pattern_default
+			)
+		);
 		try {
 			settings.sms_income_pattern = Pattern.compile(
-				preferences.getString(
-					"preference_sms_income_pattern",
-					context.getString(
-						R.string.preference_sms_income_pattern_default
-					)
-				),
+				settings.sms_income_pattern_string,
 				Pattern.CASE_INSENSITIVE
 			);
 		} catch (PatternSyntaxException exception) {
 			settings.parse_sms = false;
 		}
 		settings.sms_spending_comment = preferences.getString(
-			"preference_sms_spending_comment",
+			SETTING_NAME_SMS_SPENDING_COMMENT,
 			context.getString(R.string.preference_sms_spending_comment_default)
 		);
 		settings.sms_income_comment = preferences.getString(
-			"preference_sms_income_comment",
+			SETTING_NAME_SMS_INCOME_COMMENT,
 			context.getString(R.string.preference_sms_income_comment_default)
 		);
 
 		settings.save_backup_to_dropbox = preferences.getBoolean(
-			"preference_save_backup_to_dropbox",
+			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
 			false
 		);
 		settings.dropbox_app_secret = preferences.getString(
@@ -139,11 +173,11 @@ public class Settings {
 		);
 
 		settings.analysis_harvest = preferences.getBoolean(
-			"preference_analysis_harvest",
+			SETTING_NAME_ANALYSIS_HARVEST,
 			false
 		);
 		settings.harvest_username = preferences.getString(
-			"preference_harvest_username",
+			SETTING_NAME_HARVEST_USERNAME,
 			""
 		);
 		settings.harvest_password = preferences.getString(
@@ -151,24 +185,28 @@ public class Settings {
 			""
 		);
 		settings.harvest_subdomain = preferences.getString(
-			"preference_harvest_subdomain",
+			SETTING_NAME_HARVEST_SUBDOMAIN,
 			""
 		);
 
 		settings.backup_notification = preferences.getBoolean(
-			"preference_backup_notification",
+			SETTING_NAME_BACKUP_NOTIFICATION,
 			true
 		);
 		settings.restore_notification = preferences.getBoolean(
-			"preference_restore_notification",
+			SETTING_NAME_RESTORE_NOTIFICATION,
 			true
 		);
 		settings.sms_parsing_notification = preferences.getBoolean(
-			"preference_sms_parsing_notification",
+			SETTING_NAME_SMS_PARSING_NOTIFICATION,
 			true
 		);
 		settings.sms_import_notification = preferences.getBoolean(
-			"preference_sms_import_notification",
+			SETTING_NAME_SMS_IMPORT_NOTIFICATION,
+			true
+		);
+		settings.dropbox_notification = preferences.getBoolean(
+			SETTING_NAME_DROPBOX_NOTIFICATION,
 			true
 		);
 
@@ -267,32 +305,76 @@ public class Settings {
 		return credit_card_tag;
 	}
 
+	public void setCreditCardTag(String credit_card_tag) {
+		this.credit_card_tag = credit_card_tag;
+	}
+
 	public boolean isParseSms() {
 		return parse_sms;
+	}
+
+	public void setParseSms(boolean parse_sms) {
+		this.parse_sms = parse_sms;
+	}
+
+	public String getSmsNumberPatternString() {
+		return sms_number_pattern_string;
 	}
 
 	public Pattern getSmsNumberPattern() {
 		return sms_number_pattern;
 	}
 
+	public void setSmsNumberPattern(String sms_number_pattern) {
+		sms_number_pattern_string = sms_number_pattern;
+	}
+
+	public String getSmsSpendingPatternString() {
+		return sms_spending_pattern_string;
+	}
+
 	public Pattern getSmsSpendingPattern() {
 		return sms_spending_pattern;
+	}
+
+	public void setSmsSpendingPattern(String sms_spending_pattern) {
+		sms_spending_pattern_string = sms_spending_pattern;
+	}
+
+	public String getSmsIncomePatternString() {
+		return sms_income_pattern_string;
 	}
 
 	public Pattern getSmsIncomePattern() {
 		return sms_income_pattern;
 	}
 
+	public void setSmsIncomePattern(String sms_income_pattern) {
+		sms_income_pattern_string = sms_income_pattern;
+	}
+
 	public String getSmsSpendingComment() {
 		return sms_spending_comment;
+	}
+
+	public void setSmsSpendingComment(String sms_spending_comment) {
+		this.sms_spending_comment = sms_spending_comment;
 	}
 
 	public String getSmsIncomeComment() {
 		return sms_income_comment;
 	}
 
+	public void setSmsIncomeComment(String sms_income_comment) {
+		this.sms_income_comment = sms_income_comment;
+	}
+
 	public boolean isSaveBackupToDropbox() {
 		return save_backup_to_dropbox;
+	}
+
+	public void setSaveBackupToDropbox(boolean save_backup_to_dropbox) {
+		this.save_backup_to_dropbox = save_backup_to_dropbox;
 	}
 
 	public String getDropboxAppSecret() {
@@ -303,8 +385,16 @@ public class Settings {
 		return analysis_harvest;
 	}
 
+	public void setAnalysisHarvest(boolean analysis_harvest) {
+		this.analysis_harvest = analysis_harvest;
+	}
+
 	public String getHarvestUsername() {
 		return harvest_username;
+	}
+
+	public void setHarvestUsername(String harvest_username) {
+		this.harvest_username = harvest_username;
 	}
 
 	public String getHarvestPassword() {
@@ -315,24 +405,48 @@ public class Settings {
 		return harvest_subdomain;
 	}
 
+	public void setHarvestSubdomain(String harvest_subdomain) {
+		this.harvest_subdomain = harvest_subdomain;
+	}
+
 	public boolean isBackupNotification() {
 		return backup_notification;
+	}
+
+	public void setBackupNotification(boolean backup_notification) {
+		this.backup_notification = backup_notification;
 	}
 
 	public boolean isRestoreNotification() {
 		return restore_notification;
 	}
 
+	public void setRestoreNotification(boolean restore_notification) {
+		this.restore_notification = restore_notification;
+	}
+
 	public boolean isSmsParsingNotification() {
 		return sms_parsing_notification;
+	}
+
+	public void setSmsParsingNotification(boolean sms_parsing_notification) {
+		this.sms_parsing_notification = sms_parsing_notification;
 	}
 
 	public boolean isSmsImportNotification() {
 		return sms_import_notification;
 	}
 
+	public void setSmsImportNotification(boolean sms_import_notification) {
+		this.sms_import_notification = sms_import_notification;
+	}
+
 	public boolean isDropboxNotification() {
 		return dropbox_notification;
+	}
+
+	public void setDropboxNotification(boolean dropbox_notification) {
+		this.dropbox_notification = dropbox_notification;
 	}
 
 	public void save() {
@@ -351,6 +465,52 @@ public class Settings {
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
 		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
+		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
+		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
+		editor.putString(
+			SETTING_NAME_SMS_NUMBER_PATTERN,
+			sms_number_pattern_string
+		);
+		editor.putString(
+			SETTING_NAME_SMS_SPENDING_PATTERN,
+			sms_spending_pattern_string
+		);
+		editor.putString(
+			SETTING_NAME_SMS_INCOME_PATTERN,
+			sms_income_pattern_string
+		);
+		editor.putString(
+			SETTING_NAME_SMS_SPENDING_COMMENT,
+			sms_spending_comment
+		);
+		editor.putString(SETTING_NAME_SMS_INCOME_COMMENT, sms_income_comment);
+		editor.putBoolean(
+			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
+			save_backup_to_dropbox
+		);
+		editor.putBoolean(SETTING_NAME_ANALYSIS_HARVEST, analysis_harvest);
+		editor.putString(SETTING_NAME_HARVEST_USERNAME, harvest_username);
+		editor.putString(SETTING_NAME_HARVEST_SUBDOMAIN, harvest_subdomain);
+		editor.putBoolean(
+			SETTING_NAME_BACKUP_NOTIFICATION,
+			backup_notification
+		);
+		editor.putBoolean(
+			SETTING_NAME_RESTORE_NOTIFICATION,
+			restore_notification
+		);
+		editor.putBoolean(
+			SETTING_NAME_SMS_PARSING_NOTIFICATION,
+			sms_parsing_notification
+		);
+		editor.putBoolean(
+			SETTING_NAME_SMS_IMPORT_NOTIFICATION,
+			sms_import_notification
+		);
+		editor.putBoolean(
+			SETTING_NAME_DROPBOX_NOTIFICATION,
+			dropbox_notification
+		);
 		editor.commit();
 	}
 
@@ -378,8 +538,11 @@ public class Settings {
 	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean parse_sms = false;
+	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;
+	private String sms_spending_pattern_string = "";
 	private Pattern sms_spending_pattern;
+	private String sms_income_pattern_string = "";
 	private Pattern sms_income_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
