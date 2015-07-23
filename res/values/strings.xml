@@ -38,6 +38,9 @@
 	<string name = "preference_harvest_password_summary">Password of Harvest account.</string>
 	<string name = "preference_harvest_subdomain_title">Harvest subdomain</string>
 	<string name = "preference_harvest_subdomain_summary">Subdomain of organization in Harvest.</string>
+	<string name = "preference_working_off_limit_title">Working off limit</string>
+	<string name = "preference_working_off_limit_summary">The value at which, working off becomes impossible.</string>
+	<string name = "preference_working_off_limit_default">4</string>
 	<string name = "notifications_preferences">Notifications</string>
 	<string name = "preference_backup_notification_title">Backup notification</string>
 	<string name = "preference_backup_notification_symmary">Notify about history backup.</string>
