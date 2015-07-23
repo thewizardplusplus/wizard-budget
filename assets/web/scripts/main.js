@@ -126,6 +126,11 @@ function ShowHours(hours_data) {
 	working_off_view.text(
 		hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
 	);
+	if (hours_data.working_off < 4) {
+		working_off_view.removeClass('lack').addClass('excess');
+	} else {
+		working_off_view.removeClass('excess').addClass('lack');
+	}
 }
 
 function RequestToHarvest(request_name, path) {
