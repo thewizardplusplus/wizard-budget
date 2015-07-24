@@ -89,11 +89,11 @@ public class Widget extends AppWidgetProvider {
 			);
 		}
 
+		Settings settings = Settings.getCurrent(context);
 		double hours_difference = 0;
 		double hours_working_off = 0;
-		String raw_hours_data = Settings.getCurrent(context).getHoursData();
 		try {
-			JSONObject hours_data = new JSONObject(raw_hours_data);
+			JSONObject hours_data = new JSONObject(settings.getHoursData());
 			hours_difference = hours_data.optDouble("difference");
 			hours_working_off = hours_data.optDouble("working_off");
 		} catch(JSONException exception) {}
@@ -122,7 +122,7 @@ public class Widget extends AppWidgetProvider {
 			R.id.widget_working_off_hours,
 			format.format(hours_working_off)
 		);
-		if (hours_working_off < 4.0) {
+		if (hours_working_off < settings.getWorkingOffLimit()) {
 			views.setTextColor(
 				R.id.widget_working_off_hours,
 				Color.rgb(0x2b, 0xaa, 0x2b)

@@ -91,6 +91,8 @@ public class MainActivity extends Activity {
 			return settings.getHarvestPassword();
 		} else if (name.equals("harvest_subdomain")) {
 			return settings.getHarvestSubdomain();
+		} else if (name.equals("working_off_limit")) {
+			return String.valueOf(settings.getWorkingOffLimit());
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			return settings.getWorkedHours();
 		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {

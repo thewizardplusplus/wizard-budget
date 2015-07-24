@@ -126,7 +126,8 @@ function ShowHours(hours_data) {
 	working_off_view.text(
 		hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
 	);
-	if (hours_data.working_off < 4) {
+	var working_off_limit = parseFloat(activity.getSetting('working_off_limit'));
+	if (hours_data.working_off < working_off_limit) {
 		working_off_view.removeClass('lack').addClass('excess');
 	} else {
 		working_off_view.removeClass('excess').addClass('lack');
