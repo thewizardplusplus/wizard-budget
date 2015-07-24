@@ -421,7 +421,7 @@ public class Settings {
 		return working_off_limit;
 	}
 
-	public void getWorkingOffLimit(double working_off_limit) {
+	public void setWorkingOffLimit(double working_off_limit) {
 		this.working_off_limit = working_off_limit;
 	}
 

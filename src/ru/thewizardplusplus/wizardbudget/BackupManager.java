@@ -460,6 +460,10 @@ public class BackupManager {
 					) {
 						settings.setHarvestSubdomain(value);
 					} else if (
+						name.equals(Settings.SETTING_NAME_WORKING_OFF_LIMIT)
+					) {
+						settings.setWorkingOffLimit(Double.valueOf(value));
+					} else if (
 						name.equals(Settings.SETTING_NAME_BACKUP_NOTIFICATION)
 					) {
 						settings.setBackupNotification(boolean_value);
