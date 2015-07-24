@@ -39,7 +39,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 		EditTextPreference preference_working_off_limit =
 			(EditTextPreference)preference_screen
-			.findPreference("preference_working_off_limit");
+			.findPreference(Settings.SETTING_NAME_WORKING_OFF_LIMIT);
 		preference_working_off_limit.setOnPreferenceChangeListener(
 			new Preference.OnPreferenceChangeListener() {
 				@Override
