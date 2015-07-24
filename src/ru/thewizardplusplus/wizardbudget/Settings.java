@@ -39,6 +39,8 @@ public class Settings {
 		"preference_harvest_username";
 	public static final String SETTING_NAME_HARVEST_SUBDOMAIN =
 		"preference_harvest_subdomain";
+	public static final String SETTING_NAME_WORKING_OFF_LIMIT =
+		"preference_working_off_limit";
 	public static final String SETTING_NAME_BACKUP_NOTIFICATION =
 		"preference_backup_notification";
 	public static final String SETTING_NAME_RESTORE_NOTIFICATION =
@@ -187,6 +189,12 @@ public class Settings {
 		settings.harvest_subdomain = preferences.getString(
 			SETTING_NAME_HARVEST_SUBDOMAIN,
 			""
+		);
+		settings.working_off_limit = Double.valueOf(
+			preferences.getString(
+				SETTING_NAME_WORKING_OFF_LIMIT,
+				String.valueOf(DEFAULT_WORKING_OFF_LIMIT)
+			)
 		);
 
 		settings.backup_notification = preferences.getBoolean(
@@ -409,6 +417,14 @@ public class Settings {
 		this.harvest_subdomain = harvest_subdomain;
 	}
 
+	public double getWorkingOffLimit() {
+		return working_off_limit;
+	}
+
+	public void getWorkingOffLimit(double working_off_limit) {
+		this.working_off_limit = working_off_limit;
+	}
+
 	public boolean isBackupNotification() {
 		return backup_notification;
 	}
@@ -491,6 +507,7 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_ANALYSIS_HARVEST, analysis_harvest);
 		editor.putString(SETTING_NAME_HARVEST_USERNAME, harvest_username);
 		editor.putString(SETTING_NAME_HARVEST_SUBDOMAIN, harvest_subdomain);
+		editor.putString(SETTING_NAME_WORKING_OFF_LIMIT, String.valueOf(working_off_limit));
 		editor.putBoolean(
 			SETTING_NAME_BACKUP_NOTIFICATION,
 			backup_notification
@@ -523,6 +540,7 @@ public class Settings {
 	private static final String DEFAULT_HOURS_DATA = "null";
 	private static final long DEFAULT_STATS_RANGE = 30;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
+	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
@@ -552,6 +570,7 @@ public class Settings {
 	private String harvest_username = "";
 	private String harvest_password = "";
 	private String harvest_subdomain = "";
+	private double working_off_limit = DEFAULT_WORKING_OFF_LIMIT;
 	private boolean backup_notification = true;
 	private boolean restore_notification = true;
 	private boolean sms_parsing_notification = true;
