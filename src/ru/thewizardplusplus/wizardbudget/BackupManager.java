@@ -570,19 +570,23 @@ public class BackupManager {
 
 		if (!spending_sql.isEmpty() || !buy_sql.isEmpty()) {
 			SQLiteDatabase database = Utils.getDatabase(context);
-			database.execSQL("DELETE FROM spendings");
-			database.execSQL(
-				"INSERT INTO spendings"
-				+ "(timestamp, amount, comment)"
-				+ "VALUES" + spending_sql
-			);
+			if (!spending_sql.isEmpty()) {
+				database.execSQL("DELETE FROM spendings");
+				database.execSQL(
+					"INSERT INTO spendings"
+					+ "(timestamp, amount, comment)"
+					+ "VALUES" + spending_sql
+				);
+			}
 
-			database.execSQL("DELETE FROM buys");
-			database.execSQL(
-				"INSERT INTO buys"
-				+ "(name, cost, priority, status)"
-				+ "VALUES" + buy_sql
-			);
+			if (!buy_sql.isEmpty()) {
+				database.execSQL("DELETE FROM buys");
+				database.execSQL(
+					"INSERT INTO buys"
+					+ "(name, cost, priority, status)"
+					+ "VALUES" + buy_sql
+				);
+			}
 			database.close();
 
 			if (Settings.getCurrent(context).isRestoreNotification()) {
