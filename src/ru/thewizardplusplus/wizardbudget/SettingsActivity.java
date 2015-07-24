@@ -33,7 +33,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 		Pattern working_off_pattern = null;
 		try {
-			working_off_pattern = Pattern.compile("^\\d+$");
+			working_off_pattern = Pattern.compile("^(?:0|[1-9]\\d*)(?:\\.\\d+)?$");
 		} catch (PatternSyntaxException exception) {}
 		final Pattern working_off_pattern_copy = working_off_pattern;
 
