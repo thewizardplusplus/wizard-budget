@@ -209,6 +209,19 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_WORKING_OFF_LIMIT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getWorkingOffLimit())
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_BACKUP_NOTIFICATION
 				);
 				serializer.attribute(
