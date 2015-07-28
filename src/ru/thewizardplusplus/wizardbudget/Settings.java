@@ -507,7 +507,10 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_ANALYSIS_HARVEST, analysis_harvest);
 		editor.putString(SETTING_NAME_HARVEST_USERNAME, harvest_username);
 		editor.putString(SETTING_NAME_HARVEST_SUBDOMAIN, harvest_subdomain);
-		editor.putString(SETTING_NAME_WORKING_OFF_LIMIT, String.valueOf(working_off_limit));
+		editor.putString(
+			SETTING_NAME_WORKING_OFF_LIMIT,
+			String.valueOf(working_off_limit)
+		);
 		editor.putBoolean(
 			SETTING_NAME_BACKUP_NOTIFICATION,
 			backup_notification

@@ -33,7 +33,9 @@ public class SettingsActivity extends PreferenceActivity {
 
 		Pattern working_off_pattern = null;
 		try {
-			working_off_pattern = Pattern.compile("^(?:0|[1-9]\\d*)(?:\\.\\d+)?$");
+			working_off_pattern = Pattern.compile(
+				"^(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+			);
 		} catch (PatternSyntaxException exception) {}
 		final Pattern working_off_pattern_copy = working_off_pattern;
 
@@ -47,7 +49,10 @@ public class SettingsActivity extends PreferenceActivity {
 					Preference preference,
 					Object new_value
 				) {
-					boolean found = working_off_pattern_copy.matcher((String)new_value).find();
+					boolean found =
+						working_off_pattern_copy
+						.matcher((String)new_value)
+						.find();
 					if (!found) {
 						showAlert(
 							"Error!",
