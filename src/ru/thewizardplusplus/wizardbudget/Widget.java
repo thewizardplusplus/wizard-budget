@@ -89,11 +89,13 @@ public class Widget extends AppWidgetProvider {
 			);
 		}
 
+		Settings settings = Settings.getCurrent(context);
 		double hours_difference = 0;
-		String raw_hours_data = Settings.getCurrent(context).getHoursData();
+		double hours_working_off = 0;
 		try {
-			JSONObject hours_data = new JSONObject(raw_hours_data);
+			JSONObject hours_data = new JSONObject(settings.getHoursData());
 			hours_difference = hours_data.optDouble("difference");
+			hours_working_off = hours_data.optDouble("working_off");
 		} catch(JSONException exception) {}
 
 		DecimalFormat format = new DecimalFormat(
@@ -112,6 +114,22 @@ public class Widget extends AppWidgetProvider {
 		} else {
 			views.setTextColor(
 				R.id.widget_lack_hours,
+				Color.rgb(0xff, 0x44, 0x44)
+			);
+		}
+
+		views.setTextViewText(
+			R.id.widget_working_off_hours,
+			format.format(hours_working_off)
+		);
+		if (hours_working_off < settings.getWorkingOffLimit()) {
+			views.setTextColor(
+				R.id.widget_working_off_hours,
+				Color.rgb(0x2b, 0xaa, 0x2b)
+			);
+		} else {
+			views.setTextColor(
+				R.id.widget_working_off_hours,
 				Color.rgb(0xff, 0x44, 0x44)
 			);
 		}

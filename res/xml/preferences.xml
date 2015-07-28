@@ -75,6 +75,12 @@
 			android:dependency = "preference_analysis_harvest"
 			android:title = "@string/preference_harvest_subdomain_title"
 			android:summary = "@string/preference_harvest_subdomain_summary" />
+		<EditTextPreference
+			android:key = "preference_working_off_limit"
+			android:dependency = "preference_analysis_harvest"
+			android:title = "@string/preference_working_off_limit_title"
+			android:summary = "@string/preference_working_off_limit_summary"
+			android:defaultValue = "@string/preference_working_off_limit_default" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/notifications_preferences">
 		<CheckBoxPreference

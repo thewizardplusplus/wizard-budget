@@ -56,19 +56,30 @@ var LOADING_LOG = {
 
 var HOURS_VIEW_PRECISION = 2;
 function ProcessHours() {
+	var MAXIMAL_DAY = 31;
+
 	var current_date = new Date();
 	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
-	var month_date = work_calendar[current_date.getMonth()];
+	var month_data = work_calendar[current_date.getMonth()];
 	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
 
 	var expected_hours = 0;
 	var month_worked_hours = 0;
-	for (var day = 1; day <= current_date.getDate(); day++) {
-		var day_type = month_date[day - 1];
-		if (day_type == 'ordinary') {
-			expected_hours += 8;
-		} else if (day_type == 'short') {
-			expected_hours += 7;
+	var month_rest_days = 0;
+	for (var day = 1; day <= MAXIMAL_DAY; day++) {
+		var day_type = month_data[day - 1];
+		if (typeof day_type !== 'undefined') {
+			if (day <= current_date.getDate()) {
+				if (day_type === 'ordinary') {
+					expected_hours += 8;
+				} else if (day_type === 'short') {
+					expected_hours += 7;
+				}
+			} else {
+				if (day_type === 'ordinary' || day_type === 'short') {
+					month_rest_days++;
+				}
+			}
 		}
 
 		var day_worked_hours = worked_hours[day.toString()];
@@ -77,11 +88,13 @@ function ProcessHours() {
 		}
 	}
 
+	var difference = expected_hours - month_worked_hours;
 	var hours_data = {
 		month: moment().format('MMMM'),
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
-		difference: expected_hours - month_worked_hours
+		difference: difference,
+		working_off: difference / month_rest_days
 	};
 	activity.setSetting('hours_data', JSON.stringify(hours_data));
 
@@ -107,6 +120,19 @@ function ShowHours(hours_data) {
 		difference_view.removeClass('lack').addClass('excess');
 	} else {
 		difference_view.removeClass('excess').addClass('lack');
+	}
+
+	var working_off_view = $('.working-off-view', hours_view);
+	working_off_view.text(
+		hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
+	);
+	var working_off_limit = parseFloat(
+		activity.getSetting('working_off_limit')
+	);
+	if (hours_data.working_off < working_off_limit) {
+		working_off_view.removeClass('lack').addClass('excess');
+	} else {
+		working_off_view.removeClass('excess').addClass('lack');
 	}
 }
 

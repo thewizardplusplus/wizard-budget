@@ -30,6 +30,42 @@ public class SettingsActivity extends PreferenceActivity {
 			Settings.SETTING_NAME_SMS_INCOME_PATTERN,
 			"Invalid syntax of SMS income pattern."
 		);
+
+		Pattern working_off_pattern = null;
+		try {
+			working_off_pattern = Pattern.compile(
+				"^(?:0|[1-9]\\d*)(?:\\.\\d+)?$"
+			);
+		} catch (PatternSyntaxException exception) {}
+		final Pattern working_off_pattern_copy = working_off_pattern;
+
+		EditTextPreference preference_working_off_limit =
+			(EditTextPreference)preference_screen
+			.findPreference(Settings.SETTING_NAME_WORKING_OFF_LIMIT);
+		preference_working_off_limit.setOnPreferenceChangeListener(
+			new Preference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(
+					Preference preference,
+					Object new_value
+				) {
+					boolean found =
+						working_off_pattern_copy
+						.matcher((String)new_value)
+						.find();
+					if (!found) {
+						showAlert(
+							"Error!",
+							"Invalid working off value.",
+							null,
+							false
+						);
+					}
+
+					return found;
+				}
+			}
+		);
 	}
 
 	private void addRegexpValidator(

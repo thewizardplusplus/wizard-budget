@@ -209,6 +209,19 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_WORKING_OFF_LIMIT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getWorkingOffLimit())
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_BACKUP_NOTIFICATION
 				);
 				serializer.attribute(
@@ -447,6 +460,10 @@ public class BackupManager {
 					) {
 						settings.setHarvestSubdomain(value);
 					} else if (
+						name.equals(Settings.SETTING_NAME_WORKING_OFF_LIMIT)
+					) {
+						settings.setWorkingOffLimit(Double.valueOf(value));
+					} else if (
 						name.equals(Settings.SETTING_NAME_BACKUP_NOTIFICATION)
 					) {
 						settings.setBackupNotification(boolean_value);
@@ -553,19 +570,23 @@ public class BackupManager {
 
 		if (!spending_sql.isEmpty() || !buy_sql.isEmpty()) {
 			SQLiteDatabase database = Utils.getDatabase(context);
-			database.execSQL("DELETE FROM spendings");
-			database.execSQL(
-				"INSERT INTO spendings"
-				+ "(timestamp, amount, comment)"
-				+ "VALUES" + spending_sql
-			);
+			if (!spending_sql.isEmpty()) {
+				database.execSQL("DELETE FROM spendings");
+				database.execSQL(
+					"INSERT INTO spendings"
+					+ "(timestamp, amount, comment)"
+					+ "VALUES" + spending_sql
+				);
+			}
 
-			database.execSQL("DELETE FROM buys");
-			database.execSQL(
-				"INSERT INTO buys"
-				+ "(name, cost, priority, status)"
-				+ "VALUES" + buy_sql
-			);
+			if (!buy_sql.isEmpty()) {
+				database.execSQL("DELETE FROM buys");
+				database.execSQL(
+					"INSERT INTO buys"
+					+ "(name, cost, priority, status)"
+					+ "VALUES" + buy_sql
+				);
+			}
 			database.close();
 
 			if (Settings.getCurrent(context).isRestoreNotification()) {
@@ -591,7 +612,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
-	private static final long BACKUP_VERSION = 3;
+	private static final long BACKUP_VERSION = 4;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",
