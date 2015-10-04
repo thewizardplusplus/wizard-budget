@@ -1072,7 +1072,8 @@ $(document).ready(
 
 			edit_spending_button.click(
 				function() {
-					var amount = Math.abs(parseFloat(amount_editor.val()));
+					var signed_amount = parseFloat(amount_editor.val());
+					var amount = Math.abs(signed_amount);
 
 					tags_editor.addCurrentText();
 					var tags = tags_editor.getTags();
@@ -1081,10 +1082,8 @@ $(document).ready(
 					if (spending_type.val() == 'income') {
 						amount *= -1;
 					} else if (spending_type.val() == 'sum') {
-						var sum = Math.abs(
-							parseFloat(spending_manager.getSpendingsSum())
-						);
-						var difference = sum - amount;
+						var sum = parseFloat(spending_manager.getSpendingsSum());
+						var difference = signed_amount - sum;
 						amount = parseFloat(
 							difference.toFixed(CORRECT_SPENDING_PRECISION)
 						);
