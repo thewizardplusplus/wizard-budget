@@ -122,7 +122,7 @@ public class Widget extends AppWidgetProvider {
 			R.id.widget_working_off_hours,
 			format.format(hours_working_off)
 		);
-		if (hours_working_off < settings.getWorkingOffLimit()) {
+		if (hours_working_off <= settings.getWorkingOffLimit()) {
 			views.setTextColor(
 				R.id.widget_working_off_hours,
 				Color.rgb(0x2b, 0xaa, 0x2b)

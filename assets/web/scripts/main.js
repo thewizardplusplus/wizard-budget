@@ -116,7 +116,7 @@ function ShowHours(hours_data) {
 	difference_view.text(
 		hours_data.difference.toFixed(HOURS_VIEW_PRECISION)
 	);
-	if (hours_data.difference < 0) {
+	if (hours_data.difference <= 0) {
 		difference_view.removeClass('lack').addClass('excess');
 	} else {
 		difference_view.removeClass('excess').addClass('lack');
@@ -129,7 +129,7 @@ function ShowHours(hours_data) {
 	var working_off_limit = parseFloat(
 		activity.getSetting('working_off_limit')
 	);
-	if (hours_data.working_off < working_off_limit) {
+	if (hours_data.working_off <= working_off_limit) {
 		working_off_view.removeClass('lack').addClass('excess');
 	} else {
 		working_off_view.removeClass('excess').addClass('lack');
