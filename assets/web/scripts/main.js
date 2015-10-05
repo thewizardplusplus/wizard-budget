@@ -1191,7 +1191,8 @@ $(document).ready(
 							+ 'data-timestamp = "'
 								+ spending.timestamp
 							+ '" '
-							+ 'data-amount = "' + spending.amount + '">'
+							+ 'data-amount = "' + spending.amount + '" '
+							+ 'data-residue = "' + spending.residue + '">'
 							+ '<div class = "toggle import-flag">'
 								+ '<div class = "toggle-handle"></div>'
 							+ '</div>'
@@ -1237,7 +1238,8 @@ $(document).ready(
 								sms_data.push(
 									{
 										timestamp: list_item.data('timestamp'),
-										amount: list_item.data('amount')
+										amount: list_item.data('amount'),
+										residue: list_item.data('residue'),
 									}
 								);
 							}

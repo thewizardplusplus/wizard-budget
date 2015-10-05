@@ -142,6 +142,7 @@ public class SpendingManager {
 					spending.put("date", formatDate(timestamp));
 					spending.put("time", formatTime(timestamp));
 					spending.put("amount", sms_data.getSpending());
+					spending.put("residue", sms_data.getResidue());
 
 					spendings.put(spending);
 				} catch (JSONException exception) {
@@ -377,6 +378,7 @@ public class SpendingManager {
 		String sql = "";
 		try {
 			JSONArray spendings = new JSONArray(sms_data);
+			double residue = 0.0;
 			for (int i = 0; i < spendings.length(); i++) {
 				if (!sql.isEmpty()) {
 					sql += ",";
@@ -385,6 +387,7 @@ public class SpendingManager {
 				JSONObject spending = spendings.getJSONObject(i);
 				long timestamp = resetSeconds(spending.getLong("timestamp"));
 				double amount = spending.getDouble("amount");
+				residue = spending.getDouble("residue");
 
 				String comment =
 					amount >= 0.0
@@ -403,6 +406,10 @@ public class SpendingManager {
 						+ String.valueOf(amount) + ","
 						+ DatabaseUtils.sqlEscapeString(comment)
 					+ ")";
+			}
+
+			if (residue > 0.0) {
+				// TODO
 			}
 		} catch (JSONException exception) {}
 
