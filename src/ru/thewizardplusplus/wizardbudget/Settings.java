@@ -25,12 +25,14 @@ public class Settings {
 		"preference_sms_number_pattern";
 	public static final String SETTING_NAME_SMS_SPENDING_PATTERN =
 		"preference_sms_spending_pattern";
-	public static final String SETTING_NAME_SMS_INCOME_PATTERN =
-		"preference_sms_income_pattern";
 	public static final String SETTING_NAME_SMS_SPENDING_COMMENT =
 		"preference_sms_spending_comment";
+	public static final String SETTING_NAME_SMS_INCOME_PATTERN =
+		"preference_sms_income_pattern";
 	public static final String SETTING_NAME_SMS_INCOME_COMMENT =
 		"preference_sms_income_comment";
+	public static final String SETTING_NAME_SMS_RESIDUE_PATTERN =
+		"preference_sms_residue_pattern";
 	public static final String SETTING_NAME_SAVE_BACKUP_TO_DROPBOX =
 		"preference_save_backup_to_dropbox";
 	public static final String SETTING_NAME_ANALYSIS_HARVEST =
