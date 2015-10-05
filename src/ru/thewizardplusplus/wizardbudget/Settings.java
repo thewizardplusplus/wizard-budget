@@ -33,6 +33,10 @@ public class Settings {
 		"preference_sms_income_comment";
 	public static final String SETTING_NAME_SMS_RESIDUE_PATTERN =
 		"preference_sms_residue_pattern";
+	public static final String SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT =
+		"preference_sms_negative_correction_comment";
+	public static final String SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT =
+		"preference_sms_positive_correction_comment";
 	public static final String SETTING_NAME_SAVE_BACKUP_TO_DROPBOX =
 		"preference_save_backup_to_dropbox";
 	public static final String SETTING_NAME_ANALYSIS_HARVEST =
@@ -144,6 +148,10 @@ public class Settings {
 		} catch (PatternSyntaxException exception) {
 			settings.parse_sms = false;
 		}
+		settings.sms_spending_comment = preferences.getString(
+			SETTING_NAME_SMS_SPENDING_COMMENT,
+			context.getString(R.string.preference_sms_spending_comment_default)
+		);
 		settings.sms_income_pattern_string = preferences.getString(
 			SETTING_NAME_SMS_INCOME_PATTERN,
 			context.getString(
@@ -158,13 +166,31 @@ public class Settings {
 		} catch (PatternSyntaxException exception) {
 			settings.parse_sms = false;
 		}
-		settings.sms_spending_comment = preferences.getString(
-			SETTING_NAME_SMS_SPENDING_COMMENT,
-			context.getString(R.string.preference_sms_spending_comment_default)
-		);
 		settings.sms_income_comment = preferences.getString(
 			SETTING_NAME_SMS_INCOME_COMMENT,
 			context.getString(R.string.preference_sms_income_comment_default)
+		);
+		settings.sms_residue_pattern_string = preferences.getString(
+			SETTING_NAME_SMS_RESIDUE_PATTERN,
+			context.getString(
+				R.string.preference_sms_residue_pattern_default
+			)
+		);
+		try {
+			settings.sms_residue_pattern = Pattern.compile(
+				settings.sms_residue_pattern_string,
+				Pattern.CASE_INSENSITIVE
+			);
+		} catch (PatternSyntaxException exception) {
+			settings.parse_sms = false;
+		}
+		settings.sms_negative_correction_comment = preferences.getString(
+			SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT,
+			context.getString(R.string.preference_sms_negative_correction_comment_default)
+		);
+		settings.sms_positive_correction_comment = preferences.getString(
+			SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT,
+			context.getString(R.string.preference_sms_positive_correction_comment_default)
 		);
 
 		settings.save_backup_to_dropbox = preferences.getBoolean(
@@ -351,6 +377,14 @@ public class Settings {
 		sms_spending_pattern_string = sms_spending_pattern;
 	}
 
+	public String getSmsSpendingComment() {
+		return sms_spending_comment;
+	}
+
+	public void setSmsSpendingComment(String sms_spending_comment) {
+		this.sms_spending_comment = sms_spending_comment;
+	}
+
 	public String getSmsIncomePatternString() {
 		return sms_income_pattern_string;
 	}
@@ -363,20 +397,40 @@ public class Settings {
 		sms_income_pattern_string = sms_income_pattern;
 	}
 
-	public String getSmsSpendingComment() {
-		return sms_spending_comment;
-	}
-
-	public void setSmsSpendingComment(String sms_spending_comment) {
-		this.sms_spending_comment = sms_spending_comment;
-	}
-
 	public String getSmsIncomeComment() {
 		return sms_income_comment;
 	}
 
 	public void setSmsIncomeComment(String sms_income_comment) {
 		this.sms_income_comment = sms_income_comment;
+	}
+
+	public String getSmsResiduePatternString() {
+		return sms_residue_pattern_string;
+	}
+
+	public Pattern getSmsResiduePattern() {
+		return sms_residue_pattern;
+	}
+
+	public void setSmsResiduePattern(String sms_residue_pattern) {
+		sms_residue_pattern_string = sms_residue_pattern;
+	}
+
+	public String getSmsNegativeCorrectionComment() {
+		return sms_negative_correction_comment;
+	}
+
+	public void setSmsNegativeCorrectionComment(String sms_negative_correction_comment) {
+		this.sms_negative_correction_comment = sms_negative_correction_comment;
+	}
+
+	public String getSmsPositiveCorrectionComment() {
+		return sms_positive_correction_comment;
+	}
+
+	public void setSmsPositiveCorrectionComment(String sms_positive_correction_comment) {
+		this.sms_positive_correction_comment = sms_positive_correction_comment;
 	}
 
 	public boolean isSaveBackupToDropbox() {
@@ -494,14 +548,20 @@ public class Settings {
 			sms_spending_pattern_string
 		);
 		editor.putString(
-			SETTING_NAME_SMS_INCOME_PATTERN,
-			sms_income_pattern_string
-		);
-		editor.putString(
 			SETTING_NAME_SMS_SPENDING_COMMENT,
 			sms_spending_comment
 		);
+		editor.putString(
+			SETTING_NAME_SMS_INCOME_PATTERN,
+			sms_income_pattern_string
+		);
 		editor.putString(SETTING_NAME_SMS_INCOME_COMMENT, sms_income_comment);
+		editor.putString(
+			SETTING_NAME_SMS_RESIDUE_PATTERN,
+			sms_residue_pattern_string
+		);
+		editor.putString(SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT, sms_negative_correction_comment);
+		editor.putString(SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT, sms_positive_correction_comment);
 		editor.putBoolean(
 			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
 			save_backup_to_dropbox
@@ -567,8 +627,12 @@ public class Settings {
 	private Pattern sms_spending_pattern;
 	private String sms_income_pattern_string = "";
 	private Pattern sms_income_pattern;
+	private String sms_residue_pattern_string = "";
+	private Pattern sms_residue_pattern;
 	private String sms_spending_comment = "";
 	private String sms_income_comment = "";
+	private String sms_negative_correction_comment = "";
+	private String sms_positive_correction_comment = "";
 	private boolean save_backup_to_dropbox = false;
 	private String dropbox_app_secret = "";
 	private boolean analysis_harvest = false;
