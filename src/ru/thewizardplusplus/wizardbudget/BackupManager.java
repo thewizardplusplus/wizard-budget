@@ -118,19 +118,6 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
-					Settings.SETTING_NAME_SMS_INCOME_PATTERN
-				);
-				serializer.attribute(
-					"",
-					"value",
-					settings.getSmsIncomePatternString()
-				);
-				serializer.endTag("", "preference");
-
-				serializer.startTag("", "preference");
-				serializer.attribute(
-					"",
-					"name",
 					Settings.SETTING_NAME_SMS_SPENDING_COMMENT
 				);
 				serializer.attribute(
@@ -144,12 +131,64 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_SMS_INCOME_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsIncomePatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_SMS_INCOME_COMMENT
 				);
 				serializer.attribute(
 					"",
 					"value",
 					settings.getSmsIncomeComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_RESIDUE_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsResiduePatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsNegativeCorrectionComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsPositiveCorrectionComment()
 				);
 				serializer.endTag("", "preference");
 
@@ -430,17 +469,29 @@ public class BackupManager {
 					) {
 						settings.setSmsSpendingPattern(value);
 					} else if (
-						name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)
-					) {
-						settings.setSmsIncomePattern(value);
-					} else if (
 						name.equals(Settings.SETTING_NAME_SMS_SPENDING_COMMENT)
 					) {
 						settings.setSmsSpendingComment(value);
 					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)
+					) {
+						settings.setSmsIncomePattern(value);
+					} else if (
 						name.equals(Settings.SETTING_NAME_SMS_INCOME_COMMENT)
 					) {
 						settings.setSmsIncomeComment(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_RESIDUE_PATTERN)
+					) {
+						settings.setSmsResiduePattern(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT)
+					) {
+						settings.setSmsNegativeCorrectionComment(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT)
+					) {
+						settings.setSmsPositiveCorrectionComment(value);
 					} else if (
 						name.equals(
 							Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX
