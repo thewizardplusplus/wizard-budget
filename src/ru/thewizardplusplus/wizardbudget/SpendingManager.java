@@ -102,7 +102,7 @@ public class SpendingManager {
 			null,
 			null,
 			null,
-			null
+			"date DESC"
 		);
 		JSONArray spendings = new JSONArray();
 		if (cursor.moveToFirst()) {
@@ -379,6 +379,7 @@ public class SpendingManager {
 		try {
 			JSONArray spendings = new JSONArray(sms_data);
 			double residue = 0.0;
+			boolean residue_found_tryed = false;
 			for (int i = 0; i < spendings.length(); i++) {
 				if (!sql.isEmpty()) {
 					sql += ",";
@@ -387,7 +388,10 @@ public class SpendingManager {
 				JSONObject spending = spendings.getJSONObject(i);
 				long timestamp = resetSeconds(spending.getLong("timestamp"));
 				double amount = spending.getDouble("amount");
-				residue = spending.getDouble("residue");
+				if (!residue_found_tryed) {
+					residue = spending.getDouble("residue");
+					residue_found_tryed = true;
+				}
 
 				String comment =
 					amount >= 0.0
@@ -408,7 +412,7 @@ public class SpendingManager {
 					+ ")";
 			}
 
-			if (residue > 0.0) {
+			if (residue != 0.0) {
 				// TODO
 			}
 		} catch (JSONException exception) {}
