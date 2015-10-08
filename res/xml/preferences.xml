@@ -5,6 +5,11 @@
 		android:title = "@string/preference_credit_card_tag_title"
 		android:summary = "@string/preference_credit_card_tag_summary"
 		android:defaultValue = "@string/preference_credit_card_tag_default" />
+	<CheckBoxPreference
+		android:key = "preference_collect_stats"
+		android:title = "@string/preference_collect_stats_title"
+		android:summary = "@string/preference_collect_stats_summary"
+		android:defaultValue = "true" />
 	<PreferenceCategory android:title = "@string/sms_parsing_preferences">
 		<CheckBoxPreference
 			android:key = "preference_parse_sms"
