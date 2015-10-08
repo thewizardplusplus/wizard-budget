@@ -318,17 +318,8 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
-		ContentValues values = new ContentValues();
-		long current_timestamp = resetSeconds(
-			System.currentTimeMillis()
-			/ 1000L
-		);
-		values.put("timestamp", current_timestamp);
-		values.put("amount", amount);
-		values.put("comment", comment);
-
 		SQLiteDatabase database = Utils.getDatabase(context);
-		database.insert("spendings", null, values);
+		addNewSpending(database, amount, comment);
 		database.close();
 	}
 
@@ -426,9 +417,6 @@ public class SpendingManager {
 			);
 
 			if (residue != 0.0) {
-				Date current_date = new Date();
-				long timestamp = resetSeconds(current_date.getTime() / 1000L);
-
 				double spendings_sum = calculateSpendingsSum();
 				double correction = -1 * residue - spendings_sum;
 
@@ -443,15 +431,7 @@ public class SpendingManager {
 				}
 				comment += credit_card_tag;
 
-				database.execSQL(
-					"INSERT INTO spendings"
-					+ "(timestamp, amount, comment)"
-					+ "VALUES ("
-						+ String.valueOf(timestamp) + ","
-						+ String.valueOf(correction) + ","
-						+ DatabaseUtils.sqlEscapeString(comment)
-					+ ")"
-				);
+				addNewSpending(database, correction, comment);
 			}
 			database.close();
 
@@ -530,7 +510,20 @@ public class SpendingManager {
 		return tags;
 	}
 
-	long resetSeconds(long timestamp) {
+	private long resetSeconds(long timestamp) {
 		return timestamp / 60 * 60;
+	}
+
+	private void addNewSpending(SQLiteDatabase database, double amount, String comment) {
+		ContentValues values = new ContentValues();
+		long current_timestamp = resetSeconds(
+			System.currentTimeMillis()
+			/ 1000L
+		);
+		values.put("timestamp", current_timestamp);
+		values.put("amount", amount);
+		values.put("comment", comment);
+
+		database.insert("spendings", null, values);
 	}
 }
