@@ -16,31 +16,12 @@ public class SpendingManager {
 		this.context = context;
 	}
 
-	public double calculateSpendingsSum() {
-		SQLiteDatabase database = Utils.getDatabase(context);
-		Cursor cursor = database.query(
-			"spendings",
-			new String[]{"ROUND(SUM(amount), 2)"},
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		double spendings_sum = 0.0;
-		boolean moved = cursor.moveToFirst();
-		if (moved) {
-			spendings_sum = cursor.getDouble(0);
-		}
-
-		database.close();
-		return spendings_sum;
-	}
-
 	@JavascriptInterface
 	public String getSpendingsSum() {
-		double spendings_sum = calculateSpendingsSum();
+		SQLiteDatabase database = Utils.getDatabase(context);
+		double spendings_sum = calculateSpendingsSum(database);
+		database.close();
+
 		return String.valueOf(spendings_sum);
 	}
 
@@ -323,6 +304,12 @@ public class SpendingManager {
 		database.close();
 	}
 
+	public void createCorrection(double residue) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		addCorrection(database, residue);
+		database.close();
+	}
+
 	@JavascriptInterface
 	public void updateSpending(
 		int id,
@@ -374,7 +361,6 @@ public class SpendingManager {
 		String sql = "";
 		double residue = 0.0;
 		boolean residue_found_tryed = false;
-		String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
 		try {
 			JSONArray spendings = new JSONArray(sms_data);
 			for (int i = 0; i < spendings.length(); i++) {
@@ -395,6 +381,7 @@ public class SpendingManager {
 					amount >= 0.0
 						? Settings.getCurrent(context).getSmsSpendingComment()
 						: Settings.getCurrent(context).getSmsIncomeComment();
+				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
 				if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
 					comment += ", ";
 				}
@@ -415,24 +402,7 @@ public class SpendingManager {
 				+ "(timestamp, amount, comment)"
 				+ "VALUES" + sql
 			);
-
-			if (residue != 0.0) {
-				double spendings_sum = calculateSpendingsSum();
-				double correction = -1 * residue - spendings_sum;
-
-				String comment = "";
-				if (correction < 0) {
-					comment = Settings.getCurrent(context).getSmsPositiveCorrectionComment();
-				} else {
-					comment = Settings.getCurrent(context).getSmsNegativeCorrectionComment();
-				}
-				if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
-					comment += ", ";
-				}
-				comment += credit_card_tag;
-
-				addNewSpending(database, correction, comment);
-			}
+			addCorrection(database, residue);
 			database.close();
 
 			if (Settings.getCurrent(context).isSmsImportNotification()) {
@@ -525,5 +495,48 @@ public class SpendingManager {
 		values.put("comment", comment);
 
 		database.insert("spendings", null, values);
+	}
+
+	private void addCorrection(SQLiteDatabase database, double residue) {
+		if (residue == 0.0) {
+			return;
+		}
+
+		double spendings_sum = calculateSpendingsSum(database);
+		double correction = -1 * residue - spendings_sum;
+
+		String comment = "";
+		if (correction < 0) {
+			comment = Settings.getCurrent(context).getSmsPositiveCorrectionComment();
+		} else {
+			comment = Settings.getCurrent(context).getSmsNegativeCorrectionComment();
+		}
+		String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+		if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
+			comment += ", ";
+		}
+		comment += credit_card_tag;
+
+		addNewSpending(database, correction, comment);
+	}
+
+	private double calculateSpendingsSum(SQLiteDatabase database) {
+		Cursor cursor = database.query(
+			"spendings",
+			new String[]{"ROUND(SUM(amount), 2)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		double spendings_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			spendings_sum = cursor.getDouble(0);
+		}
+
+		return spendings_sum;
 	}
 }
