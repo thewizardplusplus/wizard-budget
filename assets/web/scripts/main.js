@@ -713,14 +713,19 @@ $(document).ready(
 
 			var current_segment = activity.getSetting('current_segment');
 			if (
-				current_segment == 'hours'
-				&& activity.getSetting('analysis_harvest') !== 'true'
+				(current_segment == 'stats'
+				&& activity.getSetting('collect_stats') !== 'true')
+				|| (current_segment == 'hours'
+				&& activity.getSetting('analysis_harvest') !== 'true')
 			) {
 				current_segment = 'history';
 				activity.setSetting('current_segment', 'history');
 			}
 			SetCurrentSegment(current_segment);
 
+			if (activity.getSetting('collect_stats') !== 'true') {
+				$('.stats-segment').hide();
+			}
 			if (activity.getSetting('analysis_harvest') !== 'true') {
 				$('.hours-segment').hide();
 			}
@@ -748,9 +753,24 @@ $(document).ready(
 						add_button.show();
 						refresh_button.hide();
 					} else if (self.hasClass('stats-segment')) {
-						activity.setSetting('current_segment', 'stats');
-						add_button.hide();
-						refresh_button.hide();
+						if (
+							activity.getSetting('collect_stats') === 'true'
+						) {
+							activity.setSetting('current_segment', 'stats');
+							add_button.hide();
+							refresh_button.hide();
+						} else {
+							activity.setSetting('current_segment', 'history');
+							add_button.show();
+							refresh_button.hide();
+
+							setTimeout(
+								function() {
+									SetCurrentSegment('history');
+								},
+								RESET_SEGMENT_TIMEOUT
+							);
+						}
 					} else if (self.hasClass('hours-segment')) {
 						if (
 							activity.getSetting('analysis_harvest') === 'true'
