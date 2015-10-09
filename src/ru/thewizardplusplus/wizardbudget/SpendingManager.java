@@ -177,18 +177,21 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStatsSum(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		number_of_last_days = Math.abs(number_of_last_days);
 		String prefix_length = String.valueOf(prefix.length());
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"ROUND(SUM(amount), 2)"},
 			"amount > 0 "
-				+ "AND date(timestamp, 'unixepoch')"
-					+ ">= date("
-						+ "'now',"
-						+ "'-"
-							+ String.valueOf(Math.abs(number_of_last_days))
-							+ " days'"
-					+ ")"
+				+ (number_of_last_days != 0.0
+					?  "AND date(timestamp, 'unixepoch')"
+						+ ">= date("
+							+ "'now',"
+							+ "'-"
+								+ String.valueOf(number_of_last_days)
+								+ " days'"
+						+ ")"
+					: "")
 				+ "AND comment LIKE "
 					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
@@ -214,19 +217,22 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStats(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		number_of_last_days = Math.abs(number_of_last_days);
 		int prefix_length = prefix.length();
 		String prefix_length_in_string = String.valueOf(prefix_length);
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"comment", "amount"},
 			"amount > 0 "
-				+ "AND date(timestamp, 'unixepoch')"
-					+ ">= date("
-						+ "'now',"
-						+ "'-"
-							+ String.valueOf(Math.abs(number_of_last_days))
-							+ " days'"
-					+ ")"
+				+ (number_of_last_days != 0.0
+					? "AND date(timestamp, 'unixepoch')"
+						+ ">= date("
+							+ "'now',"
+							+ "'-"
+								+ String.valueOf(number_of_last_days)
+								+ " days'"
+						+ ")"
+					: "")
 				+ "AND comment LIKE "
 					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
