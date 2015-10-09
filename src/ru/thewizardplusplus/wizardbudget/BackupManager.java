@@ -79,6 +79,19 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_COLLECT_STATS
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isCollectStats() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_PARSE_SMS
 				);
 				serializer.attribute(
@@ -458,6 +471,8 @@ public class BackupManager {
 					boolean boolean_value = value.equals("true");
 					if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
 						settings.setCreditCardTag(value);
+					} else if (name.equals(Settings.SETTING_NAME_COLLECT_STATS)) {
+						settings.setCollectStats(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
 					} else if (

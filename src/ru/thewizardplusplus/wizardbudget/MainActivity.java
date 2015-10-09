@@ -79,6 +79,8 @@ public class MainActivity extends Activity {
 			return settings.getActiveSpending();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			return settings.getActiveBuy();
+		} else if (name.equals("collect_stats")) {
+			return settings.isCollectStats() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {

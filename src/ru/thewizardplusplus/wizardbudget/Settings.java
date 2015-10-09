@@ -20,6 +20,8 @@ public class Settings {
 		"need_update_hours";
 	public static final String SETTING_NAME_CREDIT_CARD_TAG =
 		"preference_credit_card_tag";
+	public static final String SETTING_NAME_COLLECT_STATS =
+		"preference_collect_stats";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
 	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
 		"preference_sms_number_pattern";
@@ -115,6 +117,10 @@ public class Settings {
 				DEFAULT_CREDIT_CARD_TAG
 			)
 			.trim();
+		settings.collect_stats = preferences.getBoolean(
+			SETTING_NAME_COLLECT_STATS,
+			true
+		);
 
 		settings.parse_sms = preferences.getBoolean(
 			SETTING_NAME_PARSE_SMS,
@@ -345,6 +351,14 @@ public class Settings {
 		this.credit_card_tag = credit_card_tag;
 	}
 
+	public boolean isCollectStats() {
+		return collect_stats;
+	}
+
+	public void setCollectStats(boolean collect_stats) {
+		this.collect_stats = collect_stats;
+	}
+
 	public boolean isParseSms() {
 		return parse_sms;
 	}
@@ -538,6 +552,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
 		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
+		editor.putBoolean(SETTING_NAME_COLLECT_STATS, collect_stats);
 		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
 		editor.putString(
 			SETTING_NAME_SMS_NUMBER_PATTERN,
@@ -620,6 +635,7 @@ public class Settings {
 	private String hours_data = DEFAULT_HOURS_DATA;
 	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
+	private boolean collect_stats = true;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;
