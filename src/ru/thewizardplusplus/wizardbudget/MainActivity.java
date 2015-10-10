@@ -85,6 +85,8 @@ public class MainActivity extends Activity {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			return settings.getStatsTags();
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+			return String.valueOf(settings.getHoursRange());
 		} else if (name.equals("analysis_harvest")) {
 			return settings.isAnalysisHarvest() ? "true" : "false";
 		} else if (name.equals("harvest_username")) {
@@ -121,6 +123,8 @@ public class MainActivity extends Activity {
 			settings.setActiveBuy(value);
 		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
 			settings.setStatsRange(Long.valueOf(value));
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+			settings.setHoursRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {

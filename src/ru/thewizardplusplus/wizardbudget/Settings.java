@@ -13,6 +13,7 @@ public class Settings {
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
 	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
+	public static final String SETTING_NAME_HOURS_RANGE = "hours_range";
 	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
 	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
@@ -93,6 +94,10 @@ public class Settings {
 		settings.dropbox_token = preferences.getString(
 			SETTING_NAME_DROPBOX_TOKEN,
 			""
+		);
+		settings.hours_range = preferences.getLong(
+			SETTING_NAME_HOURS_RANGE,
+			DEFAULT_HOURS_RANGE
 		);
 		settings.worked_hours = preferences.getString(
 			SETTING_NAME_WORKED_HOURS,
@@ -309,6 +314,14 @@ public class Settings {
 
 	public void setDropboxToken(String dropbox_token) {
 		this.dropbox_token = dropbox_token;
+	}
+
+	public long getHoursRange() {
+		return hours_range;
+	}
+
+	public void setHoursRange(long hours_range) {
+		this.hours_range = hours_range;
 	}
 
 	public String getWorkedHours() {
@@ -547,6 +560,7 @@ public class Settings {
 		editor.putLong(SETTING_NAME_STATS_RANGE, stats_range);
 		editor.putString(SETTING_NAME_STATS_TAGS, stats_tags);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
+		editor.putLong(SETTING_NAME_HOURS_RANGE, hours_range);
 		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
@@ -620,6 +634,7 @@ public class Settings {
 	private static final String DEFAULT_HOURS_DATA = "null";
 	private static final long DEFAULT_STATS_RANGE = 30;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
+	private static final long DEFAULT_HOURS_RANGE = 30;
 	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
 
 	private Context context;
@@ -630,6 +645,7 @@ public class Settings {
 	private long stats_range = DEFAULT_STATS_RANGE;
 	private String stats_tags = "";
 	private String dropbox_token = "";
+	private long hours_range = DEFAULT_HOURS_RANGE;
 	private String worked_hours = DEFAULT_WORKED_HOURS;
 	private String work_calendar = DEFAULT_WORK_CALENDAR;
 	private String hours_data = DEFAULT_HOURS_DATA;
