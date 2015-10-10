@@ -986,6 +986,14 @@ $(document).ready(
 			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
 		function UpdateHours() {
+			$('.hours-range-form').on(
+				'submit',
+				function(event) {
+					event.preventDefault();
+					return false;
+				}
+			);
+
 			$('.refresh-button').click(
 				function() {
 					var self = $(this);

@@ -91,12 +91,17 @@
 				<div
 					id = "hours-segment"
 					class = "control-content hours-segment">
-					<div class = "card hidden loading-log"></div>
+					<form class = "input-group hours-range-form" action = "#">
+						<div class = "input-row">
+							<label>Days:</label>
+							<input
+								class = "hours-range-editor"
+								type = "number"
+								placeholder = "Last days" />
+						</div>
+					</form>
 
-					<h4 class = "content-padded">
-						<i class = "fa fa-calendar"></i>
-						<span class = "month-view">&mdash;</span>
-					</h4>
+					<div class = "card hidden loading-log"></div>
 					<hr />
 
 					<table class = "hours-view">
