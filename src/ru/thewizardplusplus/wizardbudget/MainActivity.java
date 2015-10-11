@@ -313,9 +313,9 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
-	private static final String DROPBOX_APP_KEY = "a3fjeiuyp2gcndt";
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
+	private DropboxAccess dropbox_access = new DefaultDropboxAccess();
 	private String backup_filename = "";
 
 	private void callGuiFunction(String name, String[] arguments) {
@@ -415,8 +415,6 @@ public class MainActivity extends Activity {
 	}
 
 	private AppKeyPair getDropboxAppKeys() {
-		Settings settings = Settings.getCurrent(this);
-		String app_secret = settings.getDropboxAppSecret();
-		return new AppKeyPair(DROPBOX_APP_KEY, app_secret);
+		return new AppKeyPair(DropboxAccess.APP_KEY, dropbox_access.getAppSecret());
 	}
 }
