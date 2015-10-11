@@ -625,7 +625,7 @@ public class Settings {
 	private static final String DEFAULT_WORKED_HOURS = "null";
 	private static final String DEFAULT_WORK_CALENDAR = "null";
 	private static final String DEFAULT_HOURS_DATA = "null";
-	private static final long DEFAULT_STATS_RANGE = 30;
+	private static final long DEFAULT_STATS_RANGE = 0;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 	private static final long DEFAULT_HOURS_RANGE = 30;
 	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
