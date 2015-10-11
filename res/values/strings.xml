@@ -6,6 +6,8 @@
 	<string name = "preference_credit_card_tag_title">Credit card tag</string>
 	<string name = "preference_credit_card_tag_summary">Tag that mark spending from credit card.</string>
 	<string name = "preference_credit_card_tag_default">credit card</string>
+	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
+	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
 	<string name = "preference_collect_stats_title">Collect stats</string>
 	<string name = "preference_collect_stats_summary">Calculate spendings stats.</string>
 	<string name = "sms_parsing_preferences">SMS parsing</string>
@@ -35,11 +37,6 @@
 	<string name = "preference_sms_positive_correction_comment_title">Positive correction comment</string>
 	<string name = "preference_sms_positive_correction_comment_summary">Spendings sum positive correction comment text.</string>
 	<string name = "preference_sms_positive_correction_comment_default">positive correction</string>
-	<string name = "dropbox_preferences">Dropbox backuping</string>
-	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
-	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
-	<string name = "preference_dropbox_app_secret_title">Dropbox app secret</string>
-	<string name = "preference_dropbox_app_secret_summary">Private key of backuping Dropbox app.</string>
 	<string name = "harvest_preferences">Harvest access</string>
 	<string name = "preference_analysis_harvest_title">Analysis Harvest</string>
 	<string name = "preference_analysis_harvest_summary">Calculate worked hours and its cost.</string>

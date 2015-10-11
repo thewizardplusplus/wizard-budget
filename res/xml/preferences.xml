@@ -6,6 +6,11 @@
 		android:summary = "@string/preference_credit_card_tag_summary"
 		android:defaultValue = "@string/preference_credit_card_tag_default" />
 	<CheckBoxPreference
+		android:key = "preference_save_backup_to_dropbox"
+		android:title = "@string/preference_save_backup_to_dropbox_title"
+		android:summary = "@string/preference_save_backup_to_dropbox_summary"
+		android:defaultValue = "false" />
+	<CheckBoxPreference
 		android:key = "preference_collect_stats"
 		android:title = "@string/preference_collect_stats_title"
 		android:summary = "@string/preference_collect_stats_summary"
@@ -64,18 +69,6 @@
 			android:title = "@string/preference_sms_positive_correction_comment_title"
 			android:summary = "@string/preference_sms_positive_correction_comment_summary"
 			android:defaultValue = "@string/preference_sms_positive_correction_comment_default" />
-	</PreferenceCategory>
-	<PreferenceCategory android:title = "@string/dropbox_preferences">
-		<CheckBoxPreference
-			android:key = "preference_save_backup_to_dropbox"
-			android:title = "@string/preference_save_backup_to_dropbox_title"
-			android:summary = "@string/preference_save_backup_to_dropbox_summary"
-			android:defaultValue = "false" />
-		<EditTextPreference
-			android:key = "preference_dropbox_app_secret"
-			android:dependency = "preference_save_backup_to_dropbox"
-			android:title = "@string/preference_dropbox_app_secret_title"
-			android:summary = "@string/preference_dropbox_app_secret_summary" />
 	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/harvest_preferences">
 		<CheckBoxPreference
