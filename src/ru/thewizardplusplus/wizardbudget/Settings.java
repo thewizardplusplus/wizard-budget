@@ -46,6 +46,7 @@ public class Settings {
 		"preference_analysis_harvest";
 	public static final String SETTING_NAME_HARVEST_USERNAME =
 		"preference_harvest_username";
+	public static final String SETTING_NAME_HARVEST_PASSWORD = "preference_harvest_password";
 	public static final String SETTING_NAME_HARVEST_SUBDOMAIN =
 		"preference_harvest_subdomain";
 	public static final String SETTING_NAME_WORKING_OFF_LIMIT =
@@ -208,10 +209,6 @@ public class Settings {
 			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
 			false
 		);
-		settings.dropbox_app_secret = preferences.getString(
-			"preference_dropbox_app_secret",
-			""
-		);
 
 		settings.analysis_harvest = preferences.getBoolean(
 			SETTING_NAME_ANALYSIS_HARVEST,
@@ -222,7 +219,7 @@ public class Settings {
 			""
 		);
 		settings.harvest_password = preferences.getString(
-			"preference_harvest_password",
+			SETTING_NAME_HARVEST_PASSWORD,
 			""
 		);
 		settings.harvest_subdomain = preferences.getString(
@@ -468,10 +465,6 @@ public class Settings {
 		this.save_backup_to_dropbox = save_backup_to_dropbox;
 	}
 
-	public String getDropboxAppSecret() {
-		return dropbox_app_secret;
-	}
-
 	public boolean isAnalysisHarvest() {
 		return analysis_harvest;
 	}
@@ -666,7 +659,6 @@ public class Settings {
 	private String sms_negative_correction_comment = "";
 	private String sms_positive_correction_comment = "";
 	private boolean save_backup_to_dropbox = false;
-	private String dropbox_app_secret = "";
 	private boolean analysis_harvest = false;
 	private String harvest_username = "";
 	private String harvest_password = "";
