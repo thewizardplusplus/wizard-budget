@@ -63,10 +63,16 @@ function ProcessHours() {
 	var month_data = work_calendar[current_date.getMonth()];
 	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
 
+	var hours_range = parseInt(activity.getSetting('hours_range'));
+	var start_day = current_date.getDate() - hours_range;
+	if (hours_range == 0 || start_day < 1) {
+		start_day = 1;
+	}
+
 	var expected_hours = 0;
 	var month_worked_hours = 0;
 	var month_rest_days = 0;
-	for (var day = 1; day <= MAXIMAL_DAY; day++) {
+	for (var day = start_day; day <= MAXIMAL_DAY; day++) {
 		var day_type = month_data[day - 1];
 		if (typeof day_type !== 'undefined') {
 			if (day <= current_date.getDate()) {
@@ -946,6 +952,8 @@ $(document).ready(
 			);
 		}
 		function UpdateStats() {
+			var STATS_RANGE_SAVING_TIMEOUT = 500;
+
 			$('.stats-range-form').on(
 				'submit',
 				function(event) {
@@ -978,7 +986,7 @@ $(document).ready(
 								comment_prefix
 							);
 						},
-						500
+						STATS_RANGE_SAVING_TIMEOUT
 					);
 				}
 			);
@@ -986,11 +994,37 @@ $(document).ready(
 			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
 		}
 		function UpdateHours() {
+			var HOURS_RANGE_SAVING_TIMEOUT = 500;
+
 			$('.hours-range-form').on(
 				'submit',
 				function(event) {
 					event.preventDefault();
 					return false;
+				}
+			);
+
+			var number_of_last_days = activity.getSetting('hours_range');
+			var range_editor = $('.hours-range-editor');
+			range_editor.val(number_of_last_days);
+
+			var range_update_timer = null;
+			range_editor.on(
+				'keyup',
+				function() {
+					clearTimeout(range_update_timer);
+					range_update_timer = setTimeout(
+						function() {
+							var number_of_last_days = range_editor.val();
+							activity.setSetting(
+								'hours_range',
+								number_of_last_days
+							);
+
+							ProcessHours();
+						},
+						HOURS_RANGE_SAVING_TIMEOUT
+					);
 				}
 			);
 
