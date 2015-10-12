@@ -96,6 +96,7 @@ function ProcessHours() {
 
 	var difference = expected_hours - month_worked_hours;
 	var hours_data = {
+		start_day: start_day,
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: difference,
@@ -107,6 +108,9 @@ function ProcessHours() {
 	activity.updateWidget();
 }
 function ShowHours(hours_data) {
+	var hours_range_start = moment().date(hours_data.start_day).format('ll');
+	$('.hours-range-start').text(hours_range_start);
+
 	var hours_view = $('#hours-segment .hours-view');
 	$('.expected-hours-view', hours_view).text(
 		hours_data.expected_hours
@@ -1008,6 +1012,8 @@ $(document).ready(
 			var number_of_last_days = activity.getSetting('hours_range');
 			var range_editor = $('.hours-range-editor');
 			range_editor.val(number_of_last_days);
+
+			$('.hours-range-end').text(moment().format('ll'));
 
 			var range_update_timer = null;
 			range_editor.on(
