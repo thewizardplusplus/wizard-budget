@@ -70,6 +70,33 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_STATS_RANGE
+				);
+				serializer.attribute("", "value", String.valueOf(settings.getStatsRange()));
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_STATS_TAGS
+				);
+				serializer.attribute("", "value", settings.getStatsTags());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_HOURS_RANGE
+				);
+				serializer.attribute("", "value", String.valueOf(settings.getHoursRange()));
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_CREDIT_CARD_TAG
 				);
 				serializer.attribute("", "value", settings.getCreditCardTag());
@@ -469,7 +496,13 @@ public class BackupManager {
 					String name = preference.getAttribute("name");
 					String value = preference.getAttribute("value");
 					boolean boolean_value = value.equals("true");
-					if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
+					if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+					settings.setStatsRange(Long.valueOf(value));
+					} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
+						settings.setStatsTags(value);
+					} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+					settings.setHoursRange(Long.valueOf(value));
+					} else if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
 						settings.setCreditCardTag(value);
 					} else if (name.equals(Settings.SETTING_NAME_COLLECT_STATS)) {
 						settings.setCollectStats(boolean_value);

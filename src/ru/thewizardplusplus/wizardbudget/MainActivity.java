@@ -123,10 +123,10 @@ public class MainActivity extends Activity {
 			settings.setActiveBuy(value);
 		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
 			settings.setStatsRange(Long.valueOf(value));
-		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
-			settings.setHoursRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+			settings.setHoursRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			settings.setWorkedHours(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
