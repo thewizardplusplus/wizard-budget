@@ -96,7 +96,6 @@ function ProcessHours() {
 
 	var difference = expected_hours - month_worked_hours;
 	var hours_data = {
-		month: moment().format('MMMM'),
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: difference,
@@ -108,8 +107,6 @@ function ProcessHours() {
 	activity.updateWidget();
 }
 function ShowHours(hours_data) {
-	$('#hours-segment .month-view').text(hours_data.month);
-
 	var hours_view = $('#hours-segment .hours-view');
 	$('.expected-hours-view', hours_view).text(
 		hours_data.expected_hours
@@ -966,6 +963,10 @@ $(document).ready(
 			var range_editor = $('.stats-range-editor');
 			range_editor.val(number_of_last_days);
 
+			var integral_range = parseInt(number_of_last_days);
+			$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+			$('.stats-range-end').text(moment().format('ll'));
+
 			var comment_prefix = activity.getSetting('stats_tags');
 
 			var range_update_timer = null;
@@ -981,17 +982,17 @@ $(document).ready(
 								number_of_last_days
 							);
 
-							DrawStatsView(
-								parseInt(number_of_last_days),
-								comment_prefix
-							);
+							var integral_range = parseInt(number_of_last_days);
+							$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+
+							DrawStatsView(integral_range, comment_prefix);
 						},
 						STATS_RANGE_SAVING_TIMEOUT
 					);
 				}
 			);
 
-			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
+			DrawStatsView(integral_range, comment_prefix);
 		}
 		function UpdateHours() {
 			var HOURS_RANGE_SAVING_TIMEOUT = 500;
