@@ -968,7 +968,15 @@ $(document).ready(
 			range_editor.val(number_of_last_days);
 
 			var integral_range = parseInt(number_of_last_days);
-			$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+			if (integral_range == 0) {
+				$('.stats-range-view').hide();
+				$('.stats-range-dummy').show();
+			} else {
+				$('.stats-range-view').show();
+				$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+
+				$('.stats-range-dummy').hide();
+			}
 			$('.stats-range-end').text(moment().format('ll'));
 
 			var comment_prefix = activity.getSetting('stats_tags');
@@ -987,7 +995,15 @@ $(document).ready(
 							);
 
 							var integral_range = parseInt(number_of_last_days);
-							$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+							if (integral_range == 0) {
+								$('.stats-range-view').hide();
+								$('.stats-range-dummy').show();
+							} else {
+								$('.stats-range-view').show();
+								$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+
+								$('.stats-range-dummy').hide();
+							}
 
 							DrawStatsView(integral_range, comment_prefix);
 						},
