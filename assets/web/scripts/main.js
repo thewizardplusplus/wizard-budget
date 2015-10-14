@@ -976,7 +976,12 @@ $(document).ready(
 				$('.stats-range-dummy').show();
 			} else {
 				$('.stats-range-view').show();
-				$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+
+				var stats_range_start =
+					moment()
+					.subtract(integral_range, 'd')
+					.format('ll');
+				$('.stats-range-start').text(stats_range_start);
 
 				$('.stats-range-dummy').hide();
 			}
@@ -1003,7 +1008,12 @@ $(document).ready(
 								$('.stats-range-dummy').show();
 							} else {
 								$('.stats-range-view').show();
-								$('.stats-range-start').text(moment().subtract(integral_range, 'd').format('ll'));
+
+								var stats_range_start =
+									moment()
+									.subtract(integral_range, 'd')
+									.format('ll');
+								$('.stats-range-start').text(stats_range_start);
 
 								$('.stats-range-dummy').hide();
 							}
@@ -1170,7 +1180,9 @@ $(document).ready(
 					if (spending_type.val() == 'income') {
 						amount *= -1;
 					} else if (spending_type.val() == 'sum') {
-						var sum = parseFloat(spending_manager.getSpendingsSum());
+						var sum = parseFloat(
+							spending_manager.getSpendingsSum()
+						);
 						var difference = signed_amount - sum;
 						amount = parseFloat(
 							difference.toFixed(CORRECT_SPENDING_PRECISION)

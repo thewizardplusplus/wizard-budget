@@ -72,7 +72,11 @@ public class BackupManager {
 					"name",
 					Settings.SETTING_NAME_STATS_RANGE
 				);
-				serializer.attribute("", "value", String.valueOf(settings.getStatsRange()));
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getStatsRange())
+				);
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
@@ -90,7 +94,11 @@ public class BackupManager {
 					"name",
 					Settings.SETTING_NAME_HOURS_RANGE
 				);
-				serializer.attribute("", "value", String.valueOf(settings.getHoursRange()));
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getHoursRange())
+				);
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
@@ -497,14 +505,18 @@ public class BackupManager {
 					String value = preference.getAttribute("value");
 					boolean boolean_value = value.equals("true");
 					if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
-					settings.setStatsRange(Long.valueOf(value));
+						settings.setStatsRange(Long.valueOf(value));
 					} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 						settings.setStatsTags(value);
 					} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
-					settings.setHoursRange(Long.valueOf(value));
-					} else if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
+						settings.setHoursRange(Long.valueOf(value));
+					} else if (
+						name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)
+					) {
 						settings.setCreditCardTag(value);
-					} else if (name.equals(Settings.SETTING_NAME_COLLECT_STATS)) {
+					} else if (
+						name.equals(Settings.SETTING_NAME_COLLECT_STATS)
+					) {
 						settings.setCollectStats(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
@@ -533,11 +545,17 @@ public class BackupManager {
 					) {
 						settings.setSmsResiduePattern(value);
 					} else if (
-						name.equals(Settings.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT)
+						name.equals(
+							Settings
+							.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT
+						)
 					) {
 						settings.setSmsNegativeCorrectionComment(value);
 					} else if (
-						name.equals(Settings.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT)
+						name.equals(
+							Settings
+							.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT
+						)
 					) {
 						settings.setSmsPositiveCorrectionComment(value);
 					} else if (

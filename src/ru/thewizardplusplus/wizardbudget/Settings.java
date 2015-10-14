@@ -46,7 +46,8 @@ public class Settings {
 		"preference_analysis_harvest";
 	public static final String SETTING_NAME_HARVEST_USERNAME =
 		"preference_harvest_username";
-	public static final String SETTING_NAME_HARVEST_PASSWORD = "preference_harvest_password";
+	public static final String SETTING_NAME_HARVEST_PASSWORD =
+		"preference_harvest_password";
 	public static final String SETTING_NAME_HARVEST_SUBDOMAIN =
 		"preference_harvest_subdomain";
 	public static final String SETTING_NAME_WORKING_OFF_LIMIT =
@@ -198,11 +199,15 @@ public class Settings {
 		}
 		settings.sms_negative_correction_comment = preferences.getString(
 			SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT,
-			context.getString(R.string.preference_sms_negative_correction_comment_default)
+			context.getString(
+				R.string.preference_sms_negative_correction_comment_default
+			)
 		);
 		settings.sms_positive_correction_comment = preferences.getString(
 			SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT,
-			context.getString(R.string.preference_sms_positive_correction_comment_default)
+			context.getString(
+				R.string.preference_sms_positive_correction_comment_default
+			)
 		);
 
 		settings.save_backup_to_dropbox = preferences.getBoolean(
@@ -445,7 +450,9 @@ public class Settings {
 		return sms_negative_correction_comment;
 	}
 
-	public void setSmsNegativeCorrectionComment(String sms_negative_correction_comment) {
+	public void setSmsNegativeCorrectionComment(
+		String sms_negative_correction_comment
+	) {
 		this.sms_negative_correction_comment = sms_negative_correction_comment;
 	}
 
@@ -453,7 +460,9 @@ public class Settings {
 		return sms_positive_correction_comment;
 	}
 
-	public void setSmsPositiveCorrectionComment(String sms_positive_correction_comment) {
+	public void setSmsPositiveCorrectionComment(
+		String sms_positive_correction_comment
+	) {
 		this.sms_positive_correction_comment = sms_positive_correction_comment;
 	}
 
@@ -582,8 +591,14 @@ public class Settings {
 			SETTING_NAME_SMS_RESIDUE_PATTERN,
 			sms_residue_pattern_string
 		);
-		editor.putString(SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT, sms_negative_correction_comment);
-		editor.putString(SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT, sms_positive_correction_comment);
+		editor.putString(
+			SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT,
+			sms_negative_correction_comment
+		);
+		editor.putString(
+			SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT,
+			sms_positive_correction_comment
+		);
 		editor.putBoolean(
 			SETTING_NAME_SAVE_BACKUP_TO_DROPBOX,
 			save_backup_to_dropbox

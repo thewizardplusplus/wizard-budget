@@ -387,7 +387,9 @@ public class SpendingManager {
 					amount >= 0.0
 						? Settings.getCurrent(context).getSmsSpendingComment()
 						: Settings.getCurrent(context).getSmsIncomeComment();
-				String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+				String credit_card_tag =
+					Settings.getCurrent(context)
+					.getCreditCardTag();
 				if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
 					comment += ", ";
 				}
@@ -490,7 +492,11 @@ public class SpendingManager {
 		return timestamp / 60 * 60;
 	}
 
-	private void addNewSpending(SQLiteDatabase database, double amount, String comment) {
+	private void addNewSpending(
+		SQLiteDatabase database,
+		double amount,
+		String comment
+	) {
 		ContentValues values = new ContentValues();
 		long current_timestamp = resetSeconds(
 			System.currentTimeMillis()
@@ -513,11 +519,17 @@ public class SpendingManager {
 
 		String comment = "";
 		if (correction < 0) {
-			comment = Settings.getCurrent(context).getSmsPositiveCorrectionComment();
+			comment =
+				Settings.getCurrent(context)
+				.getSmsPositiveCorrectionComment();
 		} else {
-			comment = Settings.getCurrent(context).getSmsNegativeCorrectionComment();
+			comment =
+				Settings.getCurrent(context)
+				.getSmsNegativeCorrectionComment();
 		}
-		String credit_card_tag = Settings.getCurrent(context).getCreditCardTag();
+		String credit_card_tag =
+			Settings.getCurrent(context)
+			.getCreditCardTag();
 		if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
 			comment += ", ";
 		}

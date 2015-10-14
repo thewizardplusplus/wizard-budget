@@ -342,6 +342,7 @@ public class MainActivity extends Activity {
 		callGuiFunction(name, new String[]{});
 	}
 
+	@SuppressWarnings("unused")
 	private void guiDebug(String message) {
 		callGuiFunction("debug", new String[]{JSONObject.quote(message)});
 	}
@@ -419,6 +420,7 @@ public class MainActivity extends Activity {
 	}
 
 	private AppKeyPair getDropboxAppKeys() {
-		return new AppKeyPair(DropboxAccess.APP_KEY, dropbox_access.getAppSecret());
+		String app_secret = dropbox_access.getAppSecret();
+		return new AppKeyPair(DropboxAccess.APP_KEY, app_secret);
 	}
 }
