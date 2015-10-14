@@ -342,6 +342,10 @@ public class MainActivity extends Activity {
 		callGuiFunction(name, new String[]{});
 	}
 
+	private void guiDebug(String message) {
+		callGuiFunction("debug", new String[]{JSONObject.quote(message)});
+	}
+
 	private void restoreBackup(String filename) {
 		File backup_file = new File(filename);
 		InputStream in = null;

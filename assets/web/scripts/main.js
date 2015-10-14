@@ -309,6 +309,9 @@ var GUI = {
 		} else {
 			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".', 'error');
 		}
+	},
+	debug: function(message) {
+		$('.debug').text(message);
 	}
 };
 
