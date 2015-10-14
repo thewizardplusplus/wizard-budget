@@ -63,10 +63,16 @@ function ProcessHours() {
 	var month_data = work_calendar[current_date.getMonth()];
 	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
 
+	var hours_range = parseInt(activity.getSetting('hours_range'));
+	var start_day = current_date.getDate() - hours_range;
+	if (hours_range == 0 || start_day < 1) {
+		start_day = 1;
+	}
+
 	var expected_hours = 0;
 	var month_worked_hours = 0;
 	var month_rest_days = 0;
-	for (var day = 1; day <= MAXIMAL_DAY; day++) {
+	for (var day = start_day; day <= MAXIMAL_DAY; day++) {
 		var day_type = month_data[day - 1];
 		if (typeof day_type !== 'undefined') {
 			if (day <= current_date.getDate()) {
@@ -90,7 +96,7 @@ function ProcessHours() {
 
 	var difference = expected_hours - month_worked_hours;
 	var hours_data = {
-		month: moment().format('MMMM'),
+		start_day: start_day,
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: difference,
@@ -102,7 +108,8 @@ function ProcessHours() {
 	activity.updateWidget();
 }
 function ShowHours(hours_data) {
-	$('#hours-segment .month-view').text(hours_data.month);
+	var hours_range_start = moment().date(hours_data.start_day).format('ll');
+	$('.hours-range-start').text(hours_range_start);
 
 	var hours_view = $('#hours-segment .hours-view');
 	$('.expected-hours-view', hours_view).text(
@@ -116,7 +123,7 @@ function ShowHours(hours_data) {
 	difference_view.text(
 		hours_data.difference.toFixed(HOURS_VIEW_PRECISION)
 	);
-	if (hours_data.difference < 0) {
+	if (hours_data.difference <= 0) {
 		difference_view.removeClass('lack').addClass('excess');
 	} else {
 		difference_view.removeClass('excess').addClass('lack');
@@ -129,7 +136,7 @@ function ShowHours(hours_data) {
 	var working_off_limit = parseFloat(
 		activity.getSetting('working_off_limit')
 	);
-	if (hours_data.working_off < working_off_limit) {
+	if (hours_data.working_off <= working_off_limit) {
 		working_off_view.removeClass('lack').addClass('excess');
 	} else {
 		working_off_view.removeClass('excess').addClass('lack');
@@ -302,6 +309,9 @@ var GUI = {
 		} else {
 			LOADING_LOG.addMessage('Error: "' + data.substr(6) + '".', 'error');
 		}
+	},
+	debug: function(message) {
+		$('.debug').text(message);
 	}
 };
 
@@ -713,14 +723,19 @@ $(document).ready(
 
 			var current_segment = activity.getSetting('current_segment');
 			if (
-				current_segment == 'hours'
-				&& activity.getSetting('analysis_harvest') !== 'true'
+				(current_segment == 'stats'
+				&& activity.getSetting('collect_stats') !== 'true')
+				|| (current_segment == 'hours'
+				&& activity.getSetting('analysis_harvest') !== 'true')
 			) {
 				current_segment = 'history';
 				activity.setSetting('current_segment', 'history');
 			}
 			SetCurrentSegment(current_segment);
 
+			if (activity.getSetting('collect_stats') !== 'true') {
+				$('.stats-segment').hide();
+			}
 			if (activity.getSetting('analysis_harvest') !== 'true') {
 				$('.hours-segment').hide();
 			}
@@ -748,9 +763,24 @@ $(document).ready(
 						add_button.show();
 						refresh_button.hide();
 					} else if (self.hasClass('stats-segment')) {
-						activity.setSetting('current_segment', 'stats');
-						add_button.hide();
-						refresh_button.hide();
+						if (
+							activity.getSetting('collect_stats') === 'true'
+						) {
+							activity.setSetting('current_segment', 'stats');
+							add_button.hide();
+							refresh_button.hide();
+						} else {
+							activity.setSetting('current_segment', 'history');
+							add_button.show();
+							refresh_button.hide();
+
+							setTimeout(
+								function() {
+									SetCurrentSegment('history');
+								},
+								RESET_SEGMENT_TIMEOUT
+							);
+						}
 					} else if (self.hasClass('hours-segment')) {
 						if (
 							activity.getSetting('analysis_harvest') === 'true'
@@ -926,6 +956,8 @@ $(document).ready(
 			);
 		}
 		function UpdateStats() {
+			var STATS_RANGE_SAVING_TIMEOUT = 500;
+
 			$('.stats-range-form').on(
 				'submit',
 				function(event) {
@@ -937,6 +969,23 @@ $(document).ready(
 			var number_of_last_days = activity.getSetting('stats_range');
 			var range_editor = $('.stats-range-editor');
 			range_editor.val(number_of_last_days);
+
+			var integral_range = parseInt(number_of_last_days);
+			if (integral_range == 0) {
+				$('.stats-range-view').hide();
+				$('.stats-range-dummy').show();
+			} else {
+				$('.stats-range-view').show();
+
+				var stats_range_start =
+					moment()
+					.subtract(integral_range, 'd')
+					.format('ll');
+				$('.stats-range-start').text(stats_range_start);
+
+				$('.stats-range-dummy').hide();
+			}
+			$('.stats-range-end').text(moment().format('ll'));
 
 			var comment_prefix = activity.getSetting('stats_tags');
 
@@ -953,19 +1002,68 @@ $(document).ready(
 								number_of_last_days
 							);
 
-							DrawStatsView(
-								parseInt(number_of_last_days),
-								comment_prefix
-							);
+							var integral_range = parseInt(number_of_last_days);
+							if (integral_range == 0) {
+								$('.stats-range-view').hide();
+								$('.stats-range-dummy').show();
+							} else {
+								$('.stats-range-view').show();
+
+								var stats_range_start =
+									moment()
+									.subtract(integral_range, 'd')
+									.format('ll');
+								$('.stats-range-start').text(stats_range_start);
+
+								$('.stats-range-dummy').hide();
+							}
+
+							DrawStatsView(integral_range, comment_prefix);
 						},
-						500
+						STATS_RANGE_SAVING_TIMEOUT
 					);
 				}
 			);
 
-			DrawStatsView(parseInt(number_of_last_days), comment_prefix);
+			DrawStatsView(integral_range, comment_prefix);
 		}
 		function UpdateHours() {
+			var HOURS_RANGE_SAVING_TIMEOUT = 500;
+
+			$('.hours-range-form').on(
+				'submit',
+				function(event) {
+					event.preventDefault();
+					return false;
+				}
+			);
+
+			var number_of_last_days = activity.getSetting('hours_range');
+			var range_editor = $('.hours-range-editor');
+			range_editor.val(number_of_last_days);
+
+			$('.hours-range-end').text(moment().format('ll'));
+
+			var range_update_timer = null;
+			range_editor.on(
+				'keyup',
+				function() {
+					clearTimeout(range_update_timer);
+					range_update_timer = setTimeout(
+						function() {
+							var number_of_last_days = range_editor.val();
+							activity.setSetting(
+								'hours_range',
+								number_of_last_days
+							);
+
+							ProcessHours();
+						},
+						HOURS_RANGE_SAVING_TIMEOUT
+					);
+				}
+			);
+
 			$('.refresh-button').click(
 				function() {
 					var self = $(this);
@@ -1072,7 +1170,8 @@ $(document).ready(
 
 			edit_spending_button.click(
 				function() {
-					var amount = Math.abs(parseFloat(amount_editor.val()));
+					var signed_amount = parseFloat(amount_editor.val());
+					var amount = Math.abs(signed_amount);
 
 					tags_editor.addCurrentText();
 					var tags = tags_editor.getTags();
@@ -1081,10 +1180,10 @@ $(document).ready(
 					if (spending_type.val() == 'income') {
 						amount *= -1;
 					} else if (spending_type.val() == 'sum') {
-						var sum = Math.abs(
-							parseFloat(spending_manager.getSpendingsSum())
+						var sum = parseFloat(
+							spending_manager.getSpendingsSum()
 						);
-						var difference = sum - amount;
+						var difference = signed_amount - sum;
 						amount = parseFloat(
 							difference.toFixed(CORRECT_SPENDING_PRECISION)
 						);
@@ -1192,7 +1291,8 @@ $(document).ready(
 							+ 'data-timestamp = "'
 								+ spending.timestamp
 							+ '" '
-							+ 'data-amount = "' + spending.amount + '">'
+							+ 'data-amount = "' + spending.amount + '" '
+							+ 'data-residue = "' + spending.residue + '">'
 							+ '<div class = "toggle import-flag">'
 								+ '<div class = "toggle-handle"></div>'
 							+ '</div>'
@@ -1238,7 +1338,8 @@ $(document).ready(
 								sms_data.push(
 									{
 										timestamp: list_item.data('timestamp'),
-										amount: list_item.data('amount')
+										amount: list_item.data('amount'),
+										residue: list_item.data('residue'),
 									}
 								);
 							}

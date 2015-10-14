@@ -19,23 +19,9 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getSpendingsSum() {
 		SQLiteDatabase database = Utils.getDatabase(context);
-		Cursor cursor = database.query(
-			"spendings",
-			new String[]{"ROUND(SUM(amount), 2)"},
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		double spendings_sum = 0.0;
-		boolean moved = cursor.moveToFirst();
-		if (moved) {
-			spendings_sum = cursor.getDouble(0);
-		}
-
+		double spendings_sum = calculateSpendingsSum(database);
 		database.close();
+
 		return String.valueOf(spendings_sum);
 	}
 
@@ -102,7 +88,7 @@ public class SpendingManager {
 			null,
 			null,
 			null,
-			null
+			"date DESC"
 		);
 		JSONArray spendings = new JSONArray();
 		if (cursor.moveToFirst()) {
@@ -142,6 +128,7 @@ public class SpendingManager {
 					spending.put("date", formatDate(timestamp));
 					spending.put("time", formatTime(timestamp));
 					spending.put("amount", sms_data.getSpending());
+					spending.put("residue", sms_data.getResidue());
 
 					spendings.put(spending);
 				} catch (JSONException exception) {
@@ -190,18 +177,21 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStatsSum(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		number_of_last_days = Math.abs(number_of_last_days);
 		String prefix_length = String.valueOf(prefix.length());
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"ROUND(SUM(amount), 2)"},
 			"amount > 0 "
-				+ "AND date(timestamp, 'unixepoch')"
-					+ ">= date("
-						+ "'now',"
-						+ "'-"
-							+ String.valueOf(Math.abs(number_of_last_days))
-							+ " days'"
-					+ ")"
+				+ (number_of_last_days != 0.0
+					?  "AND date(timestamp, 'unixepoch')"
+						+ ">= date("
+							+ "'now',"
+							+ "'-"
+								+ String.valueOf(number_of_last_days)
+								+ " days'"
+						+ ")"
+					: "")
 				+ "AND comment LIKE "
 					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
@@ -227,19 +217,22 @@ public class SpendingManager {
 	@JavascriptInterface
 	public String getStats(int number_of_last_days, String prefix) {
 		SQLiteDatabase database = Utils.getDatabase(context);
+		number_of_last_days = Math.abs(number_of_last_days);
 		int prefix_length = prefix.length();
 		String prefix_length_in_string = String.valueOf(prefix_length);
 		Cursor spendings_cursor = database.query(
 			"spendings",
 			new String[]{"comment", "amount"},
 			"amount > 0 "
-				+ "AND date(timestamp, 'unixepoch')"
-					+ ">= date("
-						+ "'now',"
-						+ "'-"
-							+ String.valueOf(Math.abs(number_of_last_days))
-							+ " days'"
-					+ ")"
+				+ (number_of_last_days != 0.0
+					? "AND date(timestamp, 'unixepoch')"
+						+ ">= date("
+							+ "'now',"
+							+ "'-"
+								+ String.valueOf(number_of_last_days)
+								+ " days'"
+						+ ")"
+					: "")
 				+ "AND comment LIKE "
 					+ DatabaseUtils.sqlEscapeString(prefix + "%")
 				+ "AND ("
@@ -312,17 +305,14 @@ public class SpendingManager {
 
 	@JavascriptInterface
 	public void createSpending(double amount, String comment) {
-		ContentValues values = new ContentValues();
-		long current_timestamp = resetSeconds(
-			System.currentTimeMillis()
-			/ 1000L
-		);
-		values.put("timestamp", current_timestamp);
-		values.put("amount", amount);
-		values.put("comment", comment);
-
 		SQLiteDatabase database = Utils.getDatabase(context);
-		database.insert("spendings", null, values);
+		addNewSpending(database, amount, comment);
+		database.close();
+	}
+
+	public void createCorrection(double residue) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		addCorrection(database, residue);
 		database.close();
 	}
 
@@ -375,6 +365,8 @@ public class SpendingManager {
 	@JavascriptInterface
 	public void importSms(String sms_data) {
 		String sql = "";
+		double residue = 0.0;
+		boolean residue_found_tryed = false;
 		try {
 			JSONArray spendings = new JSONArray(sms_data);
 			for (int i = 0; i < spendings.length(); i++) {
@@ -386,17 +378,22 @@ public class SpendingManager {
 				long timestamp = resetSeconds(spending.getLong("timestamp"));
 				double amount = spending.getDouble("amount");
 
+				if (!residue_found_tryed) {
+					residue = spending.getDouble("residue");
+					residue_found_tryed = true;
+				}
+
 				String comment =
 					amount >= 0.0
 						? Settings.getCurrent(context).getSmsSpendingComment()
 						: Settings.getCurrent(context).getSmsIncomeComment();
 				String credit_card_tag =
-					Settings
-					.getCurrent(context)
+					Settings.getCurrent(context)
 					.getCreditCardTag();
-				if (!credit_card_tag.isEmpty()) {
-					comment += ", " + credit_card_tag;
+				if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
+					comment += ", ";
 				}
+				comment += credit_card_tag;
 
 				sql += "("
 						+ String.valueOf(timestamp) + ","
@@ -413,6 +410,7 @@ public class SpendingManager {
 				+ "(timestamp, amount, comment)"
 				+ "VALUES" + sql
 			);
+			addCorrection(database, residue);
 			database.close();
 
 			if (Settings.getCurrent(context).isSmsImportNotification()) {
@@ -490,7 +488,73 @@ public class SpendingManager {
 		return tags;
 	}
 
-	long resetSeconds(long timestamp) {
+	private long resetSeconds(long timestamp) {
 		return timestamp / 60 * 60;
+	}
+
+	private void addNewSpending(
+		SQLiteDatabase database,
+		double amount,
+		String comment
+	) {
+		ContentValues values = new ContentValues();
+		long current_timestamp = resetSeconds(
+			System.currentTimeMillis()
+			/ 1000L
+		);
+		values.put("timestamp", current_timestamp);
+		values.put("amount", amount);
+		values.put("comment", comment);
+
+		database.insert("spendings", null, values);
+	}
+
+	private void addCorrection(SQLiteDatabase database, double residue) {
+		if (residue == 0.0) {
+			return;
+		}
+
+		double spendings_sum = calculateSpendingsSum(database);
+		double correction = -1 * residue - spendings_sum;
+
+		String comment = "";
+		if (correction < 0) {
+			comment =
+				Settings.getCurrent(context)
+				.getSmsPositiveCorrectionComment();
+		} else {
+			comment =
+				Settings.getCurrent(context)
+				.getSmsNegativeCorrectionComment();
+		}
+		String credit_card_tag =
+			Settings.getCurrent(context)
+			.getCreditCardTag();
+		if (!comment.isEmpty() && !credit_card_tag.isEmpty()) {
+			comment += ", ";
+		}
+		comment += credit_card_tag;
+
+		addNewSpending(database, correction, comment);
+	}
+
+	private double calculateSpendingsSum(SQLiteDatabase database) {
+		Cursor cursor = database.query(
+			"spendings",
+			new String[]{"ROUND(SUM(amount), 2)"},
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+
+		double spendings_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			spendings_sum = cursor.getDouble(0);
+		}
+
+		return spendings_sum;
 	}
 }

@@ -79,10 +79,14 @@ public class MainActivity extends Activity {
 			return settings.getActiveSpending();
 		} else if (name.equals(Settings.SETTING_NAME_ACTIVE_BUY)) {
 			return settings.getActiveBuy();
+		} else if (name.equals("collect_stats")) {
+			return settings.isCollectStats() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			return settings.getStatsTags();
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+			return String.valueOf(settings.getHoursRange());
 		} else if (name.equals("analysis_harvest")) {
 			return settings.isAnalysisHarvest() ? "true" : "false";
 		} else if (name.equals("harvest_username")) {
@@ -121,6 +125,8 @@ public class MainActivity extends Activity {
 			settings.setStatsRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+			settings.setHoursRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			settings.setWorkedHours(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
@@ -307,9 +313,9 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
-	private static final String DROPBOX_APP_KEY = "a3fjeiuyp2gcndt";
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
+	private DropboxAccess dropbox_access = new DefaultDropboxAccess();
 	private String backup_filename = "";
 
 	private void callGuiFunction(String name, String[] arguments) {
@@ -334,6 +340,11 @@ public class MainActivity extends Activity {
 
 	private void callGuiFunction(String name) {
 		callGuiFunction(name, new String[]{});
+	}
+
+	@SuppressWarnings("unused")
+	private void guiDebug(String message) {
+		callGuiFunction("debug", new String[]{JSONObject.quote(message)});
 	}
 
 	private void restoreBackup(String filename) {
@@ -409,8 +420,7 @@ public class MainActivity extends Activity {
 	}
 
 	private AppKeyPair getDropboxAppKeys() {
-		Settings settings = Settings.getCurrent(this);
-		String app_secret = settings.getDropboxAppSecret();
-		return new AppKeyPair(DROPBOX_APP_KEY, app_secret);
+		String app_secret = dropbox_access.getAppSecret();
+		return new AppKeyPair(DropboxAccess.APP_KEY, app_secret);
 	}
 }

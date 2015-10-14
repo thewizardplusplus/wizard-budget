@@ -10,16 +10,10 @@
 	<RelativeLayout
 		android:layout_width = "fill_parent"
 		android:layout_height = "wrap_content">
-		<ImageView
-			android:layout_width = "32dp"
-			android:layout_height = "32dp"
-			android:layout_centerVertical = "true"
-			android:src = "@drawable/app_widget_icon" />
 		<LinearLayout
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
 			android:layout_centerHorizontal = "true"
-			android:layout_centerVertical = "true"
 			android:gravity = "center"
 			android:orientation = "vertical">
 			<TextView
@@ -61,24 +55,18 @@
 					android:drawableRight = "@drawable/clock_widget_icon" />
 			</LinearLayout>
 		</LinearLayout>
-		<RelativeLayout
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
+		<ImageView
+			android:id = "@+id/widget_add_button_small"
+			android:layout_width = "32dp"
+			android:layout_height = "32dp"
+			android:layout_alignParentBottom = "true"
+			android:src = "@drawable/add_widget_icon" />
+		<ImageView
+			android:id = "@+id/widget_update_hours_button_small"
+			android:layout_width = "32dp"
+			android:layout_height = "32dp"
 			android:layout_alignParentRight = "true"
-			android:layout_centerVertical = "true"
-			android:orientation = "vertical">
-			<ImageView
-				android:id = "@+id/widget_add_button_small"
-				android:layout_width = "32dp"
-				android:layout_height = "32dp"
-				android:layout_alignParentTop = "true"
-				android:src = "@drawable/add_widget_icon" />
-			<ImageView
-				android:id = "@+id/widget_update_hours_button_small"
-				android:layout_width = "32dp"
-				android:layout_height = "32dp"
-				android:layout_alignParentBottom = "true"
-				android:src = "@drawable/hours_update_widget_icon" />
-		</RelativeLayout>
+			android:layout_alignParentBottom = "true"
+			android:src = "@drawable/hours_update_widget_icon" />
 	</RelativeLayout>
 </LinearLayout>

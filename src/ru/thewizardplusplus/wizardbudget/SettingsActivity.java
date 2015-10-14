@@ -30,6 +30,11 @@ public class SettingsActivity extends PreferenceActivity {
 			Settings.SETTING_NAME_SMS_INCOME_PATTERN,
 			"Invalid syntax of SMS income pattern."
 		);
+		addRegexpValidator(
+			preference_screen,
+			Settings.SETTING_NAME_SMS_RESIDUE_PATTERN,
+			"Invalid syntax of SMS residue pattern."
+		);
 
 		Pattern working_off_pattern = null;
 		try {

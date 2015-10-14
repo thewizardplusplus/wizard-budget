@@ -74,16 +74,27 @@
 						</div>
 					</form>
 					<p class = "content-padded">
-						Selected tags:
+						<span class = "underline">Range:</span>
+						<span class = "stats-range-view">
+							<time class = "stats-range-start"></time>
+							<i class = "fa fa-calendar"></i> &mdash;
+							<time class = "stats-range-end"></time>
+							<i class = "fa fa-calendar"></i>.
+						</span>
+						<span class = "stats-range-dummy">all days.</span>
+					</p>
+					<p class = "content-padded">
+						<span class = "underline">Selected tags:</span>
 						<span class = "selected-tag-list"></span>.
 					</p>
-					<hr />
-
 					<p class = "content-padded">
-						Spendings sum: <span class = "stats-sum-view">
+						<span class = "underline">Spendings sum:</span>
+						<span class = "stats-sum-view">
 							0.0
-						</span> <i class = "fa fa-ruble"></i>.
+						</span>
+						<i class = "fa fa-ruble"></i>.
 					</p>
+
 					<table class = "stats-view">
 						<tbody></tbody>
 					</table>
@@ -91,18 +102,30 @@
 				<div
 					id = "hours-segment"
 					class = "control-content hours-segment">
+					<form class = "input-group hours-range-form" action = "#">
+						<div class = "input-row">
+							<label>Days:</label>
+							<input
+								class = "hours-range-editor"
+								type = "number"
+								placeholder = "Last days" />
+						</div>
+					</form>
 					<div class = "card hidden loading-log"></div>
-
-					<h4 class = "content-padded">
-						<i class = "fa fa-calendar"></i>
-						<span class = "month-view">&mdash;</span>
-					</h4>
-					<hr />
 
 					<table class = "hours-view">
 						<tbody>
 							<tr>
-								<td>Expected hours:</td>
+								<td class = "underline">Range:</td>
+								<td>
+									<time class = "hours-range-start"></time>
+									<i class = "fa fa-calendar"></i> &mdash;
+									<time class = "hours-range-end"></time>
+									<i class = "fa fa-calendar"></i>
+								</td>
+							</tr>
+							<tr>
+								<td class = "underline">Expected hours:</td>
 								<td>
 									<span class = "expected-hours-view">
 										0.0
@@ -111,14 +134,14 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Hours worked:</td>
+								<td class = "underline">Hours worked:</td>
 								<td>
 									<span class = "hours-worked-view">0.0</span>
 									<i class = "fa fa-clock-o"></i>
 								</td>
 							</tr>
 							<tr>
-								<td>Difference:</td>
+								<td class = "underline">Difference:</td>
 								<td>
 									<strong>
 										<span class = "difference-view">
@@ -129,7 +152,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Working off:</td>
+								<td class = "underline">Working off:</td>
 								<td>
 									<strong>
 										<span class = "working-off-view">

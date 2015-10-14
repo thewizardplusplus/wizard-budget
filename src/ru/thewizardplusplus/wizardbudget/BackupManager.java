@@ -70,9 +70,57 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_STATS_RANGE
+				);
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getStatsRange())
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_STATS_TAGS
+				);
+				serializer.attribute("", "value", settings.getStatsTags());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_HOURS_RANGE
+				);
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getHoursRange())
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_CREDIT_CARD_TAG
 				);
 				serializer.attribute("", "value", settings.getCreditCardTag());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_COLLECT_STATS
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isCollectStats() ? "true" : "false"
+				);
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
@@ -118,19 +166,6 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
-					Settings.SETTING_NAME_SMS_INCOME_PATTERN
-				);
-				serializer.attribute(
-					"",
-					"value",
-					settings.getSmsIncomePatternString()
-				);
-				serializer.endTag("", "preference");
-
-				serializer.startTag("", "preference");
-				serializer.attribute(
-					"",
-					"name",
 					Settings.SETTING_NAME_SMS_SPENDING_COMMENT
 				);
 				serializer.attribute(
@@ -144,12 +179,64 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_SMS_INCOME_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsIncomePatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_SMS_INCOME_COMMENT
 				);
 				serializer.attribute(
 					"",
 					"value",
 					settings.getSmsIncomeComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_RESIDUE_PATTERN
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsResiduePatternString()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsNegativeCorrectionComment()
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.getSmsPositiveCorrectionComment()
 				);
 				serializer.endTag("", "preference");
 
@@ -417,8 +504,20 @@ public class BackupManager {
 					String name = preference.getAttribute("name");
 					String value = preference.getAttribute("value");
 					boolean boolean_value = value.equals("true");
-					if (name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)) {
+					if (name.equals(Settings.SETTING_NAME_STATS_RANGE)) {
+						settings.setStatsRange(Long.valueOf(value));
+					} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
+						settings.setStatsTags(value);
+					} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
+						settings.setHoursRange(Long.valueOf(value));
+					} else if (
+						name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)
+					) {
 						settings.setCreditCardTag(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_COLLECT_STATS)
+					) {
+						settings.setCollectStats(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
 					} else if (
@@ -430,17 +529,35 @@ public class BackupManager {
 					) {
 						settings.setSmsSpendingPattern(value);
 					} else if (
-						name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)
-					) {
-						settings.setSmsIncomePattern(value);
-					} else if (
 						name.equals(Settings.SETTING_NAME_SMS_SPENDING_COMMENT)
 					) {
 						settings.setSmsSpendingComment(value);
 					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_INCOME_PATTERN)
+					) {
+						settings.setSmsIncomePattern(value);
+					} else if (
 						name.equals(Settings.SETTING_NAME_SMS_INCOME_COMMENT)
 					) {
 						settings.setSmsIncomeComment(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_SMS_RESIDUE_PATTERN)
+					) {
+						settings.setSmsResiduePattern(value);
+					} else if (
+						name.equals(
+							Settings
+							.SETTING_NAME_SMS_NEGATIVE_CORRECTION_COMMENT
+						)
+					) {
+						settings.setSmsNegativeCorrectionComment(value);
+					} else if (
+						name.equals(
+							Settings
+							.SETTING_NAME_SMS_POSITIVE_CORRECTION_COMMENT
+						)
+					) {
+						settings.setSmsPositiveCorrectionComment(value);
 					} else if (
 						name.equals(
 							Settings.SETTING_NAME_SAVE_BACKUP_TO_DROPBOX
@@ -612,7 +729,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
-	private static final long BACKUP_VERSION = 4;
+	private static final long BACKUP_VERSION = 5;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",

@@ -53,6 +53,9 @@ public class SmsReceiver extends BroadcastReceiver {
 							sms_data.getComment()
 						);
 
+						double residue = sms_data.getResidue();
+						spending_manager.createCorrection(residue);
+
 						Utils.updateWidget(context_copy);
 						if (
 							Settings

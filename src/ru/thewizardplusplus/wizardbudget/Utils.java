@@ -90,6 +90,19 @@ public class Utils {
 			return null;
 		}
 
+		double residue = 0.0;
+		matcher =
+			Settings
+			.getCurrent(context)
+			.getSmsResiduePattern()
+			.matcher(text);
+		if (matcher.find()) {
+			String residue_string = matcher.group(1);
+			try {
+				residue = Double.valueOf(residue_string);
+			} catch(NumberFormatException exception) {}
+		}
+
 		String comment =
 			spending >= 0.0
 				? Settings.getCurrent(context).getSmsSpendingComment()
@@ -102,7 +115,7 @@ public class Utils {
 			comment += ", " + credit_card_tag;
 		}
 
-		return new SmsData(spending, comment);
+		return new SmsData(spending, residue, comment);
 	}
 
 	public static void updateWidget(Context context) {
