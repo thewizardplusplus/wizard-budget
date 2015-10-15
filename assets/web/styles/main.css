@@ -195,10 +195,19 @@ ol {
 	opacity: 0.5;
 }
 
+.hours-range-form p,
+.hours-range-form input[type=date] {
+	margin-bottom: 0;
+}
+
 .hours-view td {
 	padding: 5px 10px;
 	font-size: 14px;
 	color: #777;
+}
+
+.hours-view tr:first-child td {
+    padding: 0 10px 5px 10px;
 }
 
 .debug {
