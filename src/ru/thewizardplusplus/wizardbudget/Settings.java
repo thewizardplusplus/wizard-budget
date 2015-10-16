@@ -4,6 +4,8 @@ import java.util.regex.*;
 
 import android.content.*;
 import android.preference.*;
+import java.util.*;
+import java.text.*;
 
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
@@ -13,7 +15,8 @@ public class Settings {
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
 	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
-	public static final String SETTING_NAME_HOURS_RANGE = "hours_range";
+	public static final String SETTING_NAME_HOURS_START_DATE = "hours_start_date";
+	public static final String SETTING_NAME_HOURS_END_DATE = "hours_end_date";
 	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
 	public static final String SETTING_NAME_HOURS_DATA = "hours_data";
@@ -97,10 +100,20 @@ public class Settings {
 			SETTING_NAME_DROPBOX_TOKEN,
 			""
 		);
-		settings.hours_range = preferences.getLong(
-			SETTING_NAME_HOURS_RANGE,
-			DEFAULT_HOURS_RANGE
+
+		Date current_timestamp = new Date();
+		DateFormat date_format = new SimpleDateFormat(HOURS_DATE_FORMAT);
+		String formatted_current_timestamp = date_format.format(current_timestamp);
+
+		settings.hours_start_date = preferences.getString(
+			SETTING_NAME_HOURS_START_DATE,
+			formatted_current_timestamp
 		);
+		settings.hours_end_date = preferences.getString(
+			SETTING_NAME_HOURS_END_DATE,
+			formatted_current_timestamp
+		);
+
 		settings.worked_hours = preferences.getString(
 			SETTING_NAME_WORKED_HOURS,
 			DEFAULT_WORKED_HOURS
@@ -318,12 +331,20 @@ public class Settings {
 		this.dropbox_token = dropbox_token;
 	}
 
-	public long getHoursRange() {
-		return hours_range;
+	public String getHoursStartDate() {
+		return hours_start_date;
 	}
 
-	public void setHoursRange(long hours_range) {
-		this.hours_range = hours_range;
+	public void setHoursStartDate(String hours_start_date) {
+		this.hours_start_date = hours_start_date;
+	}
+
+	public String getHoursEndDate() {
+		return hours_end_date;
+	}
+
+	public void setHoursEndDate(String hours_end_date) {
+		this.hours_end_date = hours_end_date;
 	}
 
 	public String getWorkedHours() {
@@ -562,7 +583,8 @@ public class Settings {
 		editor.putLong(SETTING_NAME_STATS_RANGE, stats_range);
 		editor.putString(SETTING_NAME_STATS_TAGS, stats_tags);
 		editor.putString(SETTING_NAME_DROPBOX_TOKEN, dropbox_token);
-		editor.putLong(SETTING_NAME_HOURS_RANGE, hours_range);
+		editor.putString(SETTING_NAME_HOURS_START_DATE, hours_start_date);
+		editor.putString(SETTING_NAME_HOURS_END_DATE, hours_end_date);
 		editor.putString(SETTING_NAME_WORKED_HOURS, worked_hours);
 		editor.putString(SETTING_NAME_WORK_CALENDAR, work_calendar);
 		editor.putString(SETTING_NAME_HOURS_DATA, hours_data);
@@ -642,8 +664,8 @@ public class Settings {
 	private static final String DEFAULT_HOURS_DATA = "null";
 	private static final long DEFAULT_STATS_RANGE = 0;
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
-	private static final long DEFAULT_HOURS_RANGE = 0;
 	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
+	private static final String HOURS_DATE_FORMAT = "yyyy-MM-dd";
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
@@ -653,7 +675,8 @@ public class Settings {
 	private long stats_range = DEFAULT_STATS_RANGE;
 	private String stats_tags = "";
 	private String dropbox_token = "";
-	private long hours_range = DEFAULT_HOURS_RANGE;
+	private String hours_start_date = "";
+	private String hours_end_date = "";
 	private String worked_hours = DEFAULT_WORKED_HOURS;
 	private String work_calendar = DEFAULT_WORK_CALENDAR;
 	private String hours_data = DEFAULT_HOURS_DATA;
