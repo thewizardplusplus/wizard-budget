@@ -92,13 +92,18 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
-					Settings.SETTING_NAME_HOURS_RANGE
+					Settings.SETTING_NAME_HOURS_START_DATE
 				);
+				serializer.attribute("", "value", settings.getHoursStartDate());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
 				serializer.attribute(
 					"",
-					"value",
-					String.valueOf(settings.getHoursRange())
+					"name",
+					Settings.SETTING_NAME_HOURS_END_DATE
 				);
+				serializer.attribute("", "value", settings.getHoursEndDate());
 				serializer.endTag("", "preference");
 
 				serializer.startTag("", "preference");
@@ -508,8 +513,10 @@ public class BackupManager {
 						settings.setStatsRange(Long.valueOf(value));
 					} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 						settings.setStatsTags(value);
-					} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
-						settings.setHoursRange(Long.valueOf(value));
+					} else if (name.equals(Settings.SETTING_NAME_HOURS_START_DATE)) {
+						settings.setHoursStartDate(value);
+					} else if (name.equals(Settings.SETTING_NAME_HOURS_END_DATE)) {
+						settings.setHoursEndDate(value);
 					} else if (
 						name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)
 					) {
