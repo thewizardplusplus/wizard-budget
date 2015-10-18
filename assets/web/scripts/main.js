@@ -1040,8 +1040,17 @@ $(document).ready(
 			var hours_start_date_editor = $('.hours-range-start-editor');
 			hours_start_date_editor.val(hours_start_date);
 			hours_start_date_editor.change(
-				function() {
-					activity.setSetting('hours_start_date', $(this).val());
+				function(event) {
+					var self = $(this);
+					var new_date = self.val();
+					var wrapped_new_date = moment(new_date);
+					var current_year = moment().year();
+					if (wrapped_new_date.year() != current_year) {
+						new_date = wrapped_new_date.year(current_year).format('YYYY-MM-DD');
+						self.val(new_date);
+					}
+
+					activity.setSetting('hours_start_date', new_date);
 				}
 			);
 
@@ -1049,8 +1058,17 @@ $(document).ready(
 			var hours_end_date_editor = $('.hours-range-end-editor');
 			hours_end_date_editor.val(hours_end_date);
 			hours_end_date_editor.change(
-				function() {
-					activity.setSetting('hours_end_date', $(this).val());
+				function(event) {
+					var self = $(this);
+					var new_date = self.val();
+					var wrapped_new_date = moment(new_date);
+					var current_year = moment().year();
+					if (wrapped_new_date.year() != current_year) {
+						new_date = wrapped_new_date.year(current_year).format('YYYY-MM-DD');
+						self.val(new_date);
+					}
+
+					activity.setSetting('hours_end_date', new_date);
 				}
 			);
 
