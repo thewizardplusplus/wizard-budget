@@ -1028,8 +1028,6 @@ $(document).ready(
 			DrawStatsView(integral_range, comment_prefix);
 		}
 		function UpdateHours() {
-			var HOURS_RANGE_SAVING_TIMEOUT = 500;
-
 			$('.hours-range-form').on(
 				'submit',
 				function(event) {
@@ -1038,29 +1036,21 @@ $(document).ready(
 				}
 			);
 
-			var number_of_last_days = activity.getSetting('hours_range');
-			var range_editor = $('.hours-range-editor');
-			range_editor.val(number_of_last_days);
-
-			$('.hours-range-end').text(moment().format('ll'));
-
-			var range_update_timer = null;
-			range_editor.on(
-				'keyup',
+			var hours_start_date = activity.getSetting('hours_start_date');
+			var hours_start_date_editor = $('.hours-range-start-editor');
+			hours_start_date_editor.val(hours_start_date);
+			hours_start_date_editor.change(
 				function() {
-					clearTimeout(range_update_timer);
-					range_update_timer = setTimeout(
-						function() {
-							var number_of_last_days = range_editor.val();
-							activity.setSetting(
-								'hours_range',
-								number_of_last_days
-							);
+					activity.setSetting('hours_start_date', $(this).val());
+				}
+			);
 
-							ProcessHours();
-						},
-						HOURS_RANGE_SAVING_TIMEOUT
-					);
+			var hours_end_date = activity.getSetting('hours_end_date');
+			var hours_end_date_editor = $('.hours-range-end-editor');
+			hours_end_date_editor.val(hours_end_date);
+			hours_end_date_editor.change(
+				function() {
+					activity.setSetting('hours_end_date', $(this).val());
 				}
 			);
 
@@ -1077,7 +1067,7 @@ $(document).ready(
 				}
 			);
 
-			ProcessHours();
+			//ProcessHours();
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
