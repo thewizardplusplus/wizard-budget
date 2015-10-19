@@ -1080,6 +1080,15 @@ $(document).ready(
 					}
 
 					activity.setSetting('hours_end_date', new_date);
+
+					var hours_start_date = moment(hours_start_date_editor.val());
+					var new_month = wrapped_new_date.month();
+					if (hours_start_date.month() != new_month) {
+						var new_hours_start_date = hours_start_date.month(new_month).startOf('month');
+						var formatted_new_hours_start_date = new_hours_start_date.format('YYYY-MM-DD');
+						hours_start_date_editor.val(formatted_new_hours_start_date);
+						activity.setSetting('hours_start_date', formatted_new_hours_start_date);
+					}
 				}
 			);
 
