@@ -56,26 +56,26 @@ var LOADING_LOG = {
 
 var HOURS_VIEW_PRECISION = 2;
 function ProcessHours() {
-	var MAXIMAL_DAY = 31;
-
-	var current_date = new Date();
 	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
-	var month_data = work_calendar[current_date.getMonth()];
 	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
 
-	var hours_range = parseInt(activity.getSetting('hours_range'));
-	var start_day = current_date.getDate() - hours_range;
-	if (hours_range == 0 || start_day < 1) {
-		start_day = 1;
-	}
+	var hours_start_date = moment(activity.getSetting('hours_start_date'));
+	var hours_end_date = moment(activity.getSetting('hours_end_date'));
+
+	var start_day = hours_start_date.date();
+	var end_day = hours_end_date.date();
+	var month_data = work_calendar[hours_start_date.month()];
+
+	var current_date = new Date();
+	var is_current_month = current_date.getMonth() == hours_start_date.month();
 
 	var expected_hours = 0;
 	var month_worked_hours = 0;
 	var month_rest_days = 0;
-	for (var day = start_day; day <= MAXIMAL_DAY; day++) {
+	for (var day = start_day; day <= end_day; day++) {
 		var day_type = month_data[day - 1];
 		if (typeof day_type !== 'undefined') {
-			if (day <= current_date.getDate()) {
+			if (!is_current_month || day <= current_date.getDate()) {
 				if (day_type === 'ordinary') {
 					expected_hours += 8;
 				} else if (day_type === 'short') {
@@ -1045,7 +1045,7 @@ $(document).ready(
 			hours_end_date_editor.val(hours_end_date);
 
 			hours_start_date_editor.change(
-				function(event) {
+				function() {
 					var self = $(this);
 					var new_date = self.val();
 					var wrapped_new_date = moment(new_date);
@@ -1066,10 +1066,12 @@ $(document).ready(
 						hours_end_date_editor.val(formatted_new_hours_end_date);
 						activity.setSetting('hours_end_date', formatted_new_hours_end_date);
 					}
+
+					ProcessHours();
 				}
 			);
 			hours_end_date_editor.change(
-				function(event) {
+				function() {
 					var self = $(this);
 					var new_date = self.val();
 					var wrapped_new_date = moment(new_date);
@@ -1089,6 +1091,8 @@ $(document).ready(
 						hours_start_date_editor.val(formatted_new_hours_start_date);
 						activity.setSetting('hours_start_date', formatted_new_hours_start_date);
 					}
+
+					ProcessHours();
 				}
 			);
 
@@ -1105,7 +1109,7 @@ $(document).ready(
 				}
 			);
 
-			//ProcessHours();
+			ProcessHours();
 		}
 		function UpdateIndexPage() {
 			UpdateControlButtons();
