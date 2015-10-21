@@ -64,7 +64,11 @@ function ProcessHours() {
 
 	var start_day = hours_start_date.date();
 	var end_day = hours_end_date.date();
-	var month_data = work_calendar[hours_start_date.month()];
+
+	var month_data = [];
+	if (work_calendar) {
+		month_data = work_calendar[hours_start_date.month()];
+	}
 
 	var current_date = new Date();
 	var is_current_month = current_date.getMonth() == hours_start_date.month();
@@ -88,9 +92,11 @@ function ProcessHours() {
 			}
 		}
 
-		var day_worked_hours = worked_hours[day.toString()];
-		if (typeof day_worked_hours !== 'undefined') {
-			month_worked_hours += day_worked_hours;
+		if (worked_hours) {
+			var day_worked_hours = worked_hours[day.toString()];
+			if (typeof day_worked_hours !== 'undefined') {
+				month_worked_hours += day_worked_hours;
+			}
 		}
 	}
 
