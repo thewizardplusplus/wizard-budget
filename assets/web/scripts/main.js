@@ -137,9 +137,13 @@ function ShowHours(hours_data) {
 
 	var working_off_view = $('.working-off-view', hours_view);
 	if (!isNaN(hours_data.working_off)) {
-		working_off_view.text(
-			hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
-		);
+		if (hours_data.working_off != Infinity) {
+			working_off_view.text(
+				hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
+			);
+		} else {
+			working_off_view.html('&infin;');
+		}
 
 		var working_off_limit = parseFloat(
 			activity.getSetting('working_off_limit')
