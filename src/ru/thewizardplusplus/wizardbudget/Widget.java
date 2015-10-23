@@ -92,10 +92,12 @@ public class Widget extends AppWidgetProvider {
 		Settings settings = Settings.getCurrent(context);
 		double hours_difference = 0;
 		double hours_working_off = 0;
+		String hours_working_off_mode = "normal";
 		try {
 			JSONObject hours_data = new JSONObject(settings.getHoursData());
 			hours_difference = hours_data.optDouble("difference");
 			hours_working_off = hours_data.optDouble("working_off");
+			hours_working_off_mode = hours_data.optString("working_off_mode", "normal");
 		} catch(JSONException exception) {}
 
 		DecimalFormat format = new DecimalFormat(
@@ -118,19 +120,36 @@ public class Widget extends AppWidgetProvider {
 			);
 		}
 
-		views.setTextViewText(
-			R.id.widget_working_off_hours,
-			format.format(hours_working_off)
-		);
-		if (hours_working_off <= settings.getWorkingOffLimit()) {
+		if (!hours_working_off_mode.equals("none")) {
+			if (!hours_working_off_mode.equals("infinity")) {
+				views.setTextViewText(
+					R.id.widget_working_off_hours,
+					format.format(hours_working_off)
+				);
+
+				if (hours_working_off <= settings.getWorkingOffLimit()) {
+					views.setTextColor(
+						R.id.widget_working_off_hours,
+						Color.rgb(0x2b, 0xaa, 0x2b)
+					);
+				} else {
+					views.setTextColor(
+						R.id.widget_working_off_hours,
+						Color.rgb(0xff, 0x44, 0x44)
+					);
+				}
+			} else {
+				views.setTextViewText(R.id.widget_working_off_hours, "\u221e");
+				views.setTextColor(
+					R.id.widget_working_off_hours,
+					Color.rgb(0xff, 0x44, 0x44)
+				);
+			}
+		} else {
+			views.setTextViewText(R.id.widget_working_off_hours, "\u2014");
 			views.setTextColor(
 				R.id.widget_working_off_hours,
 				Color.rgb(0x2b, 0xaa, 0x2b)
-			);
-		} else {
-			views.setTextColor(
-				R.id.widget_working_off_hours,
-				Color.rgb(0xff, 0x44, 0x44)
 			);
 		}
 

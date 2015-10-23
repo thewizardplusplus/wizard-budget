@@ -101,12 +101,19 @@ function ProcessHours() {
 	}
 
 	var difference = expected_hours - month_worked_hours;
+	var working_off = difference / month_rest_days;
 	var hours_data = {
 		start_day: start_day,
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: difference,
-		working_off: difference / month_rest_days
+		working_off: working_off,
+		working_off_mode:
+			(isNaN(working_off) || working_off == Number.NEGATIVE_INFINITY
+				? 'none'
+				: (working_off == Infinity
+					? 'infinity'
+					: 'normal'))
 	};
 	activity.setSetting('hours_data', JSON.stringify(hours_data));
 
@@ -136,25 +143,27 @@ function ShowHours(hours_data) {
 	}
 
 	var working_off_view = $('.working-off-view', hours_view);
-	if (!isNaN(hours_data.working_off)) {
+	if (!isNaN(hours_data.working_off) && hours_data.working_off != Number.NEGATIVE_INFINITY) {
 		if (hours_data.working_off != Infinity) {
 			working_off_view.text(
 				hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
 			);
+
+			var working_off_limit = parseFloat(
+				activity.getSetting('working_off_limit')
+			);
+			if (hours_data.working_off <= working_off_limit) {
+				working_off_view.removeClass('lack').addClass('excess');
+			} else {
+				working_off_view.removeClass('excess').addClass('lack');
+			}
 		} else {
 			working_off_view.html('&infin;');
-		}
-
-		var working_off_limit = parseFloat(
-			activity.getSetting('working_off_limit')
-		);
-		if (hours_data.working_off <= working_off_limit) {
-			working_off_view.removeClass('lack').addClass('excess');
-		} else {
 			working_off_view.removeClass('excess').addClass('lack');
 		}
 	} else {
 		working_off_view.html('&mdash;');
+		working_off_view.removeClass('lack').addClass('excess');
 	}
 }
 
