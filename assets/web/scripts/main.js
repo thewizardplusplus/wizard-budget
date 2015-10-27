@@ -143,7 +143,10 @@ function ShowHours(hours_data) {
 	}
 
 	var working_off_view = $('.working-off-view', hours_view);
-	if (!isNaN(hours_data.working_off) && hours_data.working_off != Number.NEGATIVE_INFINITY) {
+	if (
+		!isNaN(hours_data.working_off)
+		&& hours_data.working_off != Number.NEGATIVE_INFINITY
+	) {
 		if (hours_data.working_off != Infinity) {
 			working_off_view.text(
 				hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
@@ -1085,10 +1088,18 @@ $(document).ready(
 					var hours_end_date = moment(hours_end_date_editor.val());
 					var new_month = wrapped_new_date.month();
 					if (hours_end_date.month() != new_month) {
-						var new_hours_end_date = hours_end_date.month(new_month).endOf('month');
-						var formatted_new_hours_end_date = new_hours_end_date.format('YYYY-MM-DD');
+						var new_hours_end_date =
+							hours_end_date
+							.month(new_month)
+							.endOf('month');
+						var formatted_new_hours_end_date =
+							new_hours_end_date
+							.format('YYYY-MM-DD');
 						hours_end_date_editor.val(formatted_new_hours_end_date);
-						activity.setSetting('hours_end_date', formatted_new_hours_end_date);
+						activity.setSetting(
+							'hours_end_date',
+							formatted_new_hours_end_date
+						);
 					}
 
 					ProcessHours();
@@ -1101,19 +1112,34 @@ $(document).ready(
 					var wrapped_new_date = moment(new_date);
 					var current_year = moment().year();
 					if (wrapped_new_date.year() != current_year) {
-						new_date = wrapped_new_date.year(current_year).format('YYYY-MM-DD');
+						new_date =
+							wrapped_new_date
+							.year(current_year)
+							.format('YYYY-MM-DD');
 						self.val(new_date);
 					}
 
 					activity.setSetting('hours_end_date', new_date);
 
-					var hours_start_date = moment(hours_start_date_editor.val());
+					var hours_start_date = moment(
+						hours_start_date_editor.val()
+					);
 					var new_month = wrapped_new_date.month();
 					if (hours_start_date.month() != new_month) {
-						var new_hours_start_date = hours_start_date.month(new_month).startOf('month');
-						var formatted_new_hours_start_date = new_hours_start_date.format('YYYY-MM-DD');
-						hours_start_date_editor.val(formatted_new_hours_start_date);
-						activity.setSetting('hours_start_date', formatted_new_hours_start_date);
+						var new_hours_start_date =
+							hours_start_date
+							.month(new_month)
+							.startOf('month');
+						var formatted_new_hours_start_date =
+							new_hours_start_date
+							.format('YYYY-MM-DD');
+						hours_start_date_editor.val(
+							formatted_new_hours_start_date
+						);
+						activity.setSetting(
+							'hours_start_date',
+							formatted_new_hours_start_date
+						);
 					}
 
 					ProcessHours();

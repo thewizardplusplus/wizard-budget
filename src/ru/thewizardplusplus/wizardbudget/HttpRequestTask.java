@@ -4,12 +4,12 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-import android.os.*;
-
 import org.apache.http.client.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.client.methods.*;
 import org.apache.http.*;
+
+import android.os.*;
 
 public class HttpRequestTask extends AsyncTask<URL, Void, String> {
 	public interface OnSuccessListener {

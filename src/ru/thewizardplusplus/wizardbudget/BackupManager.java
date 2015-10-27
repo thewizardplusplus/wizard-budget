@@ -513,9 +513,13 @@ public class BackupManager {
 						settings.setStatsRange(Long.valueOf(value));
 					} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 						settings.setStatsTags(value);
-					} else if (name.equals(Settings.SETTING_NAME_HOURS_START_DATE)) {
+					} else if (
+						name.equals(Settings.SETTING_NAME_HOURS_START_DATE)
+					) {
 						settings.setHoursStartDate(value);
-					} else if (name.equals(Settings.SETTING_NAME_HOURS_END_DATE)) {
+					} else if (
+						name.equals(Settings.SETTING_NAME_HOURS_END_DATE)
+					) {
 						settings.setHoursEndDate(value);
 					} else if (
 						name.equals(Settings.SETTING_NAME_CREDIT_CARD_TAG)

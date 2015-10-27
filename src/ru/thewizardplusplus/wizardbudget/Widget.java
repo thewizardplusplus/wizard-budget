@@ -97,7 +97,10 @@ public class Widget extends AppWidgetProvider {
 			JSONObject hours_data = new JSONObject(settings.getHoursData());
 			hours_difference = hours_data.optDouble("difference");
 			hours_working_off = hours_data.optDouble("working_off");
-			hours_working_off_mode = hours_data.optString("working_off_mode", "normal");
+			hours_working_off_mode = hours_data.optString(
+				"working_off_mode",
+				"normal"
+			);
 		} catch(JSONException exception) {}
 
 		DecimalFormat format = new DecimalFormat(

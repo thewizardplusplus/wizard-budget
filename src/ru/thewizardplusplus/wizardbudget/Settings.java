@@ -1,11 +1,11 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import java.util.*;
 import java.util.regex.*;
+import java.text.*;
 
 import android.content.*;
 import android.preference.*;
-import java.util.*;
-import java.text.*;
 
 public class Settings {
 	public static final String SETTING_NAME_CURRENT_PAGE = "current_page";
@@ -15,7 +15,8 @@ public class Settings {
 	public static final String SETTING_NAME_STATS_RANGE = "stats_range";
 	public static final String SETTING_NAME_STATS_TAGS = "stats_tags";
 	public static final String SETTING_NAME_DROPBOX_TOKEN = "dropbox_token";
-	public static final String SETTING_NAME_HOURS_START_DATE = "hours_start_date";
+	public static final String SETTING_NAME_HOURS_START_DATE =
+		"hours_start_date";
 	public static final String SETTING_NAME_HOURS_END_DATE = "hours_end_date";
 	public static final String SETTING_NAME_WORKED_HOURS = "worked_hours";
 	public static final String SETTING_NAME_WORK_CALENDAR = "work_calendar";
@@ -103,7 +104,9 @@ public class Settings {
 
 		Date current_timestamp = new Date();
 		DateFormat date_format = new SimpleDateFormat(HOURS_DATE_FORMAT);
-		String formatted_current_timestamp = date_format.format(current_timestamp);
+		String formatted_current_timestamp = date_format.format(
+			current_timestamp
+		);
 
 		settings.hours_start_date = preferences.getString(
 			SETTING_NAME_HOURS_START_DATE,
