@@ -564,8 +564,12 @@ $(document).ready(
 							+ '<span '
 								+ 'class = "'
 									+ 'media-object '
-									+ 'pull-left'
+									+ 'pull-left '
+									+ 'mark-container'
 								+ '">'
+								+ (true
+									? '<i class = "fa fa-calendar mark"></i>'
+									: '')
 								+ '<i '
 									+ 'class = "'
 										+ 'fa '
