@@ -56,26 +56,30 @@ var LOADING_LOG = {
 
 var HOURS_VIEW_PRECISION = 2;
 function ProcessHours() {
-	var MAXIMAL_DAY = 31;
-
-	var current_date = new Date();
 	var work_calendar = JSON.parse(activity.getSetting('work_calendar'));
-	var month_data = work_calendar[current_date.getMonth()];
 	var worked_hours = JSON.parse(activity.getSetting('worked_hours'));
 
-	var hours_range = parseInt(activity.getSetting('hours_range'));
-	var start_day = current_date.getDate() - hours_range;
-	if (hours_range == 0 || start_day < 1) {
-		start_day = 1;
+	var hours_start_date = moment(activity.getSetting('hours_start_date'));
+	var hours_end_date = moment(activity.getSetting('hours_end_date'));
+
+	var start_day = hours_start_date.date();
+	var end_day = hours_end_date.date();
+
+	var month_data = [];
+	if (work_calendar) {
+		month_data = work_calendar[hours_start_date.month()];
 	}
+
+	var current_date = new Date();
+	var is_current_month = current_date.getMonth() == hours_start_date.month();
 
 	var expected_hours = 0;
 	var month_worked_hours = 0;
 	var month_rest_days = 0;
-	for (var day = start_day; day <= MAXIMAL_DAY; day++) {
+	for (var day = start_day; day <= end_day; day++) {
 		var day_type = month_data[day - 1];
 		if (typeof day_type !== 'undefined') {
-			if (day <= current_date.getDate()) {
+			if (!is_current_month || day <= current_date.getDate()) {
 				if (day_type === 'ordinary') {
 					expected_hours += 8;
 				} else if (day_type === 'short') {
@@ -88,19 +92,28 @@ function ProcessHours() {
 			}
 		}
 
-		var day_worked_hours = worked_hours[day.toString()];
-		if (typeof day_worked_hours !== 'undefined') {
-			month_worked_hours += day_worked_hours;
+		if (worked_hours) {
+			var day_worked_hours = worked_hours[day.toString()];
+			if (typeof day_worked_hours !== 'undefined') {
+				month_worked_hours += day_worked_hours;
+			}
 		}
 	}
 
 	var difference = expected_hours - month_worked_hours;
+	var working_off = difference / month_rest_days;
 	var hours_data = {
 		start_day: start_day,
 		expected_hours: expected_hours,
 		month_worked_hours: month_worked_hours,
 		difference: difference,
-		working_off: difference / month_rest_days
+		working_off: working_off,
+		working_off_mode:
+			(isNaN(working_off) || working_off == Number.NEGATIVE_INFINITY
+				? 'none'
+				: (working_off == Infinity
+					? 'infinity'
+					: 'normal'))
 	};
 	activity.setSetting('hours_data', JSON.stringify(hours_data));
 
@@ -130,16 +143,30 @@ function ShowHours(hours_data) {
 	}
 
 	var working_off_view = $('.working-off-view', hours_view);
-	working_off_view.text(
-		hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
-	);
-	var working_off_limit = parseFloat(
-		activity.getSetting('working_off_limit')
-	);
-	if (hours_data.working_off <= working_off_limit) {
-		working_off_view.removeClass('lack').addClass('excess');
+	if (
+		!isNaN(hours_data.working_off)
+		&& hours_data.working_off != Number.NEGATIVE_INFINITY
+	) {
+		if (hours_data.working_off != Infinity) {
+			working_off_view.text(
+				hours_data.working_off.toFixed(HOURS_VIEW_PRECISION)
+			);
+
+			var working_off_limit = parseFloat(
+				activity.getSetting('working_off_limit')
+			);
+			if (hours_data.working_off <= working_off_limit) {
+				working_off_view.removeClass('lack').addClass('excess');
+			} else {
+				working_off_view.removeClass('excess').addClass('lack');
+			}
+		} else {
+			working_off_view.html('&infin;');
+			working_off_view.removeClass('excess').addClass('lack');
+		}
 	} else {
-		working_off_view.removeClass('excess').addClass('lack');
+		working_off_view.html('&mdash;');
+		working_off_view.removeClass('lack').addClass('excess');
 	}
 }
 
@@ -1028,8 +1055,6 @@ $(document).ready(
 			DrawStatsView(integral_range, comment_prefix);
 		}
 		function UpdateHours() {
-			var HOURS_RANGE_SAVING_TIMEOUT = 500;
-
 			$('.hours-range-form').on(
 				'submit',
 				function(event) {
@@ -1038,29 +1063,86 @@ $(document).ready(
 				}
 			);
 
-			var number_of_last_days = activity.getSetting('hours_range');
-			var range_editor = $('.hours-range-editor');
-			range_editor.val(number_of_last_days);
+			var hours_start_date = activity.getSetting('hours_start_date');
+			var hours_start_date_editor = $('.hours-range-start-editor');
+			hours_start_date_editor.val(hours_start_date);
 
-			$('.hours-range-end').text(moment().format('ll'));
+			var hours_end_date = activity.getSetting('hours_end_date');
+			var hours_end_date_editor = $('.hours-range-end-editor');
+			hours_end_date_editor.val(hours_end_date);
 
-			var range_update_timer = null;
-			range_editor.on(
-				'keyup',
+			hours_start_date_editor.change(
 				function() {
-					clearTimeout(range_update_timer);
-					range_update_timer = setTimeout(
-						function() {
-							var number_of_last_days = range_editor.val();
-							activity.setSetting(
-								'hours_range',
-								number_of_last_days
-							);
+					var self = $(this);
+					var new_date = self.val();
+					var wrapped_new_date = moment(new_date);
+					var current_year = moment().year();
+					if (wrapped_new_date.year() != current_year) {
+						wrapped_new_date = wrapped_new_date.year(current_year);
+						new_date = wrapped_new_date.format('YYYY-MM-DD');
+						self.val(new_date);
+					}
 
-							ProcessHours();
-						},
-						HOURS_RANGE_SAVING_TIMEOUT
+					activity.setSetting('hours_start_date', new_date);
+
+					var hours_end_date = moment(hours_end_date_editor.val());
+					var new_month = wrapped_new_date.month();
+					if (hours_end_date.month() != new_month) {
+						var new_hours_end_date =
+							hours_end_date
+							.month(new_month)
+							.endOf('month');
+						var formatted_new_hours_end_date =
+							new_hours_end_date
+							.format('YYYY-MM-DD');
+						hours_end_date_editor.val(formatted_new_hours_end_date);
+						activity.setSetting(
+							'hours_end_date',
+							formatted_new_hours_end_date
+						);
+					}
+
+					ProcessHours();
+				}
+			);
+			hours_end_date_editor.change(
+				function() {
+					var self = $(this);
+					var new_date = self.val();
+					var wrapped_new_date = moment(new_date);
+					var current_year = moment().year();
+					if (wrapped_new_date.year() != current_year) {
+						new_date =
+							wrapped_new_date
+							.year(current_year)
+							.format('YYYY-MM-DD');
+						self.val(new_date);
+					}
+
+					activity.setSetting('hours_end_date', new_date);
+
+					var hours_start_date = moment(
+						hours_start_date_editor.val()
 					);
+					var new_month = wrapped_new_date.month();
+					if (hours_start_date.month() != new_month) {
+						var new_hours_start_date =
+							hours_start_date
+							.month(new_month)
+							.startOf('month');
+						var formatted_new_hours_start_date =
+							new_hours_start_date
+							.format('YYYY-MM-DD');
+						hours_start_date_editor.val(
+							formatted_new_hours_start_date
+						);
+						activity.setSetting(
+							'hours_start_date',
+							formatted_new_hours_start_date
+						);
+					}
+
+					ProcessHours();
 				}
 			);
 

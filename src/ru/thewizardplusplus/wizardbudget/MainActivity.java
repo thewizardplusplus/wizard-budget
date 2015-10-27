@@ -85,8 +85,10 @@ public class MainActivity extends Activity {
 			return String.valueOf(settings.getStatsRange());
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			return settings.getStatsTags();
-		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
-			return String.valueOf(settings.getHoursRange());
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_START_DATE)) {
+			return settings.getHoursStartDate();
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_END_DATE)) {
+			return settings.getHoursEndDate();
 		} else if (name.equals("analysis_harvest")) {
 			return settings.isAnalysisHarvest() ? "true" : "false";
 		} else if (name.equals("harvest_username")) {
@@ -125,8 +127,10 @@ public class MainActivity extends Activity {
 			settings.setStatsRange(Long.valueOf(value));
 		} else if (name.equals(Settings.SETTING_NAME_STATS_TAGS)) {
 			settings.setStatsTags(value);
-		} else if (name.equals(Settings.SETTING_NAME_HOURS_RANGE)) {
-			settings.setHoursRange(Long.valueOf(value));
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_START_DATE)) {
+			settings.setHoursStartDate(value);
+		} else if (name.equals(Settings.SETTING_NAME_HOURS_END_DATE)) {
+			settings.setHoursEndDate(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORKED_HOURS)) {
 			settings.setWorkedHours(value);
 		} else if (name.equals(Settings.SETTING_NAME_WORK_CALENDAR)) {
