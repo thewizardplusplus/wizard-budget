@@ -553,7 +553,8 @@ $(document).ready(
 								+ 'class = "btn second-list-button '
 									+ 'edit-buy-button"'
 								+ 'data-buy-id = "' + buy.id + '"'
-								+ 'data-status = "' + buy.status + '">'
+								+ 'data-status = "' + buy.status + '"'
+								+ 'data-monthly = "' + buy.monthly + '">'
 								+ '<i class = "fa fa-pencil"></i>'
 							+ '</button>'
 							+ '<button '
@@ -567,7 +568,7 @@ $(document).ready(
 									+ 'pull-left '
 									+ 'mark-container'
 								+ '">'
-								+ (true
+								+ (buy.monthly
 									? '<i class = "fa fa-calendar mark"></i>'
 									: '')
 								+ '<i '
@@ -633,6 +634,10 @@ $(document).ready(
 					active_buy.id = parseInt(button.data('buy-id'));
 					active_buy.status =
 						button.data('status')
+							? true
+							: null;
+					active_buy.monthly =
+						button.data('monthly')
 							? true
 							: null;
 
@@ -1337,20 +1342,29 @@ $(document).ready(
 				status_flag.parent().hide();
 			}
 
+			var monthly_flag = $('.monthly');
+			if ($.type(active_buy) !== "null") {
+				if (active_buy.monthly) {
+					monthly_flag.addClass('active');
+				}
+			}
+
 			edit_buy_button.click(
 				function() {
 					var name = name_editor.val();
 					var cost = parseFloat(cost_editor.val());
 					var status = status_flag.hasClass('active') ? 1 : 0;
+					var monthly = monthly_flag.hasClass('active') ? 1 : 0;
 
 					if ($.type(active_buy) === "null") {
-						buy_manager.createBuy(name, cost);
+						buy_manager.createBuy(name, cost, monthly);
 					} else {
 						buy_manager.updateBuy(
 							active_buy.id,
 							name,
 							cost,
-							status
+							status,
+							monthly
 						);
 					}
 
