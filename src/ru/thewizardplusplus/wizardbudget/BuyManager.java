@@ -40,12 +40,12 @@ public class BuyManager {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor buys_cursor = database.query(
 			"buys",
-			new String[]{"_id", "name", "cost", "status"},
+			new String[]{"_id", "name", "cost", "status", "monthly"},
 			null,
 			null,
 			null,
 			null,
-			"status, priority DESC"
+			"status, monthly DESC, priority DESC"
 		);
 
 		JSONArray buys = new JSONArray();
@@ -57,6 +57,7 @@ public class BuyManager {
 				buy.put("name", buys_cursor.getString(1));
 				buy.put("cost", buys_cursor.getDouble(2));
 				buy.put("status", buys_cursor.getLong(3));
+				buy.put("monthly", buys_cursor.getLong(4));
 
 				buys.put(buy);
 			} catch (JSONException exception) {}
@@ -98,11 +99,12 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
-	public void createBuy(String name, double cost) {
+	public void createBuy(String name, double cost, long monthly) {
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("cost", cost);
 		values.put("status", 0L);
+		values.put("monthly", monthly);
 
 		SQLiteDatabase database = Utils.getDatabase(context);
 		long maximal_priority = getMaximalPriority(database);
@@ -113,11 +115,12 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
-	public void updateBuy(int id, String name, double cost, long status) {
+	public void updateBuy(int id, String name, double cost, long status, long monthly) {
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("cost", cost);
 		values.put("status", status);
+		values.put("monthly", monthly);
 
 		SQLiteDatabase database = Utils.getDatabase(context);
 		database.update(
