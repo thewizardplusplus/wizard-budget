@@ -157,6 +157,20 @@ public class BuyManager {
 		database.close();
 	}
 
+	public void resetMonthlyBuy() {
+		ContentValues values = new ContentValues();
+		values.put("status", 0L);
+
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.update(
+			"buys",
+			values,
+			"monthly = 1",
+			null
+		);
+		database.close();
+	}
+
 	@JavascriptInterface
 	public void deleteBuy(int id) {
 		SQLiteDatabase database = Utils.getDatabase(context);
