@@ -15,10 +15,9 @@ public class BuyResetReceiver extends BroadcastReceiver {
 					buy_manager.resetMonthlyBuy();
 
 					if (
-						//Settings
-						//.getCurrent(context_copy)
-						//.isSmsParsingNotification()
-						true
+						Settings
+						.getCurrent(context_copy)
+						.isMonthlyResetNotification()
 					) {
 						Utils.showNotification(
 							context_copy,

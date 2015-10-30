@@ -66,6 +66,7 @@ public class Settings {
 		"preference_sms_import_notification";
 	public static final String SETTING_NAME_DROPBOX_NOTIFICATION =
 		"preference_dropbox_notification";
+	public static final String SETTING_NAME_MONTHLY_RESET_NOTIFICATION = "preference_monthly_reset_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -272,6 +273,10 @@ public class Settings {
 		);
 		settings.dropbox_notification = preferences.getBoolean(
 			SETTING_NAME_DROPBOX_NOTIFICATION,
+			true
+		);
+		settings.monthly_reset_notification = preferences.getBoolean(
+			SETTING_NAME_MONTHLY_RESET_NOTIFICATION,
 			true
 		);
 
@@ -574,6 +579,14 @@ public class Settings {
 		this.dropbox_notification = dropbox_notification;
 	}
 
+	public boolean isMonthlyResetNotification() {
+		return monthly_reset_notification;
+	}
+
+	public void setMonthlyResetNotification(boolean monthly_reset_notification) {
+		this.monthly_reset_notification = monthly_reset_notification;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -655,6 +668,10 @@ public class Settings {
 			SETTING_NAME_DROPBOX_NOTIFICATION,
 			dropbox_notification
 		);
+		editor.putBoolean(
+			SETTING_NAME_MONTHLY_RESET_NOTIFICATION,
+			monthly_reset_notification
+		);
 		editor.commit();
 	}
 
@@ -710,6 +727,7 @@ public class Settings {
 	private boolean sms_parsing_notification = true;
 	private boolean sms_import_notification = true;
 	private boolean dropbox_notification = true;
+	private boolean monthly_reset_notification = true;
 
 	private Settings(Context context) {
 		this.context = context;

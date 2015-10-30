@@ -60,6 +60,8 @@
 	<string name = "preference_sms_import_notification_summary">Notify about SMS import.</string>
 	<string name = "preference_dropbox_notification_title">Dropbox notification</string>
 	<string name = "preference_dropbox_notification_summary">Notify about duplicate backup file to Dropbox.</string>
+	<string name = "preference_monthly_reset_notification_title">Monthly reset notification</string>
+	<string name = "preference_monthly_reset_notification_summary">Notify about reset of monthly buys.</string>
 	<string name = "zero">0.0</string>
 	<string name = "hours_separator">/</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>

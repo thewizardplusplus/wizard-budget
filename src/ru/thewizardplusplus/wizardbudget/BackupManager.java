@@ -374,6 +374,19 @@ public class BackupManager {
 					settings.isDropboxNotification() ? "true" : "false"
 				);
 				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isMonthlyResetNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -622,6 +635,10 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_DROPBOX_NOTIFICATION)
 					) {
 						settings.setDropboxNotification(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION)
+					) {
+						settings.setMonthlyResetNotification(boolean_value);
 					}
 				}
 			}
