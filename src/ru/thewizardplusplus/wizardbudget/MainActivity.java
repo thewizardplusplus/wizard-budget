@@ -206,7 +206,7 @@ public class MainActivity extends Activity {
 		super.onCreate(saved_instance_state);
 		setContentView(R.layout.main);
 
-		setAlarm();
+		Utils.setMonthlyBuyAlarm(this);
 
 		String current_page =
 			getIntent()
@@ -319,7 +319,6 @@ public class MainActivity extends Activity {
 	}
 
 	private static final int FILE_SELECT_CODE = 1;
-	private static final long ALARM_PERIOD_IN_MS = 30 * AlarmManager.INTERVAL_DAY;
 
 	private DropboxAPI<AndroidAuthSession> dropbox_api;
 	private DropboxAccess dropbox_access = new DefaultDropboxAccess();
@@ -429,21 +428,5 @@ public class MainActivity extends Activity {
 	private AppKeyPair getDropboxAppKeys() {
 		String app_secret = dropbox_access.getAppSecret();
 		return new AppKeyPair(DropboxAccess.APP_KEY, app_secret);
-	}
-
-	private void setAlarm() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		// clear() don't work with HOUR_OF_DAY
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.clear(Calendar.MINUTE);
-		calendar.clear(Calendar.SECOND);
-		calendar.clear(Calendar.MILLISECOND);
-
-		Intent intent = new Intent(this, BuyResetReceiver.class);
-		PendingIntent pending_intent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		AlarmManager alarm_manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-		alarm_manager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), ALARM_PERIOD_IN_MS, pending_intent);
 	}
 }

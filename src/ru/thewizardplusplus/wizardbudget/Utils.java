@@ -9,6 +9,7 @@ import android.app.*;
 import android.widget.*;
 import android.appwidget.*;
 import android.database.sqlite.*;
+import java.util.*;
 
 public class Utils {
 	public static void showNotification(
@@ -128,6 +129,24 @@ public class Utils {
 		DatabaseHelper database_helper = new DatabaseHelper(context);
 		return database_helper.getWritableDatabase();
 	}
+
+	public static void setMonthlyBuyAlarm(Context context) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		// clear() don't work with HOUR_OF_DAY
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.clear(Calendar.MINUTE);
+		calendar.clear(Calendar.SECOND);
+		calendar.clear(Calendar.MILLISECOND);
+
+		Intent intent = new Intent(context, BuyResetReceiver.class);
+		PendingIntent pending_intent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+		alarm_manager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), ALARM_PERIOD_IN_MS, pending_intent);
+	}
+
+	private static final long ALARM_PERIOD_IN_MS = 30 * AlarmManager.INTERVAL_DAY;
 
 	private static int notification_id = 0;
 }
