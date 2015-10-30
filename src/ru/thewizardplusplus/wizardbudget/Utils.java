@@ -132,6 +132,8 @@ public class Utils {
 
 	public static void setMonthlyBuyAlarm(Context context) {
 		Calendar calendar = Calendar.getInstance();
+		// the starting point should be in the future, to avoid immediate call
+		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		// clear() don't work with HOUR_OF_DAY
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
