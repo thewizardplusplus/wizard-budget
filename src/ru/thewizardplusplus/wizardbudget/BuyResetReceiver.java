@@ -6,6 +6,29 @@ import android.widget.*;
 public class BuyResetReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Toast.makeText(context, "[BUY RESET]", Toast.LENGTH_LONG).show();
+		final Context context_copy = context;
+		new Thread(
+			new Runnable() {
+				@Override
+				public void run() {
+					BuyManager buy_manager = new BuyManager(context_copy);
+					buy_manager.resetMonthlyBuy();
+
+					if (
+						//Settings
+						//.getCurrent(context_copy)
+						//.isSmsParsingNotification()
+						true
+					) {
+						Utils.showNotification(
+							context_copy,
+							context_copy.getString(R.string.app_name),
+							"Monthly purchases have been reset.",
+							null
+						);
+					}
+				}
+			}
+		).start();
 	}
 }
