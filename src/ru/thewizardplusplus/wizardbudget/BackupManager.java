@@ -747,26 +747,13 @@ public class BackupManager {
 				);
 			}
 			database.close();
+		}
 
-			if (Settings.getCurrent(context).isRestoreNotification()) {
-				Date current_date = new Date();
-				DateFormat notification_timestamp_format =
-					DateFormat
-					.getDateTimeInstance(
-						DateFormat.DEFAULT,
-						DateFormat.DEFAULT,
-						Locale.US
-					);
-				String notification_timestamp =
-					notification_timestamp_format
-					.format(current_date);
-				Utils.showNotification(
-					context,
-					context.getString(R.string.app_name),
-					"Restored at " + notification_timestamp + ".",
-					null
-				);
-			}
+		if (Settings.getCurrent(context).isRestoreNotification()) {
+			Date current_date = new Date();
+			DateFormat notification_timestamp_format = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
+			String notification_timestamp = notification_timestamp_format.format(current_date);
+			Utils.showNotification(context, context.getString(R.string.app_name), "Restored at " + notification_timestamp + ".", null);
 		}
 	}
 
