@@ -51,6 +51,10 @@ public class Widget extends AppWidgetProvider {
 			MainActivity.class
 		);
 		widget_update_hours_intent.putExtra(
+			Settings.SETTING_NAME_CURRENT_PAGE,
+			"history"
+		);
+		widget_update_hours_intent.putExtra(
 			Settings.SETTING_NAME_CURRENT_SEGMENT,
 			"hours"
 		);
