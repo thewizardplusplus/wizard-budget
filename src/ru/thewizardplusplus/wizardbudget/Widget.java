@@ -169,6 +169,8 @@ public class Widget extends AppWidgetProvider {
 		AppWidgetManager widget_manager,
 		int[] widget_ids
 	) {
+		super.onUpdate(context, widget_manager, widget_ids);
+
 		RemoteViews views = getUpdatedViews(context);
 		widget_manager.updateAppWidget(widget_ids, views);
 	}
