@@ -620,6 +620,7 @@ $(document).ready(
 					if ($.type(active_buy) !== "null") {
 						buy_manager.deleteBuy(active_buy.id);
 						activity.updateWidget();
+						activity.updateBuyWidget();
 
 						PUSH({url: 'history.html'});
 					}
@@ -1298,6 +1299,7 @@ $(document).ready(
 					buy_manager.mayBeBuy(serialized_tags);
 
 					activity.updateWidget();
+					activity.updateBuyWidget();
 					PUSH({url: 'history.html'});
 
 					return false;
@@ -1369,6 +1371,7 @@ $(document).ready(
 					}
 
 					activity.updateWidget();
+					activity.updateBuyWidget();
 					PUSH({url: 'history.html'});
 
 					return false;

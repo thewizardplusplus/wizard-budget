@@ -125,6 +125,15 @@ public class Utils {
 		AppWidgetManager.getInstance(context).updateAppWidget(widget, views);
 	}
 
+	public static void updateBuyWidget(Context context) {
+		RemoteViews views = BuyWidget.getUpdatedViews(context);
+		ComponentName widget = new ComponentName(context, Widget.class);
+		AppWidgetManager widget_manager = AppWidgetManager.getInstance(context);
+		widget_manager.updateAppWidget(widget, views);
+		int[] widget_ids = widget_manager.getAppWidgetIds(widget);
+		widget_manager.notifyAppWidgetViewDataChanged(widget_ids, R.id.buy_list);
+	}
+
 	public static SQLiteDatabase getDatabase(Context context) {
 		DatabaseHelper database_helper = new DatabaseHelper(context);
 		return database_helper.getWritableDatabase();

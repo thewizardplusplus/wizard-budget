@@ -14,6 +14,8 @@ public class BuyResetReceiver extends BroadcastReceiver {
 					BuyManager buy_manager = new BuyManager(context_copy);
 					buy_manager.resetMonthlyBuy();
 
+					Utils.updateBuyWidget(context_copy);
+
 					if (
 						Settings
 						.getCurrent(context_copy)

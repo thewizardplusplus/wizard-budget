@@ -4,6 +4,7 @@ import java.util.*;
 
 import android.content.*;
 import android.widget.*;
+import android.os.*;
 
 public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 	public BuyWidgetFactory(Context context) {
@@ -22,7 +23,7 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 	public void onDataSetChanged() {
 		items.clear();
 
-		int prefix = (new Random()).nextInt(90) + 10;
+		int prefix = (new Random(SystemClock.currentThreadTimeMillis())).nextInt(90) + 10;
 		for (int i = 0; i < 10; i++) {
 			items.add("Item #" + prefix + "." + i);
 		}

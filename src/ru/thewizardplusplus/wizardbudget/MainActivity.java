@@ -32,6 +32,11 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
+	public void updateBuyWidget() {
+		Utils.updateBuyWidget(this);
+	}
+
+	@JavascriptInterface
 	public void selectBackupForRestore() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setType("text/xml");
