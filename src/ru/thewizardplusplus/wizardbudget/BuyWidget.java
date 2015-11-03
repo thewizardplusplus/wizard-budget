@@ -24,8 +24,9 @@ public class BuyWidget extends AppWidgetProvider {
 			R.layout.buy_widget
 		);
 		views.setRemoteAdapter(R.id.buy_list, item_intent);
+		views.setOnClickPendingIntent(R.id.buy_widget_container, click_pending_intent);
 		views.setPendingIntentTemplate(R.id.buy_list, click_pending_intent);
-		views.setEmptyView(R.id.buy_list, R.id.buy_widget_empty_list_item_title);
+		views.setEmptyView(R.id.buy_list, R.id.buy_empty_list_stub);
 
 		return views;
 	}
