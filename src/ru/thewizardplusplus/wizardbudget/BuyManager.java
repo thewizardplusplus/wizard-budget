@@ -106,7 +106,7 @@ public class BuyManager {
 			new String[]{"name"},
 			"status = 0"
 				+ (only_monthly
-					? "AND monthly = 1"
+					? " AND monthly = 1"
 					: ""),
 			null,
 			null,

@@ -24,7 +24,8 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 		items.clear();
 
 		BuyManager buy_manager = new BuyManager(context);
-		items = buy_manager.getBuyNamesForWidget(false);
+		boolean only_monthly = Settings.getCurrent(context).isOnlyMonthly();
+		items = buy_manager.getBuyNamesForWidget(only_monthly);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class Settings {
 		"preference_credit_card_tag";
 	public static final String SETTING_NAME_COLLECT_STATS =
 		"preference_collect_stats";
+	public static final String SETTING_NAME_ONLY_MONTHLY = "preference_only_monthly";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
 	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
 		"preference_sms_number_pattern";
@@ -145,6 +146,7 @@ public class Settings {
 			SETTING_NAME_COLLECT_STATS,
 			true
 		);
+		settings.only_monthly = preferences.getBoolean(SETTING_NAME_ONLY_MONTHLY, false);
 
 		settings.parse_sms = preferences.getBoolean(
 			SETTING_NAME_PARSE_SMS,
@@ -403,6 +405,14 @@ public class Settings {
 		this.collect_stats = collect_stats;
 	}
 
+	public boolean isOnlyMonthly() {
+		return only_monthly;
+	}
+
+	public void setOnlyMonthly(boolean only_monthly) {
+		this.only_monthly = only_monthly;
+	}
+
 	public boolean isParseSms() {
 		return parse_sms;
 	}
@@ -607,6 +617,7 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
 		editor.putBoolean(SETTING_NAME_COLLECT_STATS, collect_stats);
+		editor.putBoolean(SETTING_NAME_ONLY_MONTHLY, only_monthly);
 		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
 		editor.putString(
 			SETTING_NAME_SMS_NUMBER_PATTERN,
@@ -703,6 +714,7 @@ public class Settings {
 	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean collect_stats = true;
+	private boolean only_monthly = false;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;

@@ -10,6 +10,8 @@
 	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
 	<string name = "preference_collect_stats_title">Collect stats</string>
 	<string name = "preference_collect_stats_summary">Calculate spendings stats.</string>
+	<string name = "preference_only_monthly_title">Only monthly</string>
+	<string name = "preference_only_monthly_summary">Show only monthly buys into the buy widget.</string>
 	<string name = "sms_parsing_preferences">SMS parsing</string>
 	<string name = "preference_parse_sms_title">Parse SMS</string>
 	<string name = "preference_parse_sms_summary">Parse bank SMS notification.</string>
