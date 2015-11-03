@@ -24,7 +24,7 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 		items.clear();
 
 		int prefix = (new Random(SystemClock.currentThreadTimeMillis())).nextInt(90) + 10;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 0; i++) {
 			items.add("Item #" + prefix + "." + i);
 		}
 	}
@@ -64,7 +64,10 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
 	@Override
 	public RemoteViews getLoadingView() {
-		return null;
+		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.buy_widget_list_item);
+		view.setTextViewText(R.id.buy_widget_list_item_title, "Loading...");
+
+		return view;
 	}
 
 	private Context context;
