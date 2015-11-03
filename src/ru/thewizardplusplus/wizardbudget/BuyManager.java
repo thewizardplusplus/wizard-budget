@@ -6,6 +6,7 @@ import android.content.*;
 import android.database.sqlite.*;
 import android.database.*;
 import android.webkit.*;
+import java.util.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {
@@ -96,6 +97,37 @@ public class BuyManager {
 
 		database.close();
 		return names.toString();
+	}
+
+	public List<String> getBuyNamesForWidget(boolean only_monthly) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor buys_cursor = database.query(
+			"buys",
+			new String[]{"name"},
+			"status = 0"
+				+ (only_monthly
+					? "AND monthly = 1"
+					: ""),
+			null,
+			null,
+			null,
+			null
+		);
+
+		List<String> names = new ArrayList<String>();
+		boolean moved = buys_cursor.moveToFirst();
+		while (moved) {
+			String name = buys_cursor.getString(0);
+			name = name.trim();
+			if (!name.isEmpty()) {
+				names.add(name);
+			}
+
+			moved = buys_cursor.moveToNext();
+		}
+
+		database.close();
+		return names;
 	}
 
 	@JavascriptInterface
