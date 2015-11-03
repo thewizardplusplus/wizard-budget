@@ -5,4 +5,4 @@
 	style = "@style/widget_label_style"
     android:layout_width = "fill_parent"
     android:layout_height = "wrap_content"
-	android:drawableLeft = "@drawable/clock_widget_icon" />
+	android:drawableLeft = "@drawable/shopping_cart_widget_icon" />

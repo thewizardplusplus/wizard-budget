@@ -24,7 +24,7 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 		items.clear();
 
 		int prefix = (new Random(SystemClock.currentThreadTimeMillis())).nextInt(90) + 10;
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 10; i++) {
 			items.add("Item #" + prefix + "." + i);
 		}
 	}

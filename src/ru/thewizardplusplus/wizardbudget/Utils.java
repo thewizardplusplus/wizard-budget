@@ -126,10 +126,12 @@ public class Utils {
 	}
 
 	public static void updateBuyWidget(Context context) {
-		RemoteViews views = BuyWidget.getUpdatedViews(context);
-		ComponentName widget = new ComponentName(context, Widget.class);
 		AppWidgetManager widget_manager = AppWidgetManager.getInstance(context);
+
+		ComponentName widget = new ComponentName(context, BuyWidget.class);
+		RemoteViews views = BuyWidget.getUpdatedViews(context);
 		widget_manager.updateAppWidget(widget, views);
+
 		int[] widget_ids = widget_manager.getAppWidgetIds(widget);
 		widget_manager.notifyAppWidgetViewDataChanged(widget_ids, R.id.buy_list);
 	}
