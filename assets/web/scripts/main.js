@@ -296,6 +296,7 @@ var GUI = {
 	},
 	refresh: function() {
 		activity.updateWidget();
+		activity.updateBuyWidget();
 		PUSH({url: 'history.html'});
 	},
 	back: function() {
