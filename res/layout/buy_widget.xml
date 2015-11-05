@@ -5,16 +5,23 @@
 	android:layout_width = "fill_parent"
 	android:layout_height = "fill_parent"
 	android:orientation = "vertical"
-	android:gravity = "center"
 	android:background = "@drawable/widget_background">
 	<ListView
 		android:id = "@+id/buy_list"
 		android:layout_width = "fill_parent"
-		android:layout_height = "fill_parent">
+		android:layout_height = "wrap_content">
 	</ListView>
-	<ViewStub
+	<LinearLayout
 		android:id = "@+id/buy_empty_list_stub"
-		android:layout_width = "wrap_content"
-		android:layout_height = "wrap_content"
-		android:layout = "@layout/buy_empty_list_stub" />
+		android:layout_width = "fill_parent"
+		android:layout_height = "fill_parent"
+		android:orientation = "vertical"
+		android:gravity = "center">
+		<TextView
+			style = "@style/widget_label_style"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:drawableLeft = "@drawable/shopping_cart_widget_icon"
+			android:text = "@string/widget_none_buys_message" />
+	</LinearLayout>
 </LinearLayout>
