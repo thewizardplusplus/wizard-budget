@@ -8,5 +8,4 @@
 	android:minResizeHeight = "40dp"
 	android:updatePeriodMillis = "86400000"
 	android:initialLayout = "@layout/buy_widget"
-	android:previewImage = "@drawable/buy_widget_preview"
-	android:label = "@string/buy_widget_label" />
+	android:previewImage = "@drawable/buy_widget_preview" />
