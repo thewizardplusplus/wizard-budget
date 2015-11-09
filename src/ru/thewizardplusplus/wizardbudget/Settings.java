@@ -28,6 +28,7 @@ public class Settings {
 	public static final String SETTING_NAME_COLLECT_STATS =
 		"preference_collect_stats";
 	public static final String SETTING_NAME_ONLY_MONTHLY = "preference_only_monthly";
+	public static final String SETTING_NAME_DAILY_AUTOBACKUP = "preference_daily_autobackup";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
 	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
 		"preference_sms_number_pattern";
@@ -147,6 +148,7 @@ public class Settings {
 			true
 		);
 		settings.only_monthly = preferences.getBoolean(SETTING_NAME_ONLY_MONTHLY, false);
+		settings.daily_autobackup = preferences.getBoolean(SETTING_NAME_DAILY_AUTOBACKUP, false);
 
 		settings.parse_sms = preferences.getBoolean(
 			SETTING_NAME_PARSE_SMS,
@@ -413,6 +415,14 @@ public class Settings {
 		this.only_monthly = only_monthly;
 	}
 
+	public boolean isDailyAutobackup() {
+		return daily_autobackup;
+	}
+
+	public void setDailyAutobackup(boolean daily_autobackup) {
+		this.daily_autobackup = daily_autobackup;
+	}
+
 	public boolean isParseSms() {
 		return parse_sms;
 	}
@@ -618,6 +628,7 @@ public class Settings {
 		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
 		editor.putBoolean(SETTING_NAME_COLLECT_STATS, collect_stats);
 		editor.putBoolean(SETTING_NAME_ONLY_MONTHLY, only_monthly);
+		editor.putBoolean(SETTING_NAME_DAILY_AUTOBACKUP, daily_autobackup);
 		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
 		editor.putString(
 			SETTING_NAME_SMS_NUMBER_PATTERN,
@@ -715,6 +726,7 @@ public class Settings {
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean collect_stats = true;
 	private boolean only_monthly = false;
+	private boolean daily_autobackup = false;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;

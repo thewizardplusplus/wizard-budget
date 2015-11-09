@@ -149,7 +149,7 @@ public class Utils {
 	public static void setMonthlyBuyAlarm(Context context) {
 		Calendar calendar = Calendar.getInstance();
 		// the starting point should be in the future, to avoid immediate call
-		//calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
+		calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		// clear() don't work with HOUR_OF_DAY
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -167,7 +167,7 @@ public class Utils {
 	public static void setBackupAlarm(Context context) {
 		Calendar calendar = Calendar.getInstance();
 		// the starting point should be in the future, to avoid immediate call
-		//calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
 		// clear() don't work with HOUR_OF_DAY
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.clear(Calendar.MINUTE);
@@ -181,10 +181,8 @@ public class Utils {
 		alarm_manager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), BACKUP_ALARM_PERIOD_IN_MS, pending_intent);
 	}
 
-	//private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS = 30 * AlarmManager.INTERVAL_DAY;
-	private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS = 10000;
-	//private static final long BACKUP_ALARM_PERIOD_IN_MS = AlarmManager.INTERVAL_DAY;
-	private static final long BACKUP_ALARM_PERIOD_IN_MS = 30000;
+	private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS = 30 * AlarmManager.INTERVAL_DAY;
+	private static final long BACKUP_ALARM_PERIOD_IN_MS = AlarmManager.INTERVAL_DAY;
 
 	private static int notification_id = 0;
 }

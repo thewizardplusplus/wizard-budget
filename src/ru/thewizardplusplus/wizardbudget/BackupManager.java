@@ -145,6 +145,19 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_DAILY_AUTOBACKUP
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isDailyAutobackup() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_PARSE_SMS
 				);
 				serializer.attribute(
@@ -564,6 +577,8 @@ public class BackupManager {
 						settings.setCollectStats(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_ONLY_MONTHLY)) {
 						settings.setOnlyMonthly(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)) {
+						settings.setDailyAutobackup(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
 					} else if (
