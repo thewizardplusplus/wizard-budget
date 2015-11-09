@@ -99,6 +99,7 @@ public class Utils {
 			.matcher(text);
 		if (matcher.find()) {
 			String residue_string = matcher.group(1);
+			residue_string = residue_string.replaceAll("[^\\d-\\.,]", "");
 			try {
 				residue = Double.valueOf(residue_string);
 			} catch(NumberFormatException exception) {}
