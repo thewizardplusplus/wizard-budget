@@ -198,7 +198,7 @@ public class MainActivity extends Activity {
 		super.onCreate(saved_instance_state);
 		setContentView(R.layout.main);
 
-		Utils.setMonthlyBuyAlarm(this);
+		Utils.setAlarms(this);
 
 		String current_page =
 			getIntent()

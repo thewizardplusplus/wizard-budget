@@ -6,7 +6,7 @@ public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            Utils.setMonthlyBuyAlarm(context);
+            Utils.setAlarms(context);
 		}
 	}
 }
