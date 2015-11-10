@@ -366,6 +366,8 @@ $(document).ready(
 			activity.setSetting('active_buy', json);
 		}
 		function UpdateSpendingList() {
+			var SPENDING_PRECISION = 2;
+
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
 			spendings_sum_view.text(spendings_sum);
@@ -431,7 +433,7 @@ $(document).ready(
 								+ '</p>'
 								+ '<p>'
 									+ '<span class = "amount-view">'
-										+ Math.abs(spending.amount)
+										+ Math.abs(spending.amount).toFixed(SPENDING_PRECISION)
 									+ '</span> '
 									+ '<i class = "fa fa-ruble"></i>'
 									+ (spending.comment.length
@@ -530,6 +532,8 @@ $(document).ready(
 			);
 		}
 		function UpdateBuyList() {
+			var BUY_COST_PRECISION = 2;
+
 			var costs_sum_view = $('.costs-sum-view');
 			var costs_sum = buy_manager.getCostsSum();
 			costs_sum_view.text(costs_sum);
@@ -594,7 +598,7 @@ $(document).ready(
 								+ '</p>'
 								+ '<p>'
 									+ '<span class = "cost-view">'
-										+ buy.cost
+										+ buy.cost.toFixed(BUY_COST_PRECISION)
 									+ '</span> '
 									+ '<i class = "fa fa-ruble"></i>.'
 								+ '</p>'
