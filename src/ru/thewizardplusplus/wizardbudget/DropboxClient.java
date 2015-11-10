@@ -105,7 +105,10 @@ public class DropboxClient {
 
 	private void authenticateViaToken(String dropbox_token) {
 		AppKeyPair app_keys = getAppKeys();
-		AndroidAuthSession session = new AndroidAuthSession(app_keys, dropbox_token);
+		AndroidAuthSession session = new AndroidAuthSession(
+			app_keys,
+			dropbox_token
+		);
 		dropbox_api = new DropboxAPI<AndroidAuthSession>(session);
 	}
 

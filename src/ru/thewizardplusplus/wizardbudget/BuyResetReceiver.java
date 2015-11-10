@@ -1,7 +1,6 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import android.content.*;
-import android.widget.*;
 
 public class BuyResetReceiver extends BroadcastReceiver {
 	@Override

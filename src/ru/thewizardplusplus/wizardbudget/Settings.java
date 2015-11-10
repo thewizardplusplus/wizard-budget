@@ -27,8 +27,10 @@ public class Settings {
 		"preference_credit_card_tag";
 	public static final String SETTING_NAME_COLLECT_STATS =
 		"preference_collect_stats";
-	public static final String SETTING_NAME_ONLY_MONTHLY = "preference_only_monthly";
-	public static final String SETTING_NAME_DAILY_AUTOBACKUP = "preference_daily_autobackup";
+	public static final String SETTING_NAME_ONLY_MONTHLY =
+		"preference_only_monthly";
+	public static final String SETTING_NAME_DAILY_AUTOBACKUP =
+		"preference_daily_autobackup";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
 	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
 		"preference_sms_number_pattern";
@@ -68,7 +70,8 @@ public class Settings {
 		"preference_sms_import_notification";
 	public static final String SETTING_NAME_DROPBOX_NOTIFICATION =
 		"preference_dropbox_notification";
-	public static final String SETTING_NAME_MONTHLY_RESET_NOTIFICATION = "preference_monthly_reset_notification";
+	public static final String SETTING_NAME_MONTHLY_RESET_NOTIFICATION =
+		"preference_monthly_reset_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -147,8 +150,14 @@ public class Settings {
 			SETTING_NAME_COLLECT_STATS,
 			true
 		);
-		settings.only_monthly = preferences.getBoolean(SETTING_NAME_ONLY_MONTHLY, false);
-		settings.daily_autobackup = preferences.getBoolean(SETTING_NAME_DAILY_AUTOBACKUP, false);
+		settings.only_monthly = preferences.getBoolean(
+			SETTING_NAME_ONLY_MONTHLY,
+			false
+		);
+		settings.daily_autobackup = preferences.getBoolean(
+			SETTING_NAME_DAILY_AUTOBACKUP,
+			false
+		);
 
 		settings.parse_sms = preferences.getBoolean(
 			SETTING_NAME_PARSE_SMS,
@@ -603,7 +612,9 @@ public class Settings {
 		return monthly_reset_notification;
 	}
 
-	public void setMonthlyResetNotification(boolean monthly_reset_notification) {
+	public void setMonthlyResetNotification(
+		boolean monthly_reset_notification
+	) {
 		this.monthly_reset_notification = monthly_reset_notification;
 	}
 

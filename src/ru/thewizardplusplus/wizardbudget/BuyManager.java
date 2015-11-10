@@ -1,12 +1,13 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import java.util.*;
+
 import org.json.*;
 
 import android.content.*;
 import android.database.sqlite.*;
 import android.database.*;
 import android.webkit.*;
-import java.util.*;
 
 public class BuyManager {
 	public BuyManager(Context context) {
@@ -147,7 +148,13 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
-	public void updateBuy(int id, String name, double cost, long status, long monthly) {
+	public void updateBuy(
+		int id,
+		String name,
+		double cost,
+		long status,
+		long monthly
+	) {
 		ContentValues values = new ContentValues();
 		values.put("name", name);
 		values.put("cost", cost);

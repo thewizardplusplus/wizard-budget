@@ -2,6 +2,7 @@ package ru.thewizardplusplus.wizardbudget;
 
 import java.io.*;
 import java.util.regex.*;
+import java.util.*;
 
 import android.content.*;
 import android.net.*;
@@ -9,7 +10,6 @@ import android.app.*;
 import android.widget.*;
 import android.appwidget.*;
 import android.database.sqlite.*;
-import java.util.*;
 
 public class Utils {
 	public static void showNotification(
@@ -134,7 +134,10 @@ public class Utils {
 		widget_manager.updateAppWidget(widget, views);
 
 		int[] widget_ids = widget_manager.getAppWidgetIds(widget);
-		widget_manager.notifyAppWidgetViewDataChanged(widget_ids, R.id.buy_list);
+		widget_manager.notifyAppWidgetViewDataChanged(
+			widget_ids,
+			R.id.buy_list
+		);
 	}
 
 	public static SQLiteDatabase getDatabase(Context context) {
@@ -159,16 +162,31 @@ public class Utils {
 		calendar.clear(Calendar.MILLISECOND);
 
 		Intent intent = new Intent(context, BuyResetReceiver.class);
-		PendingIntent pending_intent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pending_intent = PendingIntent.getBroadcast(
+			context,
+			0,
+			intent,
+			PendingIntent.FLAG_UPDATE_CURRENT
+		);
 
-		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		alarm_manager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), MONTHLY_BUY_ALARM_PERIOD_IN_MS, pending_intent);
+		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(
+			Context.ALARM_SERVICE
+		);
+		alarm_manager.setInexactRepeating(
+			AlarmManager.RTC,
+			calendar.getTimeInMillis(),
+			MONTHLY_BUY_ALARM_PERIOD_IN_MS,
+			pending_intent
+		);
 	}
 
 	public static void setBackupAlarm(Context context) {
 		Calendar calendar = Calendar.getInstance();
 		// the starting point should be in the future, to avoid immediate call
-		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+		calendar.set(
+			Calendar.DAY_OF_MONTH,
+			calendar.get(Calendar.DAY_OF_MONTH) + 1
+		);
 		// clear() don't work with HOUR_OF_DAY
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.clear(Calendar.MINUTE);
@@ -176,14 +194,29 @@ public class Utils {
 		calendar.clear(Calendar.MILLISECOND);
 
 		Intent intent = new Intent(context, BackupReceiver.class);
-		PendingIntent pending_intent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pending_intent = PendingIntent.getBroadcast(
+			context,
+			0,
+			intent,
+			PendingIntent.FLAG_UPDATE_CURRENT
+		);
 
-		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-		alarm_manager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), BACKUP_ALARM_PERIOD_IN_MS, pending_intent);
+		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(
+			Context.ALARM_SERVICE
+		);
+		alarm_manager.setInexactRepeating(
+			AlarmManager.RTC,
+			calendar.getTimeInMillis(),
+			BACKUP_ALARM_PERIOD_IN_MS,
+			pending_intent
+		);
 	}
 
-	private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS = 30 * AlarmManager.INTERVAL_DAY;
-	private static final long BACKUP_ALARM_PERIOD_IN_MS = AlarmManager.INTERVAL_DAY;
+	private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS =
+		30
+		* AlarmManager.INTERVAL_DAY;
+	private static final long BACKUP_ALARM_PERIOD_IN_MS =
+		AlarmManager.INTERVAL_DAY;
 
 	private static int notification_id = 0;
 }

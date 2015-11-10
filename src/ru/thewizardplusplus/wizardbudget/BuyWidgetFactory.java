@@ -4,7 +4,6 @@ import java.util.*;
 
 import android.content.*;
 import android.widget.*;
-import android.os.*;
 
 public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 	public BuyWidgetFactory(Context context) {
@@ -54,16 +53,28 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 		click_intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "history");
 		click_intent.putExtra(Settings.SETTING_NAME_CURRENT_SEGMENT, "buys");
 
-		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.buy_widget_list_item);
-		view.setTextViewText(R.id.buy_widget_list_item_title, items.get(position));
-		view.setOnClickFillInIntent(R.id.buy_widget_list_item_title, click_intent);
+		RemoteViews view = new RemoteViews(
+			context.getPackageName(),
+			R.layout.buy_widget_list_item
+		);
+		view.setTextViewText(
+			R.id.buy_widget_list_item_title,
+			items.get(position)
+		);
+		view.setOnClickFillInIntent(
+			R.id.buy_widget_list_item_title,
+			click_intent
+		);
 
 		return view;
 	}
 
 	@Override
 	public RemoteViews getLoadingView() {
-		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.buy_widget_list_item);
+		RemoteViews view = new RemoteViews(
+			context.getPackageName(),
+			R.layout.buy_widget_list_item
+		);
 		view.setTextViewText(R.id.buy_widget_list_item_title, "Loading...");
 
 		return view;

@@ -450,7 +450,13 @@ public class BackupManager {
 				serializer.startTag("", "buys");
 				cursor = database.query(
 					"buys",
-					new String[]{"name", "cost", "priority", "status", "monthly"},
+					new String[]{
+						"name",
+						"cost",
+						"priority",
+						"status",
+						"monthly"
+					},
 					null,
 					null,
 					null,
@@ -575,9 +581,13 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_COLLECT_STATS)
 					) {
 						settings.setCollectStats(boolean_value);
-					} else if (name.equals(Settings.SETTING_NAME_ONLY_MONTHLY)) {
+					} else if (
+						name.equals(Settings.SETTING_NAME_ONLY_MONTHLY)
+					) {
 						settings.setOnlyMonthly(boolean_value);
-					} else if (name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)) {
+					} else if (
+						name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)
+					) {
 						settings.setDailyAutobackup(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
@@ -666,7 +676,9 @@ public class BackupManager {
 					) {
 						settings.setDropboxNotification(boolean_value);
 					} else if (
-						name.equals(Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION)
+						name.equals(
+							Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION
+						)
 					) {
 						settings.setMonthlyResetNotification(boolean_value);
 					}
@@ -781,9 +793,22 @@ public class BackupManager {
 
 		if (Settings.getCurrent(context).isRestoreNotification()) {
 			Date current_date = new Date();
-			DateFormat notification_timestamp_format = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
-			String notification_timestamp = notification_timestamp_format.format(current_date);
-			Utils.showNotification(context, context.getString(R.string.app_name), "Restored at " + notification_timestamp + ".", null);
+			DateFormat notification_timestamp_format =
+				DateFormat.getDateTimeInstance(
+					DateFormat.DEFAULT,
+					DateFormat.DEFAULT,
+					Locale.US
+				);
+			String notification_timestamp =
+				notification_timestamp_format.format(
+					current_date
+				);
+			Utils.showNotification(
+				context,
+				context.getString(R.string.app_name),
+				"Restored at " + notification_timestamp + ".",
+				null
+			);
 		}
 	}
 

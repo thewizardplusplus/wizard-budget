@@ -433,7 +433,9 @@ $(document).ready(
 								+ '</p>'
 								+ '<p>'
 									+ '<span class = "amount-view">'
-										+ Math.abs(spending.amount).toFixed(SPENDING_PRECISION)
+										+ Math
+										.abs(spending.amount)
+										.toFixed(SPENDING_PRECISION)
 									+ '</span> '
 									+ '<i class = "fa fa-ruble"></i>'
 									+ (spending.comment.length

@@ -9,7 +9,9 @@ import android.net.*;
 public class BuyWidget extends AppWidgetProvider {
 	public static RemoteViews getUpdatedViews(Context context) {
 		Intent item_intent = new Intent(context, BuyWidgetService.class);
-		item_intent.setData(Uri.parse(item_intent.toUri(Intent.URI_INTENT_SCHEME)));
+		item_intent.setData(
+			Uri.parse(item_intent.toUri(Intent.URI_INTENT_SCHEME))
+		);
 
 		Intent click_intent = new Intent(context, MainActivity.class);
 		PendingIntent click_pending_intent = PendingIntent.getActivity(
@@ -24,7 +26,10 @@ public class BuyWidget extends AppWidgetProvider {
 			R.layout.buy_widget
 		);
 		views.setRemoteAdapter(R.id.buy_list, item_intent);
-		views.setOnClickPendingIntent(R.id.buy_widget_container, click_pending_intent);
+		views.setOnClickPendingIntent(
+			R.id.buy_widget_container,
+			click_pending_intent
+		);
 		views.setPendingIntentTemplate(R.id.buy_list, click_pending_intent);
 		views.setEmptyView(R.id.buy_list, R.id.buy_empty_list_stub);
 
@@ -41,6 +46,9 @@ public class BuyWidget extends AppWidgetProvider {
 
 		RemoteViews views = getUpdatedViews(context);
 		widget_manager.updateAppWidget(widget_ids, views);
-		widget_manager.notifyAppWidgetViewDataChanged(widget_ids, R.id.buy_list);
+		widget_manager.notifyAppWidgetViewDataChanged(
+			widget_ids,
+			R.id.buy_list
+		);
 	}
 }

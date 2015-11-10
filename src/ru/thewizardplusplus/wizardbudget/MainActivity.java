@@ -1,7 +1,6 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.io.*;
-import java.text.*;
 import java.util.*;
 import java.net.*;
 
@@ -14,11 +13,6 @@ import android.webkit.*;
 import android.content.*;
 import android.net.*;
 import android.util.*;
-
-import com.dropbox.client2.*;
-import com.dropbox.client2.android.*;
-import com.dropbox.client2.session.*;
-import com.dropbox.client2.exception.*;
 
 public class MainActivity extends Activity {
 	@Override
