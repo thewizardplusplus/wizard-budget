@@ -536,9 +536,17 @@ $(document).ready(
 		function UpdateBuyList() {
 			var BUY_COST_PRECISION = 2;
 
-			var costs_sum_view = $('.costs-sum-view');
-			var costs_sum = buy_manager.getCostsSum();
-			costs_sum_view.text(costs_sum);
+			var total_costs_sum_view = $('.total-costs-sum-view');
+			var total_costs_sum = buy_manager.getAnyCostsSum();
+			total_costs_sum_view.text(total_costs_sum);
+
+			var monthly_costs_sum_view = $('.monthly-costs-sum-view');
+			var monthly_costs_sum = buy_manager.getMonthlyCostsSum();
+			monthly_costs_sum_view.text(monthly_costs_sum);
+
+			var single_costs_sum_view = $('.single-costs-sum-view');
+			var single_costs_sum = buy_manager.getSingleCostsSum();
+			single_costs_sum_view.text(single_costs_sum);
 
 			var buy_list = $('.buy-list');
 			buy_list.empty();

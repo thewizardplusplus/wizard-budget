@@ -15,26 +15,18 @@ public class BuyManager {
 	}
 
 	@JavascriptInterface
-	public String getCostsSum() {
-		SQLiteDatabase database = Utils.getDatabase(context);
-		Cursor cursor = database.query(
-			"buys",
-			new String[]{"ROUND(SUM(cost), 2)"},
-			"status = 0",
-			null,
-			null,
-			null,
-			null
-		);
+	public String getAnyCostsSum() {
+		return getCostsSum(BuyType.ANY);
+	}
 
-		double costs_sum = 0.0;
-		boolean moved = cursor.moveToFirst();
-		if (moved) {
-			costs_sum = cursor.getDouble(0);
-		}
+	@JavascriptInterface
+	public String getMonthlyCostsSum() {
+		return getCostsSum(BuyType.MONTHLY);
+	}
 
-		database.close();
-		return String.valueOf(costs_sum);
+	@JavascriptInterface
+	public String getSingleCostsSum() {
+		return getCostsSum(BuyType.SINGLE);
 	}
 
 	@JavascriptInterface
@@ -266,6 +258,28 @@ public class BuyManager {
 		}
 
 		return maximal_priority;
+	}
+
+	private String getCostsSum(BuyType buy_type) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor cursor = database.query(
+			"buys",
+			new String[]{"ROUND(SUM(cost), 2)"},
+			buy_type.toCondition(),
+			null,
+			null,
+			null,
+			null
+		);
+
+		double costs_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			costs_sum = cursor.getDouble(0);
+		}
+
+		database.close();
+		return String.valueOf(costs_sum);
 	}
 
 	private Context context;
