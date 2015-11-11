@@ -112,7 +112,7 @@ public class BuyManager {
 			null,
 			null,
 			null,
-			null
+			"monthly DESC, priority DESC"
 		);
 
 		List<String> names = new ArrayList<String>();
