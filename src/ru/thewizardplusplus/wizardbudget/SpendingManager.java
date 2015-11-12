@@ -435,6 +435,8 @@ public class SpendingManager {
 		}
 	}
 
+	private static final double CORRECTION_MINIMUM = 0.01;
+
 	private Context context;
 
 	private String formatDate(long timestamp) {
@@ -516,6 +518,9 @@ public class SpendingManager {
 
 		double spendings_sum = calculateSpendingsSum(database);
 		double correction = -1 * residue - spendings_sum;
+		if (Math.abs(correction) < CORRECTION_MINIMUM) {
+			return;
+		}
 
 		String comment = "";
 		if (correction < 0) {

@@ -132,6 +132,32 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_ONLY_MONTHLY
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isOnlyMonthly() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_DAILY_AUTOBACKUP
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isDailyAutobackup() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_PARSE_SMS
 				);
 				serializer.attribute(
@@ -374,6 +400,19 @@ public class BackupManager {
 					settings.isDropboxNotification() ? "true" : "false"
 				);
 				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isMonthlyResetNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -411,12 +450,18 @@ public class BackupManager {
 				serializer.startTag("", "buys");
 				cursor = database.query(
 					"buys",
-					new String[]{"name", "cost", "priority", "status"},
+					new String[]{
+						"name",
+						"cost",
+						"priority",
+						"status",
+						"monthly"
+					},
 					null,
 					null,
 					null,
 					null,
-					"status, priority DESC"
+					"status, monthly DESC, priority DESC"
 				);
 
 				moved = cursor.moveToFirst();
@@ -439,6 +484,13 @@ public class BackupManager {
 						"",
 						"purchased",
 						status == 0 ? "false" : "true"
+					);
+
+					long monthly = cursor.getLong(4);
+					serializer.attribute(
+						"",
+						"monthly",
+						monthly == 0 ? "false" : "true"
 					);
 
 					serializer.endTag("", "buy");
@@ -529,6 +581,14 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_COLLECT_STATS)
 					) {
 						settings.setCollectStats(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_ONLY_MONTHLY)
+					) {
+						settings.setOnlyMonthly(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)
+					) {
+						settings.setDailyAutobackup(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_PARSE_SMS)) {
 						settings.setParseSms(boolean_value);
 					} else if (
@@ -615,6 +675,12 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_DROPBOX_NOTIFICATION)
 					) {
 						settings.setDropboxNotification(boolean_value);
+					} else if (
+						name.equals(
+							Settings.SETTING_NAME_MONTHLY_RESET_NOTIFICATION
+						)
+					) {
+						settings.setMonthlyResetNotification(boolean_value);
 					}
 				}
 			}
@@ -673,6 +739,12 @@ public class BackupManager {
 							? "0"
 							: "1";
 
+					String monthly =
+						!buy.hasAttribute("monthly")
+						|| buy.getAttribute("monthly").equals("false")
+							? "0"
+							: "1";
+
 					if (!buy_sql.isEmpty()) {
 						buy_sql += ",";
 					}
@@ -682,7 +754,8 @@ public class BackupManager {
 							) + ","
 							+ buy.getAttribute("cost") + ","
 							+ buy.getAttribute("priority") + ","
-							+ status
+							+ status + ","
+							+ monthly
 						+ ")";
 				}
 			}
@@ -711,31 +784,31 @@ public class BackupManager {
 				database.execSQL("DELETE FROM buys");
 				database.execSQL(
 					"INSERT INTO buys"
-					+ "(name, cost, priority, status)"
+					+ "(name, cost, priority, status, monthly)"
 					+ "VALUES" + buy_sql
 				);
 			}
 			database.close();
+		}
 
-			if (Settings.getCurrent(context).isRestoreNotification()) {
-				Date current_date = new Date();
-				DateFormat notification_timestamp_format =
-					DateFormat
-					.getDateTimeInstance(
-						DateFormat.DEFAULT,
-						DateFormat.DEFAULT,
-						Locale.US
-					);
-				String notification_timestamp =
-					notification_timestamp_format
-					.format(current_date);
-				Utils.showNotification(
-					context,
-					context.getString(R.string.app_name),
-					"Restored at " + notification_timestamp + ".",
-					null
+		if (Settings.getCurrent(context).isRestoreNotification()) {
+			Date current_date = new Date();
+			DateFormat notification_timestamp_format =
+				DateFormat.getDateTimeInstance(
+					DateFormat.DEFAULT,
+					DateFormat.DEFAULT,
+					Locale.US
 				);
-			}
+			String notification_timestamp =
+				notification_timestamp_format.format(
+					current_date
+				);
+			Utils.showNotification(
+				context,
+				context.getString(R.string.app_name),
+				"Restored at " + notification_timestamp + ".",
+				null
+			);
 		}
 	}
 

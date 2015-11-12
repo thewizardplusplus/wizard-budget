@@ -101,6 +101,10 @@
 	text-decoration: underline;
 }
 
+.with_gap {
+	margin-bottom: 15px;
+}
+
 ol {
 	font-size: 14px;
 	color: #777;

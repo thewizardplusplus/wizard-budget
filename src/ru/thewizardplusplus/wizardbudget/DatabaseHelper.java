@@ -24,7 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "name TEXT NOT NULL,"
 				+ "cost REAL NOT NULL,"
 				+ "priority INTEGER NOT NULL,"
-				+ "status INTEGER NOT NULL"
+				+ "status INTEGER NOT NULL,"
+				+ "monthly INTEGER NOT NULL"
 			+ ");"
 		);
 	}

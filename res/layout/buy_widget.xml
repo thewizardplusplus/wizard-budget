@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<LinearLayout
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	android:id = "@+id/buy_widget_container"
+	android:layout_width = "fill_parent"
+	android:layout_height = "fill_parent"
+	android:orientation = "vertical"
+	android:background = "@drawable/widget_background">
+	<ListView
+		android:id = "@+id/buy_list"
+		android:layout_width = "fill_parent"
+		android:layout_height = "wrap_content">
+	</ListView>
+	<LinearLayout
+		android:id = "@+id/buy_empty_list_stub"
+		android:layout_width = "fill_parent"
+		android:layout_height = "fill_parent"
+		android:orientation = "vertical"
+		android:gravity = "center">
+		<TextView
+			style = "@style/widget_label_style"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:drawableLeft = "@drawable/shopping_cart_widget_icon"
+			android:text = "@string/widget_none_buys_message" />
+	</LinearLayout>
+</LinearLayout>

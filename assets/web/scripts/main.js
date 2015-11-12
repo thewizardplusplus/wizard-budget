@@ -296,6 +296,7 @@ var GUI = {
 	},
 	refresh: function() {
 		activity.updateWidget();
+		activity.updateBuyWidget();
 		PUSH({url: 'history.html'});
 	},
 	back: function() {
@@ -365,6 +366,8 @@ $(document).ready(
 			activity.setSetting('active_buy', json);
 		}
 		function UpdateSpendingList() {
+			var SPENDING_PRECISION = 2;
+
 			var spendings_sum_view = $('.spendings-sum-view');
 			var spendings_sum = spending_manager.getSpendingsSum();
 			spendings_sum_view.text(spendings_sum);
@@ -430,7 +433,9 @@ $(document).ready(
 								+ '</p>'
 								+ '<p>'
 									+ '<span class = "amount-view">'
-										+ Math.abs(spending.amount)
+										+ Math
+										.abs(spending.amount)
+										.toFixed(SPENDING_PRECISION)
 									+ '</span> '
 									+ '<i class = "fa fa-ruble"></i>'
 									+ (spending.comment.length
@@ -529,9 +534,19 @@ $(document).ready(
 			);
 		}
 		function UpdateBuyList() {
-			var costs_sum_view = $('.costs-sum-view');
-			var costs_sum = buy_manager.getCostsSum();
-			costs_sum_view.text(costs_sum);
+			var BUY_COST_PRECISION = 2;
+
+			var total_costs_sum_view = $('.total-costs-sum-view');
+			var total_costs_sum = buy_manager.getAnyCostsSum();
+			total_costs_sum_view.text(total_costs_sum);
+
+			var monthly_costs_sum_view = $('.monthly-costs-sum-view');
+			var monthly_costs_sum = buy_manager.getMonthlyCostsSum();
+			monthly_costs_sum_view.text(monthly_costs_sum);
+
+			var single_costs_sum_view = $('.single-costs-sum-view');
+			var single_costs_sum = buy_manager.getSingleCostsSum();
+			single_costs_sum_view.text(single_costs_sum);
 
 			var buy_list = $('.buy-list');
 			buy_list.empty();
@@ -553,7 +568,8 @@ $(document).ready(
 								+ 'class = "btn second-list-button '
 									+ 'edit-buy-button"'
 								+ 'data-buy-id = "' + buy.id + '"'
-								+ 'data-status = "' + buy.status + '">'
+								+ 'data-status = "' + buy.status + '"'
+								+ 'data-monthly = "' + buy.monthly + '">'
 								+ '<i class = "fa fa-pencil"></i>'
 							+ '</button>'
 							+ '<button '
@@ -564,8 +580,12 @@ $(document).ready(
 							+ '<span '
 								+ 'class = "'
 									+ 'media-object '
-									+ 'pull-left'
+									+ 'pull-left '
+									+ 'mark-container'
 								+ '">'
+								+ (buy.monthly
+									? '<i class = "fa fa-calendar mark"></i>'
+									: '')
 								+ '<i '
 									+ 'class = "'
 										+ 'fa '
@@ -588,7 +608,7 @@ $(document).ready(
 								+ '</p>'
 								+ '<p>'
 									+ '<span class = "cost-view">'
-										+ buy.cost
+										+ buy.cost.toFixed(BUY_COST_PRECISION)
 									+ '</span> '
 									+ '<i class = "fa fa-ruble"></i>.'
 								+ '</p>'
@@ -615,6 +635,7 @@ $(document).ready(
 					if ($.type(active_buy) !== "null") {
 						buy_manager.deleteBuy(active_buy.id);
 						activity.updateWidget();
+						activity.updateBuyWidget();
 
 						PUSH({url: 'history.html'});
 					}
@@ -629,6 +650,10 @@ $(document).ready(
 					active_buy.id = parseInt(button.data('buy-id'));
 					active_buy.status =
 						button.data('status')
+							? true
+							: null;
+					active_buy.monthly =
+						button.data('monthly')
 							? true
 							: null;
 
@@ -1289,6 +1314,7 @@ $(document).ready(
 					buy_manager.mayBeBuy(serialized_tags);
 
 					activity.updateWidget();
+					activity.updateBuyWidget();
 					PUSH({url: 'history.html'});
 
 					return false;
@@ -1333,24 +1359,34 @@ $(document).ready(
 				status_flag.parent().hide();
 			}
 
+			var monthly_flag = $('.monthly');
+			if ($.type(active_buy) !== "null") {
+				if (active_buy.monthly) {
+					monthly_flag.addClass('active');
+				}
+			}
+
 			edit_buy_button.click(
 				function() {
 					var name = name_editor.val();
 					var cost = parseFloat(cost_editor.val());
 					var status = status_flag.hasClass('active') ? 1 : 0;
+					var monthly = monthly_flag.hasClass('active') ? 1 : 0;
 
 					if ($.type(active_buy) === "null") {
-						buy_manager.createBuy(name, cost);
+						buy_manager.createBuy(name, cost, monthly);
 					} else {
 						buy_manager.updateBuy(
 							active_buy.id,
 							name,
 							cost,
-							status
+							status,
+							monthly
 						);
 					}
 
 					activity.updateWidget();
+					activity.updateBuyWidget();
 					PUSH({url: 'history.html'});
 
 					return false;

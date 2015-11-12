@@ -27,6 +27,10 @@ public class Settings {
 		"preference_credit_card_tag";
 	public static final String SETTING_NAME_COLLECT_STATS =
 		"preference_collect_stats";
+	public static final String SETTING_NAME_ONLY_MONTHLY =
+		"preference_only_monthly";
+	public static final String SETTING_NAME_DAILY_AUTOBACKUP =
+		"preference_daily_autobackup";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
 	public static final String SETTING_NAME_SMS_NUMBER_PATTERN =
 		"preference_sms_number_pattern";
@@ -66,6 +70,8 @@ public class Settings {
 		"preference_sms_import_notification";
 	public static final String SETTING_NAME_DROPBOX_NOTIFICATION =
 		"preference_dropbox_notification";
+	public static final String SETTING_NAME_MONTHLY_RESET_NOTIFICATION =
+		"preference_monthly_reset_notification";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -143,6 +149,14 @@ public class Settings {
 		settings.collect_stats = preferences.getBoolean(
 			SETTING_NAME_COLLECT_STATS,
 			true
+		);
+		settings.only_monthly = preferences.getBoolean(
+			SETTING_NAME_ONLY_MONTHLY,
+			false
+		);
+		settings.daily_autobackup = preferences.getBoolean(
+			SETTING_NAME_DAILY_AUTOBACKUP,
+			false
 		);
 
 		settings.parse_sms = preferences.getBoolean(
@@ -274,6 +288,10 @@ public class Settings {
 			SETTING_NAME_DROPBOX_NOTIFICATION,
 			true
 		);
+		settings.monthly_reset_notification = preferences.getBoolean(
+			SETTING_NAME_MONTHLY_RESET_NOTIFICATION,
+			true
+		);
 
 		return settings;
 	}
@@ -396,6 +414,22 @@ public class Settings {
 
 	public void setCollectStats(boolean collect_stats) {
 		this.collect_stats = collect_stats;
+	}
+
+	public boolean isOnlyMonthly() {
+		return only_monthly;
+	}
+
+	public void setOnlyMonthly(boolean only_monthly) {
+		this.only_monthly = only_monthly;
+	}
+
+	public boolean isDailyAutobackup() {
+		return daily_autobackup;
+	}
+
+	public void setDailyAutobackup(boolean daily_autobackup) {
+		this.daily_autobackup = daily_autobackup;
 	}
 
 	public boolean isParseSms() {
@@ -574,6 +608,16 @@ public class Settings {
 		this.dropbox_notification = dropbox_notification;
 	}
 
+	public boolean isMonthlyResetNotification() {
+		return monthly_reset_notification;
+	}
+
+	public void setMonthlyResetNotification(
+		boolean monthly_reset_notification
+	) {
+		this.monthly_reset_notification = monthly_reset_notification;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -594,6 +638,8 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_NEED_UPDATE_HOURS, need_update_hours);
 		editor.putString(SETTING_NAME_CREDIT_CARD_TAG, credit_card_tag);
 		editor.putBoolean(SETTING_NAME_COLLECT_STATS, collect_stats);
+		editor.putBoolean(SETTING_NAME_ONLY_MONTHLY, only_monthly);
+		editor.putBoolean(SETTING_NAME_DAILY_AUTOBACKUP, daily_autobackup);
 		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
 		editor.putString(
 			SETTING_NAME_SMS_NUMBER_PATTERN,
@@ -655,6 +701,10 @@ public class Settings {
 			SETTING_NAME_DROPBOX_NOTIFICATION,
 			dropbox_notification
 		);
+		editor.putBoolean(
+			SETTING_NAME_MONTHLY_RESET_NOTIFICATION,
+			monthly_reset_notification
+		);
 		editor.commit();
 	}
 
@@ -686,6 +736,8 @@ public class Settings {
 	private boolean need_update_hours = false;
 	private String credit_card_tag = DEFAULT_CREDIT_CARD_TAG;
 	private boolean collect_stats = true;
+	private boolean only_monthly = false;
+	private boolean daily_autobackup = false;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";
 	private Pattern sms_number_pattern;
@@ -710,6 +762,7 @@ public class Settings {
 	private boolean sms_parsing_notification = true;
 	private boolean sms_import_notification = true;
 	private boolean dropbox_notification = true;
+	private boolean monthly_reset_notification = true;
 
 	private Settings(Context context) {
 		this.context = context;
