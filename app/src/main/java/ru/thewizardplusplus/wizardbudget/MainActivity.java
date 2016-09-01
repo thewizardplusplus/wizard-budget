@@ -223,6 +223,9 @@ public class MainActivity extends Activity {
 
 		WebView web_view = (WebView)findViewById(R.id.web_view);
 		web_view.getSettings().setJavaScriptEnabled(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			web_view.getSettings().setAllowUniversalAccessFromFileURLs(true);
+		}
 		web_view.setWebViewClient(
 			new WebViewClient() {
 				@Override
