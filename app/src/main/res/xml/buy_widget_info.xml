@@ -1,4 +1,4 @@
-<?xml version = "1.0" encoding = "utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	android:minWidth = "110dp"
@@ -7,5 +7,5 @@
 	android:minResizeWidth = "110dp"
 	android:minResizeHeight = "40dp"
 	android:updatePeriodMillis = "86400000"
-	android:initialLayout = "@layout/widget"
-	android:previewImage = "@drawable/widget_preview" />
+	android:initialLayout = "@layout/buy_widget"
+	android:previewImage = "@drawable/buy_widget_preview" />
