@@ -11,25 +11,25 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8663"
-   sodipodi:docname="app_icon.svg"
-   viewBox="0 0 256 256"
+   sodipodi:docname="app_icon_big.svg"
+   viewBox="-256000 0 0 256"
    version="1.1"
    inkscape:version="0.91 r"
-   width="100%"
-   height="100%"
-   inkscape:export-filename="/home/thewizardpp/projects/android/wizard-budget/screenshots/app_icon.png"
-   inkscape:export-xdpi="180"
-   inkscape:export-ydpi="180">
+   width="1024"
+   height="500"
+   inkscape:export-filename="/home/thewizardpp/projects/android/wizard-budget/screenshots/app_icon_big.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs8665">
     <filter
        id="filter7936"
        height="1.5421"
        width="1.1745"
-       color-interpolation-filters="sRGB"
        y="-0.27107"
        x="-0.087241001"
-       inkscape:collect="always">
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          id="feGaussianBlur7938"
          stdDeviation="3.758059"
@@ -74,10 +74,10 @@
        id="filter7890"
        height="1.0793999"
        width="1.2459"
-       color-interpolation-filters="sRGB"
        y="-0.039680999"
        x="-0.12296"
-       inkscape:collect="always">
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          id="feGaussianBlur7892"
          stdDeviation="1.0413191"
@@ -274,7 +274,7 @@
     <filter
        id="filter6383"
        inkscape:collect="always"
-       color-interpolation-filters="sRGB">
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          id="feGaussianBlur6385"
          stdDeviation="2.216462"
@@ -301,7 +301,7 @@
     <filter
        id="filter6387"
        inkscape:collect="always"
-       color-interpolation-filters="sRGB">
+       style="color-interpolation-filters:sRGB">
       <feGaussianBlur
          id="feGaussianBlur6389"
          stdDeviation="0.55319808"
@@ -2282,14 +2282,14 @@
      pagecolor="#ffffff"
      fit-margin-top="10"
      inkscape:window-maximized="1"
-     inkscape:zoom="1.4791237"
+     inkscape:zoom="0.73956185"
      inkscape:window-x="197"
      inkscape:window-height="844"
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="132.62107"
-     inkscape:cy="119.2826"
+     inkscape:cx="514.07892"
+     inkscape:cy="228.94375"
      fit-margin-right="10"
      fit-margin-bottom="10"
      inkscape:window-width="1152"
@@ -2299,10 +2299,17 @@
      id="layer1"
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     transform="translate(-194.13,-307.3)">
+     transform="translate(-194.13,-63.3)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3933"
+       width="1024"
+       height="500"
+       x="194.13"
+       y="63.299999" />
     <g
        id="g6272"
-       transform="translate(172.01832,232.43285)">
+       transform="matrix(1.506283,0,0,1.506283,480.01933,7.7246561)">
       <ellipse
          id="path7894"
          style="color:#000000;opacity:0.2;fill:#000000;filter:url(#filter7936)"
@@ -4241,7 +4248,7 @@
             <dc:title>Openclipart</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Money Pot</dc:title>
+        <dc:title></dc:title>
         <dc:date>2012-08-06T07:53:25</dc:date>
         <dc:description />
         <dc:source>https://openclipart.org/detail/171507/money-pot-by-gnokii-171507</dc:source>
