@@ -42,7 +42,7 @@
 			android:launchMode = "singleTask"
 			android:configChanges = "orientation|keyboard">
 			<intent-filter>
-				<data android:scheme = "db-a3fjeiuyp2gcndt" />
+				<data android:scheme = "db-b0vzne23tu7i7rb" />
 				<action android:name = "android.intent.action.VIEW" />
 				<category android:name = "android.intent.category.BROWSABLE" />
 				<category android:name = "android.intent.category.DEFAULT" />
