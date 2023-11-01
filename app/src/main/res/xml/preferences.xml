@@ -123,6 +123,7 @@
 			android:defaultValue = "true" />
 		<CheckBoxPreference
 			android:key = "preference_sms_parsing_notification"
+			android:dependency = "preference_parse_sms"
 			android:title = "@string/preference_sms_parsing_notification_title"
 			android:summary = "@string/preference_sms_parsing_notification_summary"
 			android:defaultValue = "true" />
