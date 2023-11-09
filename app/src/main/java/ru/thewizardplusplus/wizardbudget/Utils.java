@@ -18,7 +18,24 @@ public class Utils {
 		String message,
 		File file
 	) {
-		Intent intent = null;
+		Intent main_intent = new Intent(context, MainActivity.class);
+		PendingIntent main_pending_intent = PendingIntent.getActivity(
+			context,
+			0,
+			main_intent,
+			0
+		);
+
+		@SuppressWarnings("deprecation")
+		Notification.Builder notification_builder =
+			new Notification
+			.Builder(context)
+			.setTicker(title)
+			.setSmallIcon(R.drawable.app_icon)
+			.setContentTitle(title)
+			.setContentText(message)
+			.setContentIntent(main_pending_intent);
+
 		if (file != null) {
 			Uri fileUri = DefaultFileProvider.getUriForFile(
 				context,
@@ -26,27 +43,24 @@ public class Utils {
 				file
 			);
 
-			intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(fileUri, "text/xml");
-			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-		} else {
-			intent = new Intent(context, MainActivity.class);
-		}
-		PendingIntent pending_intent = PendingIntent.getActivity(
-			context,
-			0,
-			intent,
-			0
-		);
+			Intent view_intent = new Intent(Intent.ACTION_VIEW);
+			view_intent.setDataAndType(fileUri, "text/xml");
+			view_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-		@SuppressWarnings("deprecation")
-		Notification notification = new Notification.Builder(context)
-			.setTicker(title)
-			.setSmallIcon(R.drawable.app_icon)
-			.setContentTitle(title)
-			.setContentText(message)
-			.setContentIntent(pending_intent)
-			.getNotification();
+			PendingIntent view_pending_intent = PendingIntent.getActivity(
+				context,
+				0,
+				view_intent,
+				0
+			);
+			notification_builder.addAction(
+				android.R.drawable.ic_menu_view,
+				context.getString(R.string.backup_notification_action_view),
+				view_pending_intent
+			);
+		}
+
+		Notification notification = notification_builder.getNotification();
 
 		NotificationManager notifications = (NotificationManager)context
 			.getSystemService(

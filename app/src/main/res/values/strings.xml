@@ -71,4 +71,5 @@
 	<string name = "hours_separator">/</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>
 	<string name = "widget_none_buys_message">None buys.</string>
+	<string name = "backup_notification_action_view">View</string>
 </resources>
