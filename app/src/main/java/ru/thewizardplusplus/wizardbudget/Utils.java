@@ -20,8 +20,15 @@ public class Utils {
 	) {
 		Intent intent = null;
 		if (file != null) {
+			Uri fileUri = DefaultFileProvider.getUriForFile(
+				context,
+				context.getPackageName() + ".DefaultFileProvider",
+				file
+			);
+
 			intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(file), "text/xml");
+			intent.setDataAndType(fileUri, "text/xml");
+			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		} else {
 			intent = new Intent(context, MainActivity.class);
 		}

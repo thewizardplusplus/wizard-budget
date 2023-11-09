@@ -23,4 +23,6 @@ android {
 dependencies {
     compile files('libs/dropbox-android-sdk-1.6.3.jar')
     compile files('libs/json_simple-1.1.jar')
+
+    implementation "androidx.core:core:1.5.0"
 }

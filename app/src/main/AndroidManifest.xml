@@ -89,5 +89,15 @@
 			android:name = "BuyWidgetService"
 			android:permission = "android.permission.BIND_REMOTEVIEWS">
 		</service>
+
+		<provider
+			android:name = ".DefaultFileProvider"
+			android:authorities = "${applicationId}.DefaultFileProvider"
+			android:exported = "false"
+			android:grantUriPermissions = "true">
+			<meta-data
+				android:name = "android.support.FILE_PROVIDER_PATHS"
+				android:resource = "@xml/file_paths" />
+		</provider>
 	</application>
 </manifest>
