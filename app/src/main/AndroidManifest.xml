@@ -50,7 +50,7 @@
 		</activity>
 
 		<receiver
-			android:name = "Widget"
+			android:name = ".Widget"
 			android:exported = "false">
 			<intent-filter>
 				<action
@@ -61,7 +61,7 @@
 				android:resource = "@xml/widget_info" />
 		</receiver>
 		<receiver
-			android:name = "BuyWidget"
+			android:name = ".BuyWidget"
 			android:exported = "false">
 			<intent-filter>
 				<action
@@ -71,22 +71,22 @@
 				android:name = "android.appwidget.provider"
 				android:resource = "@xml/buy_widget_info" />
 		</receiver>
-		<receiver android:name = "SmsReceiver">
+		<receiver android:name = ".SmsReceiver">
 			<intent-filter android:priority = "1000">
 				<action
 					android:name = "android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>
 		</receiver>
-		<receiver android:name = "BuyResetReceiver" />
-		<receiver android:name = "BackupReceiver" />
-		<receiver android:name = "BootReceiver">
+		<receiver android:name = ".BuyResetReceiver" />
+		<receiver android:name = ".BackupReceiver" />
+		<receiver android:name = ".BootReceiver">
 			<intent-filter>
 				<action android:name = "android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
 
 		<service
-			android:name = "BuyWidgetService"
+			android:name = ".BuyWidgetService"
 			android:permission = "android.permission.BIND_REMOTEVIEWS">
 		</service>
 
