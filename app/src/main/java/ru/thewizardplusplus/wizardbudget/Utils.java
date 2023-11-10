@@ -58,6 +58,25 @@ public class Utils {
 				context.getString(R.string.backup_notification_action_view),
 				view_pending_intent
 			);
+
+			Intent share_intent = new Intent(Intent.ACTION_SEND);
+			share_intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+			share_intent.setType("text/xml");
+			share_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+			Intent chooser_intent = Intent.createChooser(share_intent, null);
+
+			PendingIntent share_pending_intent = PendingIntent.getActivity(
+				context,
+				0,
+				chooser_intent,
+				0
+			);
+			notification_builder.addAction(
+				android.R.drawable.ic_menu_share,
+				context.getString(R.string.backup_notification_action_share),
+				share_pending_intent
+			);
 		}
 
 		Notification notification = notification_builder.getNotification();
