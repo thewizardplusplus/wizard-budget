@@ -1220,17 +1220,15 @@ $(document).ready(
 			var date_editor = $('.date-editor');
 			if ($.type(active_spending) !== "null") {
 				date_editor.val(active_spending.date);
-				date_editor.show();
+			} else {
+				date_editor.val(moment().format('YYYY-MM-DD'));
 			}
 
 			var time_editor = $('.time-editor');
 			if ($.type(active_spending) !== "null") {
 				time_editor.val(active_spending.time);
-				time_editor.show();
-			}
-
-			if ($.type(active_spending) !== "null") {
-				$('hr').show();
+			} else {
+				time_editor.val(moment().format('HH:mm'));
 			}
 
 			var amount_editor = $('.amount-editor');
@@ -1296,11 +1294,16 @@ $(document).ready(
 						);
 					}
 
+					var date = date_editor.val();
+					var time = time_editor.val();
 					if ($.type(active_spending) === "null") {
-						spending_manager.createSpending(amount, comment);
+						spending_manager.createSpendingWithDateAndTime(
+							date,
+							time,
+							amount,
+							comment
+						);
 					} else {
-						var date = date_editor.val();
-						var time = time_editor.val();
 						spending_manager.updateSpending(
 							active_spending.id,
 							date,

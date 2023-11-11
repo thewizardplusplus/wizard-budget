@@ -310,6 +310,35 @@ public class SpendingManager {
 		database.close();
 	}
 
+	@JavascriptInterface
+	public void createSpendingWithDateAndTime(
+		String date,
+		String time,
+		double amount,
+		String comment
+	) {
+		try {
+			String formatted_timestamp = date + " " + time + ":00";
+			SimpleDateFormat timestamp_format = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss",
+				Locale.US
+			);
+			Date parsed_timestamp = timestamp_format.parse(
+				formatted_timestamp
+			);
+			long timestamp = parsed_timestamp.getTime() / 1000L;
+
+			ContentValues values = new ContentValues();
+			values.put("timestamp", timestamp);
+			values.put("amount", amount);
+			values.put("comment", comment);
+
+			SQLiteDatabase database = Utils.getDatabase(context);
+			database.insert("spendings", null, values);
+			database.close();
+		} catch (java.text.ParseException exception) {}
+	}
+
 	public void createCorrection(double residue) {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		addCorrection(database, residue);
