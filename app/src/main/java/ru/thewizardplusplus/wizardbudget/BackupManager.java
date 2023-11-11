@@ -812,7 +812,7 @@ public class BackupManager {
 		}
 	}
 
-	private static final String BACKUPS_DIRECTORY = "#wizard-budget";
+	private static final String BACKUPS_DIRECTORY = ".wizard-budget";
 	private static final long BACKUP_VERSION = 5;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
