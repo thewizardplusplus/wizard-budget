@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 34
 
     useLibrary 'org.apache.http.legacy'
 
@@ -21,8 +20,8 @@ android {
 }
 
 dependencies {
-    compile files('libs/dropbox-android-sdk-1.6.3.jar')
-    compile files('libs/json_simple-1.1.jar')
+    implementation files('libs/dropbox-android-sdk-1.6.3.jar')
+    implementation files('libs/json_simple-1.1.jar')
 
-    implementation "androidx.core:core:1.5.0"
+    implementation "androidx.core:core:1.12.0"
 }
