@@ -1491,6 +1491,44 @@ $(document).ready(
 			);
 			UpdateImportButton();
 		}
+		function UpdateCurrenciesPage() {
+			var CURRENCY_RATE_PRECISION = 2;
+
+			var currency_list = $('.currency-list');
+			currency_list.empty();
+
+			var raw_currencies = currency_manager.getAllCurrencies();
+			var currencies = JSON.parse(raw_currencies);
+			currencies.map(
+				function(currency) {
+					currency_list.append(
+						'<li class = "table-view-cell media">'
+							+ '<span class = "'
+								+ 'media-object '
+								+ 'pull-left'
+							+ '">'
+								+ '<i class = "fa fa-money fa-2x"></i>'
+							+ '</span>'
+							+ '<div class = "media-body">'
+								+ '<p>'
+									+ '<span class = "underline">'
+										+ '<strong>'
+											+ moment(parseInt(currency.timestamp) * 1000).format('lll') + ':'
+										+ '</strong>'
+									+ '</span>'
+								+ '</p>'
+								+ '<p>'
+									+ '1 ' + currency.code + ' = ' + (1 / currency.rate).toFixed(CURRENCY_RATE_PRECISION) + ' <i class = "fa fa-ruble"></i>'
+								+ '</p>'
+								+ '<p>'
+									+ '1 <i class = "fa fa-ruble"></i> = ' + currency.rate.toFixed(CURRENCY_RATE_PRECISION) + ' ' + currency.code
+								+ '</p>'
+							+ '</div>'
+						+ '</li>'
+					);
+				}
+			);
+		}
 
 		window.addEventListener(
 			'push',
@@ -1507,6 +1545,9 @@ $(document).ready(
 				} else if (/\bsms\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'sms');
 					UpdateSmsPage();
+				} else if (/\bcurrencies\b/.test(event.detail.state.url)) {
+					activity.setSetting('current_page', 'currencies');
+					UpdateCurrenciesPage();
 				} else if (/\bauthors\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'authors');
 				} else {
