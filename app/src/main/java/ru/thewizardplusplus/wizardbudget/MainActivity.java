@@ -271,9 +271,6 @@ public class MainActivity extends Activity {
 		SQLiteDatabase database = Utils.getDatabase(this);
 		database.insert("currencies", null, values);
 		database.close();
-
-		String currencies = currency_manager.getAllCurrencies();
-		Log.d("DEBUG", currencies);
 	}
 
 	@Override
