@@ -256,6 +256,8 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(buy_manager, "buy_manager");
 		BackupManager backup_manager = new BackupManager(this);
 		web_view.addJavascriptInterface(backup_manager, "backup_manager");
+		CurrencyManager currency_manager = new CurrencyManager(this);
+		web_view.addJavascriptInterface(currency_manager, "currency_manager");
 
 		web_view.loadUrl("file:///android_asset/web/index.html");
 
@@ -269,6 +271,9 @@ public class MainActivity extends Activity {
 		SQLiteDatabase database = Utils.getDatabase(this);
 		database.insert("currencies", null, values);
 		database.close();
+
+		String currencies = currency_manager.getAllCurrencies();
+		Log.d("DEBUG", currencies);
 	}
 
 	@Override
