@@ -28,6 +28,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "monthly INTEGER NOT NULL"
 			+ ");"
 		);
+		database.execSQL(
+			"CREATE TABLE currencies ("
+				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "timestamp INTEGER NOT NULL,"
+				+ "code TEXT NOT NULL,"
+				+ "rate REAL NOT NULL"
+			+ ");"
+		);
 	}
 
 	@Override
