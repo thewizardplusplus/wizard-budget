@@ -14,6 +14,9 @@ import android.content.*;
 import android.net.*;
 import android.util.*;
 
+// TODO: remove after debugging
+import android.database.sqlite.*;
+
 public class MainActivity extends Activity {
 	@Override
 	public void onBackPressed() {
@@ -255,6 +258,17 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(backup_manager, "backup_manager");
 
 		web_view.loadUrl("file:///android_asset/web/index.html");
+
+		// TODO: remove after debugging
+		ContentValues values = new ContentValues();
+		long current_timestamp = System.currentTimeMillis() / 1000L;
+		values.put("timestamp", current_timestamp);
+		values.put("code", "TEST");
+		values.put("rate", (new Random()).nextDouble());
+
+		SQLiteDatabase database = Utils.getDatabase(this);
+		database.insert("currencies", null, values);
+		database.close();
 	}
 
 	@Override
