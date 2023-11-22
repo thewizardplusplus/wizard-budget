@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wizard-budget.iml" filepath="$PROJECT_DIR$/.idea/modules/wizard-budget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/wizard-budget.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wizard-budget.iml" filepath="$PROJECT_DIR$/wizard-budget.iml" />
     </modules>
   </component>
 </project>
