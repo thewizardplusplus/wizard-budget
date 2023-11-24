@@ -18,6 +18,11 @@
 	width: 40px;
 }
 
+.media-object .currency-logo-container {
+	display: inline-block;
+	width: 40px;
+}
+
 .mark-container {
 	position: relative;
 }
@@ -212,6 +217,14 @@ ol {
 
 .hours-view tr:first-child td {
 	padding: 0 10px 5px 10px;
+}
+
+.currency-logo {
+	height: 33px;
+}
+
+.currency-sign {
+	height: 12px;
 }
 
 .debug {
