@@ -1501,13 +1501,28 @@ $(document).ready(
 			var currencies = JSON.parse(raw_currencies);
 			currencies.map(
 				function(currency) {
+					var currency_logo = null;
+					var currency_sign = null;
+					switch (currency.code) {
+					case 'KZT':
+						currency_logo = '<span class = "currency-logo-container"><img class = "currency-logo" src = "images/tenge_symbol.black.svg" alt = "Tenge" /></span>';
+						currency_sign = '<img class = "currency-sign" src = "images/tenge_symbol.gray.svg" alt = "Tenge" />';
+
+						break;
+					default:
+						currency_logo = '<i class = "fa fa-question fa-2x"></i>';
+						currency_sign = currency.code;
+
+						break;
+					}
+
 					currency_list.append(
 						'<li class = "table-view-cell media">'
 							+ '<span class = "'
 								+ 'media-object '
 								+ 'pull-left'
 							+ '">'
-								+ '<i class = "fa fa-money fa-2x"></i>'
+								+ currency_logo
 							+ '</span>'
 							+ '<div class = "media-body">'
 								+ '<p>'
@@ -1518,10 +1533,10 @@ $(document).ready(
 									+ '</span>'
 								+ '</p>'
 								+ '<p>'
-									+ '1 ' + currency.code + ' = ' + (1 / currency.rate).toFixed(CURRENCY_RATE_PRECISION) + ' <i class = "fa fa-ruble"></i>'
+									+ '1 ' + currency_sign + ' = ' + (1 / currency.rate).toFixed(CURRENCY_RATE_PRECISION) + ' <i class = "fa fa-ruble"></i>'
 								+ '</p>'
 								+ '<p>'
-									+ '1 <i class = "fa fa-ruble"></i> = ' + currency.rate.toFixed(CURRENCY_RATE_PRECISION) + ' ' + currency.code
+									+ '1 <i class = "fa fa-ruble"></i> = ' + currency.rate.toFixed(CURRENCY_RATE_PRECISION) + ' ' + currency_sign
 								+ '</p>'
 							+ '</div>'
 						+ '</li>'
