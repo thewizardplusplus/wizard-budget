@@ -270,6 +270,13 @@ public class MainActivity extends Activity {
 
 		SQLiteDatabase database = Utils.getDatabase(this);
 		database.insert("currencies", null, values);
+
+		values = new ContentValues();
+		values.put("timestamp", current_timestamp);
+		values.put("code", "KZT");
+		values.put("rate", (new Random()).nextDouble());
+
+		database.insert("currencies", null, values);
 		database.close();
 	}
 
