@@ -1520,7 +1520,7 @@ $(document).ready(
 
 						break;
 					default:
-						currency_logo = '<i class = "fa fa-money fa-2x"></i>';
+						currency_logo = '<i class = "fa fa-question fa-2x"></i>';
 						currency_sign = currency.code;
 
 						break;
