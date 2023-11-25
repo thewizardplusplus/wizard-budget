@@ -273,6 +273,20 @@ public class MainActivity extends Activity {
 
 		values = new ContentValues();
 		values.put("timestamp", current_timestamp);
+		values.put("code", "USD");
+		values.put("rate", (new Random()).nextDouble());
+
+		database.insert("currencies", null, values);
+
+		values = new ContentValues();
+		values.put("timestamp", current_timestamp);
+		values.put("code", "EUR");
+		values.put("rate", (new Random()).nextDouble());
+
+		database.insert("currencies", null, values);
+
+		values = new ContentValues();
+		values.put("timestamp", current_timestamp);
 		values.put("code", "KZT");
 		values.put("rate", (new Random()).nextDouble());
 

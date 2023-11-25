@@ -1504,6 +1504,16 @@ $(document).ready(
 					var currency_logo = null;
 					var currency_sign = null;
 					switch (currency.code) {
+					case 'USD':
+						currency_logo = '<i class = "fa fa-dollar fa-2x"></i>';
+						currency_sign = '<i class = "fa fa-dollar"></i>';
+
+						break;
+					case 'EUR':
+						currency_logo = '<i class = "fa fa-euro fa-2x"></i>';
+						currency_sign = '<i class = "fa fa-euro"></i>';
+
+						break;
 					case 'KZT':
 						currency_logo = '<span class = "currency-logo-container"><img class = "currency-logo" src = "images/tenge_symbol.black.svg" alt = "Tenge" /></span>';
 						currency_sign = '<img class = "currency-sign" src = "images/tenge_symbol.gray.svg" alt = "Tenge" />';
