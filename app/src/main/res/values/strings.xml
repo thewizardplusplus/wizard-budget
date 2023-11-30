@@ -10,6 +10,14 @@
 	<string name = "preference_collect_stats_summary">Calculate spendings stats.</string>
 	<string name = "preference_only_monthly_title">Only monthly buys</string>
 	<string name = "preference_only_monthly_summary">Show only monthly buys into the buy widget.</string>
+	<string name = "preference_currency_list_mode_title">Currency list mode</string>
+	<string name = "preference_currency_list_mode_summary">Display mode of the currency list.</string>
+	<string name = "preference_currency_list_mode_label_all">All</string>
+	<string name = "preference_currency_list_mode_label_last_by_day">Last by day</string>
+	<string name = "preference_currency_list_mode_label_last_at_all">Last at all</string>
+	<string name = "preference_currency_list_mode_value_all">all</string>
+	<string name = "preference_currency_list_mode_value_last_by_day">last-by-day</string>
+	<string name = "preference_currency_list_mode_value_last_at_all">last-at-all</string>
 	<string name = "backup_preferences">Backups</string>
 	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
 	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
