@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			"CREATE TABLE currencies ("
 				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "timestamp INTEGER NOT NULL,"
+				+ "date TEXT NOT NULL,"
 				+ "code TEXT NOT NULL,"
 				+ "rate REAL NOT NULL"
 			+ ");"

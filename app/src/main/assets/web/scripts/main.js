@@ -1497,7 +1497,7 @@ $(document).ready(
 			var currency_list = $('.currency-list');
 			currency_list.empty();
 
-			var raw_currencies = currency_manager.getAllCurrencies();
+			var raw_currencies = currency_manager.getAllCurrencies("all");
 			var currencies = JSON.parse(raw_currencies);
 			currencies.map(
 				function(currency) {
