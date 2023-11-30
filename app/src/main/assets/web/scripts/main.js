@@ -1497,8 +1497,28 @@ $(document).ready(
 			var currency_list = $('.currency-list');
 			currency_list.empty();
 
-			var raw_currencies = currency_manager.getAllCurrencies("all");
-			var currencies = JSON.parse(raw_currencies);
+			var raw_actual_currencies = currency_manager.getAllCurrencies("last-at-all");
+			var actual_currency_id_set = {};
+			var actual_currencies = JSON.parse(raw_actual_currencies)
+				.map(function(currency) {
+					actual_currency_id_set[currency.id] = true;
+
+					currency.is_actual = true;
+					return currency;
+				});
+
+			var raw_all_currencies = currency_manager.getAllCurrencies("all");
+			var all_currencies = JSON.parse(raw_all_currencies);
+			var not_actual_currencies = all_currencies
+				.filter(function(currency) {
+					return !actual_currency_id_set[currency.id];
+				})
+				.map(function(currency) {
+					currency.is_actual = false;
+					return currency;
+				});
+
+			var currencies = actual_currencies.concat(not_actual_currencies);
 			currencies.map(
 				function(currency) {
 					var currency_logo = null;
@@ -1527,7 +1547,7 @@ $(document).ready(
 					}
 
 					currency_list.append(
-						'<li class = "table-view-cell media">'
+						'<li class = "table-view-cell media ' + (currency.is_actual ? 'actual' : 'not-actual') + '">'
 							+ '<span class = "'
 								+ 'media-object '
 								+ 'pull-left'
