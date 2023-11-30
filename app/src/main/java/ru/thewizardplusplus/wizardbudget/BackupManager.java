@@ -145,6 +145,15 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_CURRENCY_LIST_MODE
+				);
+				serializer.attribute("", "value", settings.getCurrencyListMode());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_DAILY_AUTOBACKUP
 				);
 				serializer.attribute(
@@ -586,6 +595,10 @@ public class BackupManager {
 					) {
 						settings.setOnlyMonthly(boolean_value);
 					} else if (
+						name.equals(Settings.SETTING_NAME_CURRENCY_LIST_MODE)
+					) {
+						settings.setCurrencyListMode(value);
+					} else if (
 						name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)
 					) {
 						settings.setDailyAutobackup(boolean_value);
@@ -813,7 +826,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = ".wizard-budget";
-	private static final long BACKUP_VERSION = 5;
+	private static final long BACKUP_VERSION = 6;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",
