@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<array name="preference_currency_list_mode_labels">
+		<item>@string/preference_currency_list_mode_label_all</item>
+		<item>@string/preference_currency_list_mode_label_last_by_day</item>
+		<item>@string/preference_currency_list_mode_label_last_at_all</item>
+	</array>
+
+	<array name="preference_currency_list_mode_values">
+		<item>@string/preference_currency_list_mode_value_all</item>
+		<item>@string/preference_currency_list_mode_value_last_by_day</item>
+		<item>@string/preference_currency_list_mode_value_last_at_all</item>
+	</array>
+</resources>

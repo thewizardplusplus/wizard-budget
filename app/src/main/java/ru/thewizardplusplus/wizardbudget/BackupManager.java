@@ -145,6 +145,15 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_CURRENCY_LIST_MODE
+				);
+				serializer.attribute("", "value", settings.getCurrencyListMode());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_DAILY_AUTOBACKUP
 				);
 				serializer.attribute(
@@ -585,6 +594,10 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_ONLY_MONTHLY)
 					) {
 						settings.setOnlyMonthly(boolean_value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_CURRENCY_LIST_MODE)
+					) {
+						settings.setCurrencyListMode(value);
 					} else if (
 						name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)
 					) {

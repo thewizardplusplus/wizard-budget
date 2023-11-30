@@ -1507,7 +1507,8 @@ $(document).ready(
 					return currency;
 				});
 
-			var raw_all_currencies = currency_manager.getAllCurrencies("all");
+			var mode = activity.getSetting("preference_currency_list_mode");
+			var raw_all_currencies = currency_manager.getAllCurrencies(mode);
 			var all_currencies = JSON.parse(raw_all_currencies);
 			var not_actual_currencies = all_currencies
 				.filter(function(currency) {
