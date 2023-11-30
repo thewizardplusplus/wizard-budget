@@ -507,6 +507,33 @@ public class BackupManager {
 					moved = cursor.moveToNext();
 				}
 				serializer.endTag("", "buys");
+
+				serializer.startTag("", "currencies");
+				cursor = database.query(
+					"currencies",
+					new String[]{"timestamp", "code", "rate"},
+					null,
+					null,
+					null,
+					null,
+					"timestamp"
+				);
+
+				moved = cursor.moveToFirst();
+				while (moved) {
+					serializer.startTag("", "currency");
+
+					Date date = new Date(cursor.getLong(0) * 1000L);
+					String formatted_date = XML_DATE_FORMAT.format(date);
+					serializer.attribute("", "date", formatted_date);
+
+					serializer.attribute("", "code", cursor.getString(1));
+					serializer.attribute("", "rate", String.valueOf(cursor.getDouble(2)));
+					serializer.endTag("", "currency");
+
+					moved = cursor.moveToNext();
+				}
+				serializer.endTag("", "currencies");
 				database.close();
 
 				serializer.endTag("", "budget");
@@ -543,6 +570,7 @@ public class BackupManager {
 	public void restore(InputStream in) {
 		String spending_sql = "";
 		String buy_sql = "";
+		String currency_sql = "";
 		try {
 			Element budget = DocumentBuilderFactory
 				.newInstance()
@@ -772,6 +800,46 @@ public class BackupManager {
 						+ ")";
 				}
 			}
+
+			NodeList currency_list = budget.getElementsByTagName("currency");
+			for (int i = 0; i < currency_list.getLength(); i++) {
+				if (currency_list.item(i).getNodeType() == Node.ELEMENT_NODE) {
+					Element currency = (Element)currency_list.item(i);
+					if (
+						!currency.hasAttribute("date")
+						|| !currency.hasAttribute("code")
+						|| !currency.hasAttribute("rate")
+					) {
+						continue;
+					}
+
+					long timestamp = 0;
+					try {
+						Date date = XML_DATE_FORMAT.parse(
+							currency.getAttribute("date")
+						);
+						timestamp = date.getTime() / 1000L;
+					} catch (java.text.ParseException exception) {
+						continue;
+					}
+
+					String date = CURRENCY_DATE_FORMAT.format(
+						new Date(timestamp * 1000L)
+					);
+
+					if (!currency_sql.isEmpty()) {
+						currency_sql += ",";
+					}
+					currency_sql += "("
+							+ String.valueOf(timestamp) + ","
+							+ DatabaseUtils.sqlEscapeString(date) + ","
+							+ DatabaseUtils.sqlEscapeString(
+								currency.getAttribute("code")
+							) + ","
+							+ currency.getAttribute("rate")
+						+ ")";
+				}
+			}
 		} catch (ParserConfigurationException exception) {
 			return;
 		} catch (SAXException exception) {
@@ -782,7 +850,7 @@ public class BackupManager {
 			return;
 		}
 
-		if (!spending_sql.isEmpty() || !buy_sql.isEmpty()) {
+		if (!spending_sql.isEmpty() || !buy_sql.isEmpty() || !currency_sql.isEmpty()) {
 			SQLiteDatabase database = Utils.getDatabase(context);
 			if (!spending_sql.isEmpty()) {
 				database.execSQL("DELETE FROM spendings");
@@ -799,6 +867,15 @@ public class BackupManager {
 					"INSERT INTO buys"
 					+ "(name, cost, priority, status, monthly)"
 					+ "VALUES" + buy_sql
+				);
+			}
+
+			if (!currency_sql.isEmpty()) {
+				database.execSQL("DELETE FROM currencies");
+				database.execSQL(
+					"INSERT INTO currencies"
+					+ "(timestamp, date, code, rate)"
+					+ "VALUES" + currency_sql
 				);
 			}
 			database.close();
@@ -832,6 +909,8 @@ public class BackupManager {
 			"yyyy-MM-dd HH:mm:ss",
 			Locale.US
 		);
+	private static final SimpleDateFormat CURRENCY_DATE_FORMAT =
+		new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
 	private Context context;
 }
