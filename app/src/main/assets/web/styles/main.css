@@ -115,7 +115,8 @@ ol {
 	color: #777;
 }
 
-.buy-list .buyed {
+.buy-list .buyed,
+.currency-list .not-actual {
 	opacity: 0.5;
 }
 
