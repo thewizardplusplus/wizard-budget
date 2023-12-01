@@ -6,6 +6,12 @@
 	</head>
 	<body>
 		<header class = "bar bar-nav">
+			<a
+				class = "pull-right refresh-button"
+				href = "#"
+				data-ignore = "push">
+				<i class = "icon fa fa-refresh fa-2x"></i>
+			</a>
 			<a href = "history.html">
 				<i class = "icon fa fa-chevron-left fa-2x pull-left"></i>
 				<h1 class = "title">Currencies</h1>
@@ -13,6 +19,8 @@
 		</header>
 
 		<div class = "content">
+			<div class = "card hidden loading-log"></div>
+
 			<ul class = "table-view currency-list"></ul>
 		</div>
 	</body>

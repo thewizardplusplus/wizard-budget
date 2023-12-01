@@ -186,6 +186,13 @@ function RequestToHarvest(request_name, path) {
 
 	activity.httpRequest(request_name, url, JSON.stringify(headers));
 }
+function RequestToExchangeRateAPI() {
+	var BASE_CURRENCY = 'RUB';
+
+	var api_key = 'dummy';
+	var url = 'https://v6.exchangerate-api.com/v6/' + api_key + '/latest/' + BASE_CURRENCY;
+	activity.httpRequest('exchange_rate_api', url, JSON.stringify(null));
+}
 var HTTP_HANDLERS = {
 	harvest_user_id: function(data) {
 		LOADING_LOG.addMessage('Start the Harvest user ID processing.');
@@ -281,6 +288,22 @@ var HTTP_HANDLERS = {
 
 		ProcessHours();
 
+		LOADING_LOG.finish(
+			function() {
+				$('.refresh-button').removeClass('disabled');
+			}
+		);
+	},
+	exchange_rate_api: function(data) {
+		LOADING_LOG.addMessage('Start the ExchangeRate-API response processing.');
+		var parsed_data = JSON.parse(data);
+
+		activity.log(JSON.stringify(parsed_data, null, '  '));
+
+		LOADING_LOG.addMessage(
+			'The ExchangeRate-API response processing has finished.',
+			'success'
+		);
 		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
@@ -1572,6 +1595,19 @@ $(document).ready(
 							+ '</div>'
 						+ '</li>'
 					);
+				}
+			);
+
+			$('.refresh-button').click(
+				function() {
+					var self = $(this);
+					if (!self.hasClass('disabled')) {
+						self.addClass('disabled');
+					} else {
+						return;
+					}
+
+					RequestToExchangeRateAPI();
 				}
 			);
 		}
