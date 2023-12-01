@@ -387,14 +387,21 @@ public class MainActivity extends Activity {
 			arguments_string += arguments[i];
 		}
 
-		WebView web_view = (WebView)findViewById(R.id.web_view);
-		web_view.loadUrl(
-			"javascript:GUI."
-			+ name
-			+ "("
-			+ arguments_string
-			+ ")"
-		);
+		final WebView web_view = (WebView)findViewById(R.id.web_view);
+		final String name_copy = name;
+		final String arguments_string_copy = arguments_string;
+		web_view.post(new Runnable() {
+			@Override
+			public void run() {
+				web_view.loadUrl(
+					"javascript:GUI."
+					+ name_copy
+					+ "("
+					+ arguments_string_copy
+					+ ")"
+				);
+			}
+		});
 	}
 
 	private void callGuiFunction(String name) {
