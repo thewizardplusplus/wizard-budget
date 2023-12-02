@@ -298,7 +298,22 @@ var HTTP_HANDLERS = {
 		LOADING_LOG.addMessage('Start the ExchangeRate-API response processing.');
 		var parsed_data = JSON.parse(data);
 
-		activity.log(JSON.stringify(parsed_data, null, '  '));
+		if (parsed_data.result !== 'success') {
+			LOADING_LOG.addMessage(
+				'The ExchangeRate-API returned the error: <code>' + data + '</code>.',
+				'error'
+			);
+
+			return;
+		}
+
+		var timestamp = parsed_data.time_last_update_unix;
+		var conversion_rates = (parsed_data.conversion_rates || {});
+		['USD', 'EUR', 'KZT'].forEach(function(currency) {
+			var rate = conversion_rates[currency];
+
+			activity.log('create currency: ' + timestamp + ', ' + currency + ', ' + rate);
+		});
 
 		LOADING_LOG.addMessage(
 			'The ExchangeRate-API response processing has finished.',
