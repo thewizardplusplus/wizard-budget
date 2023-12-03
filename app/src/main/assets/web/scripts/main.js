@@ -169,6 +169,96 @@ function ShowHours(hours_data) {
 		working_off_view.removeClass('lack').addClass('excess');
 	}
 }
+function ShowCurrencies() {
+	var CURRENCY_RATE_PRECISION = 2;
+
+	var currency_list = $('.currency-list');
+	currency_list.empty();
+
+	var raw_actual_currencies = currency_manager.getAllCurrencies("last-at-all");
+	var actual_currency_id_set = {};
+	var actual_currencies = JSON.parse(raw_actual_currencies)
+		.map(function(currency) {
+			actual_currency_id_set[currency.id] = true;
+
+			currency.is_actual = true;
+			return currency;
+		});
+
+	var mode = activity.getSetting("preference_currency_list_mode");
+	var raw_all_currencies = currency_manager.getAllCurrencies(mode);
+	var all_currencies = JSON.parse(raw_all_currencies);
+	var not_actual_currencies = all_currencies
+		.filter(function(currency) {
+			return !actual_currency_id_set[currency.id];
+		})
+		.map(function(currency) {
+			currency.is_actual = false;
+			return currency;
+		});
+
+	var currencies = actual_currencies.concat(not_actual_currencies);
+	currencies.map(function(currency) {
+		var currency_logo = null;
+		var currency_sign = null;
+		switch (currency.code) {
+		case 'USD':
+			currency_logo = '<i class = "fa fa-dollar fa-2x"></i>';
+			currency_sign = '<i class = "fa fa-dollar"></i>';
+
+			break;
+		case 'EUR':
+			currency_logo = '<i class = "fa fa-euro fa-2x"></i>';
+			currency_sign = '<i class = "fa fa-euro"></i>';
+
+			break;
+		case 'KZT':
+			currency_logo = '<span class = "currency-logo-container"><img class = "currency-logo" src = "images/tenge_symbol.black.svg" alt = "Tenge" /></span>';
+			currency_sign = '<img class = "currency-sign" src = "images/tenge_symbol.gray.svg" alt = "Tenge" />';
+
+			break;
+		default:
+			currency_logo = '<i class = "fa fa-question fa-2x"></i>';
+			currency_sign = currency.code;
+
+			break;
+		}
+
+		currency_list.append(
+			'<li class = "table-view-cell media ' + (currency.is_actual ? 'actual' : 'not-actual') + '">'
+				+ '<span class = "media-object pull-left">'
+					+ currency_logo
+				+ '</span>'
+				+ '<div class = "media-body">'
+					+ '<p>'
+						+ '<span class = "underline">'
+							+ '<strong>'
+								+ moment(parseInt(currency.timestamp) * 1000).format('lll') + ':'
+							+ '</strong>'
+						+ '</span>'
+					+ '</p>'
+					+ '<p>'
+						+ '1 ' + currency_sign + ' = ' + (1 / currency.rate).toFixed(CURRENCY_RATE_PRECISION) + ' <i class = "fa fa-ruble"></i>'
+					+ '</p>'
+					+ '<p>'
+						+ '1 <i class = "fa fa-ruble"></i> = ' + currency.rate.toFixed(CURRENCY_RATE_PRECISION) + ' ' + currency_sign
+					+ '</p>'
+				+ '</div>'
+			+ '</li>'
+		);
+	});
+
+	$('.refresh-button').click(function() {
+		var self = $(this);
+		if (!self.hasClass('disabled')) {
+			self.addClass('disabled');
+		} else {
+			return;
+		}
+
+		RequestToExchangeRateAPI();
+	});
+}
 
 function RequestToHarvest(request_name, path) {
 	var harvest_subdomain = activity.getSetting('harvest_subdomain');
@@ -318,6 +408,9 @@ var HTTP_HANDLERS = {
 			'The ExchangeRate-API response processing has finished.',
 			'success'
 		);
+
+		ShowCurrencies();
+
 		LOADING_LOG.finish(
 			function() {
 				$('.refresh-button').removeClass('disabled');
@@ -1528,103 +1621,6 @@ $(document).ready(
 			);
 			UpdateImportButton();
 		}
-		function UpdateCurrenciesPage() {
-			var CURRENCY_RATE_PRECISION = 2;
-
-			var currency_list = $('.currency-list');
-			currency_list.empty();
-
-			var raw_actual_currencies = currency_manager.getAllCurrencies("last-at-all");
-			var actual_currency_id_set = {};
-			var actual_currencies = JSON.parse(raw_actual_currencies)
-				.map(function(currency) {
-					actual_currency_id_set[currency.id] = true;
-
-					currency.is_actual = true;
-					return currency;
-				});
-
-			var mode = activity.getSetting("preference_currency_list_mode");
-			var raw_all_currencies = currency_manager.getAllCurrencies(mode);
-			var all_currencies = JSON.parse(raw_all_currencies);
-			var not_actual_currencies = all_currencies
-				.filter(function(currency) {
-					return !actual_currency_id_set[currency.id];
-				})
-				.map(function(currency) {
-					currency.is_actual = false;
-					return currency;
-				});
-
-			var currencies = actual_currencies.concat(not_actual_currencies);
-			currencies.map(
-				function(currency) {
-					var currency_logo = null;
-					var currency_sign = null;
-					switch (currency.code) {
-					case 'USD':
-						currency_logo = '<i class = "fa fa-dollar fa-2x"></i>';
-						currency_sign = '<i class = "fa fa-dollar"></i>';
-
-						break;
-					case 'EUR':
-						currency_logo = '<i class = "fa fa-euro fa-2x"></i>';
-						currency_sign = '<i class = "fa fa-euro"></i>';
-
-						break;
-					case 'KZT':
-						currency_logo = '<span class = "currency-logo-container"><img class = "currency-logo" src = "images/tenge_symbol.black.svg" alt = "Tenge" /></span>';
-						currency_sign = '<img class = "currency-sign" src = "images/tenge_symbol.gray.svg" alt = "Tenge" />';
-
-						break;
-					default:
-						currency_logo = '<i class = "fa fa-question fa-2x"></i>';
-						currency_sign = currency.code;
-
-						break;
-					}
-
-					currency_list.append(
-						'<li class = "table-view-cell media ' + (currency.is_actual ? 'actual' : 'not-actual') + '">'
-							+ '<span class = "'
-								+ 'media-object '
-								+ 'pull-left'
-							+ '">'
-								+ currency_logo
-							+ '</span>'
-							+ '<div class = "media-body">'
-								+ '<p>'
-									+ '<span class = "underline">'
-										+ '<strong>'
-											+ moment(parseInt(currency.timestamp) * 1000).format('lll') + ':'
-										+ '</strong>'
-									+ '</span>'
-								+ '</p>'
-								+ '<p>'
-									+ '1 ' + currency_sign + ' = ' + (1 / currency.rate).toFixed(CURRENCY_RATE_PRECISION) + ' <i class = "fa fa-ruble"></i>'
-								+ '</p>'
-								+ '<p>'
-									+ '1 <i class = "fa fa-ruble"></i> = ' + currency.rate.toFixed(CURRENCY_RATE_PRECISION) + ' ' + currency_sign
-								+ '</p>'
-							+ '</div>'
-						+ '</li>'
-					);
-				}
-			);
-
-			$('.refresh-button').click(
-				function() {
-					var self = $(this);
-					if (!self.hasClass('disabled')) {
-						self.addClass('disabled');
-					} else {
-						return;
-					}
-
-					RequestToExchangeRateAPI();
-				}
-			);
-		}
 
 		window.addEventListener(
 			'push',
@@ -1643,7 +1639,7 @@ $(document).ready(
 					UpdateSmsPage();
 				} else if (/\bcurrencies\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'currencies');
-					UpdateCurrenciesPage();
+					ShowCurrencies();
 				} else if (/\bauthors\b/.test(event.detail.state.url)) {
 					activity.setSetting('current_page', 'authors');
 				} else {
