@@ -95,6 +95,8 @@ public class MainActivity extends Activity {
 			return settings.isNeedUpdateHours() ? "true" : "false";
 		} else if (name.equals(Settings.SETTING_NAME_CURRENCY_LIST_MODE)) {
 			return settings.getCurrencyListMode();
+		} else if (name.equals(Settings.SETTING_NAME_EXCHANGE_RATE_API_KEY)) {
+			return settings.getExchangeRateApiKey();
 		} else {
 			return "";
 		}

@@ -15,13 +15,19 @@
 		android:title = "@string/preference_only_monthly_title"
 		android:summary = "@string/preference_only_monthly_summary"
 		android:defaultValue = "false" />
-	<ListPreference
-		android:key = "preference_currency_list_mode"
-		android:title = "@string/preference_currency_list_mode_title"
-		android:summary = "@string/preference_currency_list_mode_summary"
-		android:entries = "@array/preference_currency_list_mode_labels"
-		android:entryValues = "@array/preference_currency_list_mode_values"
-		android:defaultValue = "all" />
+	<PreferenceCategory android:title = "@string/currency_preferences">
+		<ListPreference
+			android:key = "preference_currency_list_mode"
+			android:title = "@string/preference_currency_list_mode_title"
+			android:summary = "@string/preference_currency_list_mode_summary"
+			android:entries = "@array/preference_currency_list_mode_labels"
+			android:entryValues = "@array/preference_currency_list_mode_values"
+			android:defaultValue = "all" />
+		<EditTextPreference
+			android:key = "preference_exchange_rate_api_key"
+			android:title = "@string/preference_exchange_rate_api_key_title"
+			android:summary = "@string/preference_exchange_rate_api_key_summary" />
+	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/backup_preferences">
 		<CheckBoxPreference
 			android:key = "preference_save_backup_to_dropbox"

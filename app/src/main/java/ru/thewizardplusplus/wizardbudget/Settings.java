@@ -31,6 +31,8 @@ public class Settings {
 		"preference_only_monthly";
 	public static final String SETTING_NAME_CURRENCY_LIST_MODE =
 		"preference_currency_list_mode";
+	public static final String SETTING_NAME_EXCHANGE_RATE_API_KEY =
+		"preference_exchange_rate_api_key";
 	public static final String SETTING_NAME_DAILY_AUTOBACKUP =
 		"preference_daily_autobackup";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
@@ -159,6 +161,10 @@ public class Settings {
 		settings.currency_list_mode = preferences.getString(
 			SETTING_NAME_CURRENCY_LIST_MODE,
 			DEFAULT_CURRENCY_LIST_MODE
+		);
+		settings.exchange_rate_api_key = preferences.getString(
+			SETTING_NAME_EXCHANGE_RATE_API_KEY,
+			""
 		);
 		settings.daily_autobackup = preferences.getBoolean(
 			SETTING_NAME_DAILY_AUTOBACKUP,
@@ -438,6 +444,10 @@ public class Settings {
 		String currency_list_mode
 	) {
 		this.currency_list_mode = currency_list_mode;
+	}
+
+	public String getExchangeRateApiKey() {
+		return exchange_rate_api_key;
 	}
 
 	public boolean isDailyAutobackup() {
@@ -756,6 +766,7 @@ public class Settings {
 	private boolean collect_stats = true;
 	private boolean only_monthly = false;
 	private String currency_list_mode = DEFAULT_CURRENCY_LIST_MODE;
+	private String exchange_rate_api_key = "";
 	private boolean daily_autobackup = false;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";
