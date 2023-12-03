@@ -21,6 +21,8 @@
 	<string name = "preference_currency_list_mode_value_last_at_all">last-at-all</string>
 	<string name = "preference_exchange_rate_api_key_title">ExchangeRate-API key</string>
 	<string name = "preference_exchange_rate_api_key_summary">API key of the ExchangeRate-API account.</string>
+	<string name = "preference_daily_currency_autoupdate_title">Daily currency autoupdate</string>
+	<string name = "preference_daily_currency_autoupdate_summary">Update currencies automatically every day.</string>
 	<string name = "backup_preferences">Backups</string>
 	<string name = "preference_save_backup_to_dropbox_title">Save backup to Dropbox</string>
 	<string name = "preference_save_backup_to_dropbox_summary">Duplicate every backup file to Dropbox folder.</string>
