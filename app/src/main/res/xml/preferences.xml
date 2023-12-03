@@ -156,5 +156,10 @@
 			android:title = "@string/preference_monthly_reset_notification_title"
 			android:summary = "@string/preference_monthly_reset_notification_summary"
 			android:defaultValue = "true" />
+		<CheckBoxPreference
+			android:key = "preference_currency_update_notification"
+			android:title = "@string/preference_currency_update_notification_title"
+			android:summary = "@string/preference_currency_update_notification_summary"
+			android:defaultValue = "true" />
 	</PreferenceCategory>
 </PreferenceScreen>

@@ -422,6 +422,19 @@ public class BackupManager {
 					settings.isMonthlyResetNotification() ? "true" : "false"
 				);
 				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_CURRENCY_UPDATE_NOTIFICATION
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isCurrencyUpdateNotification() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -722,6 +735,12 @@ public class BackupManager {
 						)
 					) {
 						settings.setMonthlyResetNotification(boolean_value);
+					} else if (
+						name.equals(
+							Settings.SETTING_NAME_CURRENCY_UPDATE_NOTIFICATION
+						)
+					) {
+						settings.setCurrencyUpdateNotification(boolean_value);
 					}
 				}
 			}

@@ -105,6 +105,10 @@ public class CurrencyManager {
 
 	@JavascriptInterface
 	public void showNotification(long timestamp) {
+		if (!Settings.getCurrent(context).isCurrencyUpdateNotification()) {
+			return;
+		}
+
 		Date date = new Date(timestamp * 1000L);
 		DateFormat notification_timestamp_format = DateFormat.getDateTimeInstance(
 			DateFormat.DEFAULT,
