@@ -14,10 +14,6 @@ import android.content.*;
 import android.net.*;
 import android.util.*;
 
-// TODO: remove after debugging
-import android.database.sqlite.*;
-import java.text.*;
-
 public class MainActivity extends Activity {
 	@Override
 	public void onBackPressed() {
@@ -265,74 +261,18 @@ public class MainActivity extends Activity {
 		web_view.loadUrl("file:///android_asset/web/index.html");
 
 		// TODO: remove after debugging
-		ContentValues values = new ContentValues();
 		long current_timestamp = System.currentTimeMillis() / 1000L;
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "TEST");
-		values.put("rate", (new Random()).nextDouble());
-
-		SQLiteDatabase database = Utils.getDatabase(this);
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "USD");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "EUR");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "KZT");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
+		current_timestamp = current_timestamp - 24 * 60 * 60;
+		currency_manager.createCurrency(current_timestamp, "TEST", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "USD", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "EUR", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "KZT", (new Random()).nextDouble());
 
 		current_timestamp = current_timestamp - 24 * 60 * 60;
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "TEST");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "USD");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "EUR");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-
-		values = new ContentValues();
-		values.put("timestamp", current_timestamp);
-		values.put("date", formatDate(current_timestamp));
-		values.put("code", "KZT");
-		values.put("rate", (new Random()).nextDouble());
-
-		database.insert("currencies", null, values);
-		database.close();
+		currency_manager.createCurrency(current_timestamp, "TEST", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "USD", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "EUR", (new Random()).nextDouble());
+		currency_manager.createCurrency(current_timestamp, "KZT", (new Random()).nextDouble());
 	}
 
 	@Override
@@ -428,11 +368,5 @@ public class MainActivity extends Activity {
 				}
 			}
 		} catch (IOException exception) {}
-	}
-
-	private String formatDate(long timestamp) {
-		Date date = new Date(timestamp * 1000L);
-		SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
-		return date_format.format(date);
 	}
 }

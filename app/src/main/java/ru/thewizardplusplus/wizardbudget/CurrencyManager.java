@@ -90,5 +90,24 @@ public class CurrencyManager {
 		return currencies.toString();
 	}
 
+	@JavascriptInterface
+	public void createCurrency(long timestamp, String code, double rate) {
+		ContentValues values = new ContentValues();
+		values.put("timestamp", timestamp);
+		values.put("date", formatDate(timestamp));
+		values.put("code", code);
+		values.put("rate", rate);
+
+		SQLiteDatabase database = Utils.getDatabase(context);
+		database.insert("currencies", null, values);
+		database.close();
+	}
+
 	private Context context;
+
+	private String formatDate(long timestamp) {
+		Date date = new Date(timestamp * 1000L);
+		SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
+		return date_format.format(date);
+	}
 }
