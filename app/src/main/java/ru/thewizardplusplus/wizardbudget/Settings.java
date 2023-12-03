@@ -33,6 +33,8 @@ public class Settings {
 		"preference_currency_list_mode";
 	public static final String SETTING_NAME_EXCHANGE_RATE_API_KEY =
 		"preference_exchange_rate_api_key";
+	public static final String SETTING_NAME_DAILY_CURRENCY_AUTOUPDATE =
+		"preference_daily_currency_autoupdate";
 	public static final String SETTING_NAME_DAILY_AUTOBACKUP =
 		"preference_daily_autobackup";
 	public static final String SETTING_NAME_PARSE_SMS = "preference_parse_sms";
@@ -167,6 +169,10 @@ public class Settings {
 		settings.exchange_rate_api_key = preferences.getString(
 			SETTING_NAME_EXCHANGE_RATE_API_KEY,
 			""
+		);
+		settings.daily_currency_autoupdate = preferences.getBoolean(
+			SETTING_NAME_DAILY_CURRENCY_AUTOUPDATE,
+			false
 		);
 		settings.daily_autobackup = preferences.getBoolean(
 			SETTING_NAME_DAILY_AUTOBACKUP,
@@ -456,6 +462,14 @@ public class Settings {
 		return exchange_rate_api_key;
 	}
 
+	public boolean isDailyCurrencyAutoupdate() {
+		return daily_currency_autoupdate;
+	}
+
+	public void setDailyCurrencyAutoupdate(boolean daily_currency_autoupdate) {
+		this.daily_currency_autoupdate = daily_currency_autoupdate;
+	}
+
 	public boolean isDailyAutobackup() {
 		return daily_autobackup;
 	}
@@ -682,6 +696,7 @@ public class Settings {
 		editor.putBoolean(SETTING_NAME_COLLECT_STATS, collect_stats);
 		editor.putBoolean(SETTING_NAME_ONLY_MONTHLY, only_monthly);
 		editor.putString(SETTING_NAME_CURRENCY_LIST_MODE, currency_list_mode);
+		editor.putBoolean(SETTING_NAME_DAILY_CURRENCY_AUTOUPDATE, daily_currency_autoupdate);
 		editor.putBoolean(SETTING_NAME_DAILY_AUTOBACKUP, daily_autobackup);
 		editor.putBoolean(SETTING_NAME_PARSE_SMS, parse_sms);
 		editor.putString(
@@ -787,6 +802,7 @@ public class Settings {
 	private boolean only_monthly = false;
 	private String currency_list_mode = DEFAULT_CURRENCY_LIST_MODE;
 	private String exchange_rate_api_key = "";
+	private boolean daily_currency_autoupdate = false;
 	private boolean daily_autobackup = false;
 	private boolean parse_sms = false;
 	private String sms_number_pattern_string = "";

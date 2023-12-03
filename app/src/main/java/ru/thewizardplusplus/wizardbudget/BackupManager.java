@@ -154,6 +154,19 @@ public class BackupManager {
 				serializer.attribute(
 					"",
 					"name",
+					Settings.SETTING_NAME_DAILY_CURRENCY_AUTOUPDATE
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isDailyCurrencyAutoupdate() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
 					Settings.SETTING_NAME_DAILY_AUTOBACKUP
 				);
 				serializer.attribute(
@@ -639,6 +652,10 @@ public class BackupManager {
 						name.equals(Settings.SETTING_NAME_CURRENCY_LIST_MODE)
 					) {
 						settings.setCurrencyListMode(value);
+					} else if (
+						name.equals(Settings.SETTING_NAME_DAILY_CURRENCY_AUTOUPDATE)
+					) {
+						settings.setDailyCurrencyAutoupdate(boolean_value);
 					} else if (
 						name.equals(Settings.SETTING_NAME_DAILY_AUTOBACKUP)
 					) {
