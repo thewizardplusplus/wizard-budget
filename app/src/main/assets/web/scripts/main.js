@@ -279,7 +279,16 @@ function RequestToHarvest(request_name, path) {
 function RequestToExchangeRateAPI() {
 	var BASE_CURRENCY = 'RUB';
 
-	var api_key = 'dummy';
+	var api_key = activity.getSetting('preference_exchange_rate_api_key');
+	if (api_key.length === 0) {
+		LOADING_LOG.addMessage(
+			'The ExchangeRate-API key isn\'t set.',
+			'error'
+		);
+
+		return;
+	}
+
 	var url = 'https://v6.exchangerate-api.com/v6/' + api_key + '/latest/' + BASE_CURRENCY;
 	activity.httpRequest('exchange_rate_api', url, JSON.stringify(null));
 }
