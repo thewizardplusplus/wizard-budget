@@ -311,8 +311,7 @@ var HTTP_HANDLERS = {
 		var conversion_rates = (parsed_data.conversion_rates || {});
 		['USD', 'EUR', 'KZT'].forEach(function(currency) {
 			var rate = conversion_rates[currency];
-
-			activity.log('create currency: ' + timestamp + ', ' + currency + ', ' + rate);
+			currency_manager.createCurrency(timestamp, currency, rate);
 		});
 
 		LOADING_LOG.addMessage(
