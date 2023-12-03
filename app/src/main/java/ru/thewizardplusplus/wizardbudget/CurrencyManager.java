@@ -103,6 +103,23 @@ public class CurrencyManager {
 		database.close();
 	}
 
+	@JavascriptInterface
+	public void showNotification(long timestamp) {
+		Date date = new Date(timestamp * 1000L);
+		DateFormat notification_timestamp_format = DateFormat.getDateTimeInstance(
+			DateFormat.DEFAULT,
+			DateFormat.DEFAULT,
+			Locale.US
+		);
+		String notification_timestamp = notification_timestamp_format.format(date);
+		Utils.showNotification(
+			context,
+			context.getString(R.string.app_name),
+			"Updated the currencies at " + notification_timestamp + ".",
+			null
+		);
+	}
+
 	private Context context;
 
 	private String formatDate(long timestamp) {

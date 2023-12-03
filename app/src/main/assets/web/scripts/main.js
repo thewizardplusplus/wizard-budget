@@ -410,6 +410,7 @@ var HTTP_HANDLERS = {
 		);
 
 		ShowCurrencies();
+		currency_manager.showNotification(timestamp);
 
 		LOADING_LOG.finish(
 			function() {
