@@ -2,6 +2,7 @@ package ru.thewizardplusplus.wizardbudget;
 
 import java.text.*;
 import java.util.*;
+import java.net.*;
 
 import org.json.*;
 
@@ -106,6 +107,25 @@ public class CurrencyManager {
 
 	public void updateCurrencies() {
 		Log.d("DEBUG", "CurrencyManager.updateCurrencies()");
+
+		try {
+			String api_key = Settings.getCurrent(context).getExchangeRateApiKey();
+			if (api_key.isEmpty()) {
+				return;
+			}
+
+			String url = "https://v6.exchangerate-api.com/v6/" + api_key + "/latest/" + BASE_CURRENCY;
+			HttpRequestTask task = new HttpRequestTask(
+				new HashMap<String, String>(),
+				new HttpRequestTask.OnSuccessListener() {
+					@Override
+					public void onSuccess(String data) {
+						Log.d("DEBUG", data);
+					}
+				}
+			);
+			task.execute(new URL(url));
+		} catch(MalformedURLException exception) {}
 	}
 
 	@JavascriptInterface
@@ -128,6 +148,8 @@ public class CurrencyManager {
 			null
 		);
 	}
+
+	private static final String BASE_CURRENCY = "RUB";
 
 	private Context context;
 
