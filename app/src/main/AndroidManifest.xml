@@ -79,6 +79,7 @@
 		</receiver>
 		<receiver android:name = ".BuyResetReceiver" />
 		<receiver android:name = ".BackupReceiver" />
+		<receiver android:name = ".CurrenciesReceiver" />
 		<receiver android:name = ".BootReceiver">
 			<intent-filter>
 				<action android:name = "android.intent.action.BOOT_COMPLETED" />

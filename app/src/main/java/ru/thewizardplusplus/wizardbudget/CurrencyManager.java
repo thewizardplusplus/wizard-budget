@@ -10,6 +10,7 @@ import android.database.*;
 import android.database.sqlite.*;
 import android.net.*;
 import android.webkit.*;
+import android.util.*;
 
 public class CurrencyManager {
 	public CurrencyManager(Context context) {
@@ -101,6 +102,10 @@ public class CurrencyManager {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		database.insert("currencies", null, values);
 		database.close();
+	}
+
+	public void updateCurrencies() {
+		Log.d("DEBUG", "CurrencyManager.updateCurrencies()");
 	}
 
 	@JavascriptInterface
