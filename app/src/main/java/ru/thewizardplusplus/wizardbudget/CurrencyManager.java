@@ -11,7 +11,6 @@ import android.database.*;
 import android.database.sqlite.*;
 import android.net.*;
 import android.webkit.*;
-import android.util.*;
 
 public class CurrencyManager {
 	public CurrencyManager(Context context) {
@@ -106,8 +105,6 @@ public class CurrencyManager {
 	}
 
 	public void updateCurrencies() {
-		Log.d("DEBUG", "CurrencyManager.updateCurrencies()");
-
 		try {
 			String api_key = Settings.getCurrent(context).getExchangeRateApiKey();
 			if (api_key.isEmpty()) {
@@ -121,8 +118,6 @@ public class CurrencyManager {
 				new HttpRequestTask.OnSuccessListener() {
 					@Override
 					public void onSuccess(String data) {
-						Log.d("DEBUG", data);
-
 						try {
 							JSONObject parsed_data = new JSONObject(data);
 							if (!parsed_data.getString("result").equals("success")) {
@@ -135,9 +130,6 @@ public class CurrencyManager {
 							for (int index = 0; index < currencies.length; index++) {
 								String currency = currencies[index];
 								double rate = conversion_rates.getDouble(currency);
-
-								Log.d("DEBUG", String.valueOf(timestamp) + " " + currency + " " + String.valueOf(rate));
-
 								self.createCurrency(timestamp, currency, rate);
 							}
 

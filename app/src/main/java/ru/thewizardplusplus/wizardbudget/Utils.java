@@ -254,13 +254,15 @@ public class Utils {
 	}
 
 	public static void setCurrenciesAlarm(Context context) {
-		// TODO: fix after debugging
 		Calendar calendar = Calendar.getInstance();
 		// the starting point should be in the future, to avoid immediate call
 		calendar.set(
-			Calendar.MINUTE,
-			calendar.get(Calendar.MINUTE) + 1
+			Calendar.DAY_OF_MONTH,
+			calendar.get(Calendar.DAY_OF_MONTH) + 1
 		);
+		// clear() don't work with HOUR_OF_DAY
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.clear(Calendar.MINUTE);
 		calendar.clear(Calendar.SECOND);
 		calendar.clear(Calendar.MILLISECOND);
 
@@ -288,9 +290,8 @@ public class Utils {
 		* AlarmManager.INTERVAL_DAY;
 	private static final long BACKUP_ALARM_PERIOD_IN_MS =
 		AlarmManager.INTERVAL_DAY;
-	// TODO: fix after debugging
 	private static final long CURRENCIES_ALARM_PERIOD_IN_MS =
-		AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+		AlarmManager.INTERVAL_DAY;
 
 	private static int notification_id = 0;
 }
