@@ -115,6 +115,7 @@ public class CurrencyManager {
 			}
 
 			String url = "https://v6.exchangerate-api.com/v6/" + api_key + "/latest/" + BASE_CURRENCY;
+			final CurrencyManager self = this;
 			HttpRequestTask task = new HttpRequestTask(
 				new HashMap<String, String>(),
 				new HttpRequestTask.OnSuccessListener() {
@@ -136,7 +137,11 @@ public class CurrencyManager {
 								double rate = conversion_rates.getDouble(currency);
 
 								Log.d("DEBUG", String.valueOf(timestamp) + " " + currency + " " + String.valueOf(rate));
+
+								self.createCurrency(timestamp, currency, rate);
 							}
+
+							self.showNotification(timestamp);
 						} catch(JSONException exception) {}
 					}
 				}
