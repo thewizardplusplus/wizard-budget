@@ -188,6 +188,7 @@ public class Utils {
 	public static void setAlarms(Context context) {
 		setMonthlyBuyAlarm(context);
 		setBackupAlarm(context);
+		setCurrenciesAlarm(context);
 	}
 
 	public static void setMonthlyBuyAlarm(Context context) {
@@ -252,11 +253,44 @@ public class Utils {
 		);
 	}
 
+	public static void setCurrenciesAlarm(Context context) {
+		// TODO: fix after debugging
+		Calendar calendar = Calendar.getInstance();
+		// the starting point should be in the future, to avoid immediate call
+		calendar.set(
+			Calendar.MINUTE,
+			calendar.get(Calendar.MINUTE) + 1
+		);
+		calendar.clear(Calendar.SECOND);
+		calendar.clear(Calendar.MILLISECOND);
+
+		Intent intent = new Intent(context, CurrenciesReceiver.class);
+		PendingIntent pending_intent = PendingIntent.getBroadcast(
+			context,
+			0,
+			intent,
+			PendingIntent.FLAG_UPDATE_CURRENT
+		);
+
+		AlarmManager alarm_manager = (AlarmManager)context.getSystemService(
+			Context.ALARM_SERVICE
+		);
+		alarm_manager.setInexactRepeating(
+			AlarmManager.RTC,
+			calendar.getTimeInMillis(),
+			CURRENCIES_ALARM_PERIOD_IN_MS,
+			pending_intent
+		);
+	}
+
 	private static final long MONTHLY_BUY_ALARM_PERIOD_IN_MS =
 		30
 		* AlarmManager.INTERVAL_DAY;
 	private static final long BACKUP_ALARM_PERIOD_IN_MS =
 		AlarmManager.INTERVAL_DAY;
+	// TODO: fix after debugging
+	private static final long CURRENCIES_ALARM_PERIOD_IN_MS =
+		AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
 	private static int notification_id = 0;
 }
