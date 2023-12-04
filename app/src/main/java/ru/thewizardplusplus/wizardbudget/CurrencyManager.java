@@ -121,6 +121,23 @@ public class CurrencyManager {
 					@Override
 					public void onSuccess(String data) {
 						Log.d("DEBUG", data);
+
+						try {
+							JSONObject parsed_data = new JSONObject(data);
+							if (!parsed_data.getString("result").equals("success")) {
+								return;
+							}
+
+							long timestamp = parsed_data.getLong("time_last_update_unix");
+							JSONObject conversion_rates = parsed_data.getJSONObject("conversion_rates");
+							String[] currencies = {"USD", "EUR", "KZT"};
+							for (int index = 0; index < currencies.length; index++) {
+								String currency = currencies[index];
+								double rate = conversion_rates.getDouble(currency);
+
+								Log.d("DEBUG", String.valueOf(timestamp) + " " + currency + " " + String.valueOf(rate));
+							}
+						} catch(JSONException exception) {}
 					}
 				}
 			);
