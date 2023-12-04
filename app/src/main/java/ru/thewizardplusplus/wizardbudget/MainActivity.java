@@ -261,20 +261,6 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(currency_manager, "currency_manager");
 
 		web_view.loadUrl("file:///android_asset/web/index.html");
-
-		// TODO: remove after debugging
-		long current_timestamp = System.currentTimeMillis() / 1000L;
-		current_timestamp = current_timestamp - 24 * 60 * 60;
-		currency_manager.createCurrency(current_timestamp, "TEST", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "USD", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "EUR", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "KZT", (new Random()).nextDouble());
-
-		current_timestamp = current_timestamp - 24 * 60 * 60;
-		currency_manager.createCurrency(current_timestamp, "TEST", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "USD", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "EUR", (new Random()).nextDouble());
-		currency_manager.createCurrency(current_timestamp, "KZT", (new Random()).nextDouble());
 	}
 
 	@Override
