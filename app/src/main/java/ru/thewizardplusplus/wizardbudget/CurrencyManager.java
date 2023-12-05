@@ -91,6 +91,40 @@ public class CurrencyManager {
 		return currencies.toString();
 	}
 
+	public List<String> getAllCurrenciesForWidget() {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		Cursor currencies_cursor = database.rawQuery(
+				"SELECT currencies.* "
+					+ "FROM currencies "
+					+ "JOIN ("
+						+ "SELECT code, max(timestamp) AS 'max_timestamp' "
+						+ "FROM currencies "
+						+ "GROUP BY code"
+					+ ") sub_query "
+					+ "ON currencies.code = sub_query.code AND currencies.timestamp = sub_query.max_timestamp "
+					+ "ORDER BY timestamp DESC, _id DESC;",
+				null
+			);
+
+		List<String> currencies = new ArrayList<String>();
+		boolean moved = currencies_cursor.moveToFirst();
+		while (moved) {
+			String code = currencies_cursor.getString(3);
+			double rate = currencies_cursor.getDouble(4);
+			currencies.add(String.format(
+				"%1$s: 1 %1$s = %3$.2f RUB / 1 RUB = %2$.2f %1$s",
+				code,
+				rate,
+				1 / rate
+			));
+
+			moved = currencies_cursor.moveToNext();
+		}
+
+		database.close();
+		return currencies;
+	}
+
 	@JavascriptInterface
 	public void createCurrency(long timestamp, String code, double rate) {
 		ContentValues values = new ContentValues();
