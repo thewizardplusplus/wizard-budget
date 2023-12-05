@@ -22,9 +22,8 @@ public class CurrencyWidgetFactory implements RemoteViewsService.RemoteViewsFact
 	public void onDataSetChanged() {
 		items.clear();
 
-		items.add("one");
-		items.add("two");
-		items.add("three");
+		CurrencyManager currency_manager = new CurrencyManager(context);
+		items = currency_manager.getAllCurrenciesForWidget();
 	}
 
 	@Override
