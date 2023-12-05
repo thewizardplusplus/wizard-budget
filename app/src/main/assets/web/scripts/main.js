@@ -504,6 +504,7 @@ var HTTP_HANDLERS = {
 		);
 
 		ShowCurrencies();
+		activity.updateCurrencyWidget();
 		currency_manager.showNotification(timestamp);
 
 		LOADING_LOG.finish(

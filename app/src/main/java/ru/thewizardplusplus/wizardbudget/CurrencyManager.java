@@ -176,6 +176,7 @@ public class CurrencyManager {
 								self.createCurrency(timestamp, currency, rate);
 							}
 
+							Utils.updateCurrencyWidget(context);
 							self.showNotification(timestamp);
 						} catch(JSONException exception) {}
 					}

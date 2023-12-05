@@ -282,6 +282,8 @@ public class MainActivity extends Activity {
 		currency_manager.createCurrency(current_timestamp, "USD", (new Random()).nextDouble());
 		currency_manager.createCurrency(current_timestamp, "EUR", (new Random()).nextDouble());
 		currency_manager.createCurrency(current_timestamp, "KZT", (new Random()).nextDouble());
+
+		updateCurrencyWidget();
 	}
 
 	@Override
