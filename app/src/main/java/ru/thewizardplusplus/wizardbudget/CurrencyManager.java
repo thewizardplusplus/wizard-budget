@@ -116,13 +116,13 @@ public class CurrencyManager {
 			String currency = String.format("%1$s: ", code);
 			if (rate >= inverted_rate) {
 				currency += String.format(
-					"1 %1$s = %2$.2f RUB",
+					"1 RUB = %2$.2f %1$s",
 					code,
 					rate
 				);
 			} else {
 				currency += String.format(
-					"1 RUB = %2$.2f %1$s",
+					"1 %1$s = %2$.2f RUB",
 					code,
 					inverted_rate
 				);
