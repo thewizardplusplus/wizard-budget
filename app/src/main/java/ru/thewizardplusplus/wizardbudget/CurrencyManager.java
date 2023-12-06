@@ -111,11 +111,27 @@ public class CurrencyManager {
 		while (moved) {
 			String code = currencies_cursor.getString(3);
 			double rate = currencies_cursor.getDouble(4);
+			double inverted_rate = 1 / rate;
+
+			String currency = "";
+			if (rate >= inverted_rate) {
+				currency = String.format(
+					"1 %1$s = %2$.2f RUB",
+					code,
+					rate
+				);
+			} else {
+				currency = String.format(
+					"1 RUB = %2$.2f %1$s",
+					code,
+					inverted_rate
+				);
+			}
+
 			currencies.add(String.format(
-				"%1$s: 1 %1$s = %3$.2f RUB / 1 RUB = %2$.2f %1$s",
+				"%1$s: %2$s",
 				code,
-				rate,
-				1 / rate
+				currency
 			));
 
 			moved = currencies_cursor.moveToNext();
