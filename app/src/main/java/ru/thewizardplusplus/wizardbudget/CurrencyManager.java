@@ -30,7 +30,7 @@ public class CurrencyManager {
 				null,
 				null,
 				null,
-				"timestamp DESC, _id DESC"
+				"timestamp DESC, _id"
 			);
 
 			break;
@@ -44,7 +44,7 @@ public class CurrencyManager {
 						+ "GROUP BY date, code"
 					+ ") sub_query "
 					+ "ON currencies.code = sub_query.code AND currencies.timestamp = sub_query.max_timestamp "
-					+ "ORDER BY timestamp DESC, _id DESC;",
+					+ "ORDER BY timestamp DESC, _id;",
 				null
 			);
 
@@ -59,7 +59,7 @@ public class CurrencyManager {
 						+ "GROUP BY code"
 					+ ") sub_query "
 					+ "ON currencies.code = sub_query.code AND currencies.timestamp = sub_query.max_timestamp "
-					+ "ORDER BY timestamp DESC, _id DESC;",
+					+ "ORDER BY timestamp DESC, _id;",
 				null
 			);
 
