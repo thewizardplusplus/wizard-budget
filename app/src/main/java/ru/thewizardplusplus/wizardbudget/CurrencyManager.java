@@ -102,7 +102,7 @@ public class CurrencyManager {
 						+ "GROUP BY code"
 					+ ") sub_query "
 					+ "ON currencies.code = sub_query.code AND currencies.timestamp = sub_query.max_timestamp "
-					+ "ORDER BY timestamp DESC, _id DESC;",
+					+ "ORDER BY timestamp DESC, _id;",
 				null
 			);
 
