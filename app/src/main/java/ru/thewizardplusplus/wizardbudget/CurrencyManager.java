@@ -100,7 +100,12 @@ public class CurrencyManager {
 		values.put("rate", rate);
 
 		SQLiteDatabase database = Utils.getDatabase(context);
-		database.insert("currencies", null, values);
+		database.insertWithOnConflict(
+			"currencies",
+			null,
+			values,
+			SQLiteDatabase.CONFLICT_REPLACE
+		);
 		database.close();
 	}
 

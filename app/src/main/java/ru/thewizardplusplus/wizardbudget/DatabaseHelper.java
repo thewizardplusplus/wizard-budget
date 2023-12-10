@@ -34,7 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "timestamp INTEGER NOT NULL,"
 				+ "date TEXT NOT NULL,"
 				+ "code TEXT NOT NULL,"
-				+ "rate REAL NOT NULL"
+				+ "rate REAL NOT NULL,"
+				+ "UNIQUE(timestamp, code)"
 			+ ");"
 		);
 	}
