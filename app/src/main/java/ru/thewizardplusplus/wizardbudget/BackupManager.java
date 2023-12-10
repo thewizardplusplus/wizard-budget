@@ -909,7 +909,7 @@ public class BackupManager {
 			if (!currency_sql.isEmpty()) {
 				database.execSQL("DELETE FROM currencies");
 				database.execSQL(
-					"INSERT INTO currencies"
+					"REPLACE INTO currencies"
 					+ "(timestamp, date, code, rate)"
 					+ "VALUES" + currency_sql
 				);
