@@ -80,6 +80,8 @@ public class Settings {
 		"preference_monthly_reset_notification";
 	public static final String SETTING_NAME_CURRENCY_UPDATE_NOTIFICATION =
 		"preference_currency_update_notification";
+	public static final String SETTING_NAME_USED_CURRENCIES =
+		"preference_used_currencies";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -315,6 +317,10 @@ public class Settings {
 		settings.currency_update_notification = preferences.getBoolean(
 			SETTING_NAME_CURRENCY_UPDATE_NOTIFICATION,
 			true
+		);
+		settings.used_currencies = preferences.getString(
+			SETTING_NAME_USED_CURRENCIES,
+			DEFAULT_USED_CURRENCIES
 		);
 
 		return settings;
@@ -674,6 +680,19 @@ public class Settings {
 		this.currency_update_notification = currency_update_notification;
 	}
 
+	public String getUsedCurrencies() {
+		String cleaned_used_currencies = used_currencies
+			.toUpperCase()
+			.replaceAll("[^A-Z,]+", "");
+		return !cleaned_used_currencies.isEmpty()
+			? cleaned_used_currencies
+			: DEFAULT_USED_CURRENCIES;
+	}
+
+	public void setUsedCurrencies(String used_currencies) {
+		this.used_currencies = used_currencies;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -767,6 +786,7 @@ public class Settings {
 			SETTING_NAME_CURRENCY_UPDATE_NOTIFICATION,
 			currency_update_notification
 		);
+		editor.putString(SETTING_NAME_USED_CURRENCIES, used_currencies);
 		editor.commit();
 	}
 
@@ -781,6 +801,7 @@ public class Settings {
 	private static final String DEFAULT_CREDIT_CARD_TAG = "credit card";
 	private static final String DEFAULT_CURRENCY_LIST_MODE = "all";
 	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
+	private static final String DEFAULT_USED_CURRENCIES = "USD,EUR";
 	private static final String HOURS_DATE_FORMAT = "yyyy-MM-dd";
 
 	private Context context;
@@ -830,6 +851,7 @@ public class Settings {
 	private boolean dropbox_notification = true;
 	private boolean monthly_reset_notification = true;
 	private boolean currency_update_notification = true;
+	private String used_currencies = DEFAULT_USED_CURRENCIES;
 
 	private Settings(Context context) {
 		this.context = context;

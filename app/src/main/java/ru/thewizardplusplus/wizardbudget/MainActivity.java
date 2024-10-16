@@ -97,6 +97,8 @@ public class MainActivity extends Activity {
 			return settings.getCurrencyListMode();
 		} else if (name.equals(Settings.SETTING_NAME_EXCHANGE_RATE_API_KEY)) {
 			return settings.getExchangeRateApiKey();
+		} else if (name.equals(Settings.SETTING_NAME_USED_CURRENCIES)) {
+			return settings.getUsedCurrencies();
 		} else {
 			return "";
 		}

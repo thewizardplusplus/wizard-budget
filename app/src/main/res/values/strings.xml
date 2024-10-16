@@ -88,4 +88,6 @@
 	<string name = "widget_none_buys_message">None buys.</string>
 	<string name = "backup_notification_action_view">View</string>
 	<string name = "backup_notification_action_share">Share</string>
+	<string name = "preference_used_currencies_title">Used currencies</string>
+	<string name = "preference_used_currencies_summary">Currencies whose rates should be monitored.</string>
 </resources>

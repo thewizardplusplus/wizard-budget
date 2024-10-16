@@ -448,6 +448,15 @@ public class BackupManager {
 					settings.isCurrencyUpdateNotification() ? "true" : "false"
 				);
 				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_USED_CURRENCIES
+				);
+				serializer.attribute("", "value", settings.getUsedCurrencies());
+				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -758,6 +767,8 @@ public class BackupManager {
 						)
 					) {
 						settings.setCurrencyUpdateNotification(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_USED_CURRENCIES)) {
+						settings.setUsedCurrencies(value);
 					}
 				}
 			}
