@@ -408,10 +408,15 @@ var HTTP_HANDLERS = {
 
 		var timestamp = parsed_data.time_last_update_unix;
 		var conversion_rates = (parsed_data.conversion_rates || {});
-		['USD', 'EUR', 'KZT'].forEach(function(currency) {
-			var rate = conversion_rates[currency];
-			currency_manager.createCurrency(timestamp, currency, rate);
-		});
+		var currencies = activity.getSetting('preference_used_currencies').split(',');
+		currencies
+			.filter(function(currency) {
+				return conversion_rates.hasOwnProperty(currency);
+			})
+			.forEach(function(currency) {
+				var rate = conversion_rates[currency];
+				currency_manager.createCurrency(timestamp, currency, rate);
+			});
 
 		LOADING_LOG.addMessage(
 			'The ExchangeRate-API response processing has finished.',

@@ -118,6 +118,7 @@ public class CurrencyManager {
 
 			String url = "https://v6.exchangerate-api.com/v6/" + api_key + "/latest/" + BASE_CURRENCY;
 			final CurrencyManager self = this;
+			final String[] currencies = Settings.getCurrent(context).getUsedCurrencies().split(",");
 			HttpRequestTask task = new HttpRequestTask(
 				new HashMap<String, String>(),
 				new HttpRequestTask.OnSuccessListener() {
@@ -131,9 +132,12 @@ public class CurrencyManager {
 
 							long timestamp = parsed_data.getLong("time_last_update_unix");
 							JSONObject conversion_rates = parsed_data.getJSONObject("conversion_rates");
-							String[] currencies = {"USD", "EUR", "KZT"};
 							for (int index = 0; index < currencies.length; index++) {
 								String currency = currencies[index];
+								if (!conversion_rates.has(currency)) {
+									continue;
+								}
+
 								double rate = conversion_rates.getDouble(currency);
 								self.createCurrency(timestamp, currency, rate);
 							}
