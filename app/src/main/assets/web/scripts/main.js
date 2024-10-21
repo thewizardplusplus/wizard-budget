@@ -201,15 +201,96 @@ function ShowCurrencies() {
 	currencies.map(function(currency) {
 		var currency_logo = null;
 		var currency_sign = null;
+		// the principle of selecting and displaying available currencies:
+		// - selection:
+		//   - support all currencies whose symbols are included in the Font Awesome library version 4.2.0
+		//   - if one symbol corresponds to several currencies, support those currencies that are included in the list of "Most traded currencies" for 2022
+		// - displaying:
+		//   - if a unique symbol is found for a currency, use it
+		//   - if a special prefix is available for a currency with a non-unique symbol (see the "World Bank Editorial Style Guide 2020" document, appendix D), use it
+		//   - otherwise use the ISO 4217 code as the prefix
+		//   - for all other currencies for which no symbol is found, just use the ISO 4217 code
+		// - add the tenge symbol separately as an SVG image (since it is not in the Font Awesome library version 4.2.0)
+		// see: https://fontawesome.com/v4/icons/#currency-icons
+		// see: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
+		// see: https://openknowledge.worldbank.org/bitstream/handle/10986/33367/33304.pdf
 		switch (currency.code) {
+		// dollar
+		case 'AUD':
+		case 'CAD':
+		case 'HKD':
+		case 'NZD':
+		case 'SGD':
+		case 'TWD':
 		case 'USD':
+		// peso
+		case 'ARS':
+		case 'CLP':
+		case 'COP':
+		case 'MXN':
+		// others
+		case 'BRL':
 			currency_logo = '<i class = "fa fa-dollar fa-2x"></i>';
-			currency_sign = '<i class = "fa fa-dollar"></i>';
+
+			switch (currency.code) {
+			// dollar
+			case 'AUD':
+				currency_sign = '<i class = "fa fa-dollar"></i>A';
+				break;
+			case 'CAD':
+				currency_sign = 'Can<i class = "fa fa-dollar"></i>';
+				break;
+			case 'HKD':
+				currency_sign = 'HK<i class = "fa fa-dollar"></i>';
+				break;
+			case 'NZD':
+				currency_sign = '<i class = "fa fa-dollar"></i>NZ';
+				break;
+			case 'SGD':
+				currency_sign = 'S<i class = "fa fa-dollar"></i>';
+				break;
+			case 'TWD':
+				currency_sign = 'NT<i class = "fa fa-dollar"></i>';
+				break;
+			case 'USD':
+				currency_sign = 'US<i class = "fa fa-dollar"></i>';
+				break;
+			// peso
+			case 'ARS':
+				currency_sign = 'Arg<i class = "fa fa-dollar"></i>';
+				break;
+			case 'CLP':
+				currency_sign = 'Ch<i class = "fa fa-dollar"></i>';
+				break;
+			case 'COP':
+				currency_sign = 'Col<i class = "fa fa-dollar"></i>';
+				break;
+			case 'MXN':
+				currency_sign = 'Mex<i class = "fa fa-dollar"></i>';
+				break;
+			// others
+			case 'BRL':
+				currency_sign = 'R<i class = "fa fa-dollar"></i>';
+				break;
+			}
+
+			break;
+		case 'CNY':
+			currency_logo = '<i class = "fa fa-cny fa-2x"></i>';
+			currency_sign = 'RMB<i class = "fa fa-cny"></i>';
 
 			break;
 		case 'EUR':
-			currency_logo = '<i class = "fa fa-euro fa-2x"></i>';
-			currency_sign = '<i class = "fa fa-euro"></i>';
+		case 'GBP':
+		case 'ILS':
+		case 'INR':
+		case 'JPY':
+		case 'KRW':
+		case 'RUB':
+		case 'TRY':
+			var code = currency.code.toLowerCase()
+			currency_logo = '<i class = "fa fa-' + code + ' fa-2x"></i>';
+			currency_sign = '<i class = "fa fa-' + code + '"></i>';
 
 			break;
 		case 'KZT':
