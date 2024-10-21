@@ -27,6 +27,7 @@
 ![](docs/screenshots/buys.png)
 ![](docs/screenshots/stats.png)
 ![](docs/screenshots/hours.png)
+![](docs/screenshots/currencies.jpg)
 ![](docs/screenshots/spendings_widget.png)
 ![](docs/screenshots/buys_widget.png)
 
