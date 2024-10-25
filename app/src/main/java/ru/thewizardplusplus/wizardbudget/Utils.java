@@ -180,6 +180,20 @@ public class Utils {
 		);
 	}
 
+	public static void updateCurrencyWidget(Context context) {
+		AppWidgetManager widget_manager = AppWidgetManager.getInstance(context);
+
+		ComponentName widget = new ComponentName(context, CurrencyWidget.class);
+		RemoteViews views = CurrencyWidget.getUpdatedViews(context);
+		widget_manager.updateAppWidget(widget, views);
+
+		int[] widget_ids = widget_manager.getAppWidgetIds(widget);
+		widget_manager.notifyAppWidgetViewDataChanged(
+			widget_ids,
+			R.id.currency_list
+		);
+	}
+
 	public static SQLiteDatabase getDatabase(Context context) {
 		DatabaseHelper database_helper = new DatabaseHelper(context);
 		return database_helper.getWritableDatabase();
