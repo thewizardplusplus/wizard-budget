@@ -13,6 +13,23 @@ import android.net.*;
 import android.webkit.*;
 
 public class CurrencyManager {
+	public static long getMainTimestamp(List<CurrencyData> currencies) {
+		Map<Long, Long> timestamp_counters_by_timestamps = new HashMap<Long, Long>();
+		for (CurrencyData currency: currencies) {
+			Long timestamp_counter = timestamp_counters_by_timestamps.getOrDefault(currency.getTimestamp(), 0l);
+			timestamp_counters_by_timestamps.put(currency.getTimestamp(), timestamp_counter + 1);
+		}
+
+		Map.Entry<Long, Long> timestamp_with_max_counter = new AbstractMap.SimpleEntry<Long, Long>(0l, Long.MIN_VALUE);
+		for (Map.Entry<Long, Long> timestamp_with_counter: timestamp_counters_by_timestamps.entrySet()) {
+			if (timestamp_with_counter.getValue() > timestamp_with_max_counter.getValue()) {
+				timestamp_with_max_counter = timestamp_with_counter;
+			}
+		}
+
+		return timestamp_with_max_counter.getKey();
+	}
+
 	public CurrencyManager(Context context) {
 		this.context = context;
 	}
@@ -109,10 +126,11 @@ public class CurrencyManager {
 		List<CurrencyData> currencies = new ArrayList<CurrencyData>();
 		boolean moved = currencies_cursor.moveToFirst();
 		while (moved) {
+			long timestamp = currencies_cursor.getLong(1);
 			String code = currencies_cursor.getString(3);
 			double rate = currencies_cursor.getDouble(4);
 
-			CurrencyData currency = new CurrencyData(code, rate);
+			CurrencyData currency = new CurrencyData(timestamp, code, rate);
 			currencies.add(currency);
 
 			moved = currencies_cursor.moveToNext();

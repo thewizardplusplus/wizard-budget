@@ -70,6 +70,12 @@ public class CurrencyWidgetFactory implements RemoteViewsService.RemoteViewsFact
 			item.getDescription()
 		);
 
+		long main_timestamp = CurrencyManager.getMainTimestamp(items);
+		view.setTextViewText(
+			R.id.currency_widget_list_item_actual_flag,
+			item.getActualFlag(main_timestamp)
+		);
+
 		return view;
 	}
 

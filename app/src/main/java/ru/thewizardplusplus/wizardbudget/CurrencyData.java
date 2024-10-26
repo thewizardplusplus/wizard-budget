@@ -1,9 +1,14 @@
 package ru.thewizardplusplus.wizardbudget;
 
 public class CurrencyData {
-	public CurrencyData(String code, double rate) {
+	public CurrencyData(long timestamp, String code, double rate) {
+		this.timestamp = timestamp;
 		this.code = code;
 		this.rate = rate;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
 	}
 
 	public String getTitle() {
@@ -27,6 +32,15 @@ public class CurrencyData {
 		return replaceCurrencies(description);
 	}
 
+	public String getActualFlag(long actual_timestamp) {
+		return timestamp < actual_timestamp
+			? "[OLDER]"
+			: timestamp > actual_timestamp
+				? "[NEWER]"
+				: "";
+	}
+
+	private long timestamp;
 	private String code;
 	private double rate;
 

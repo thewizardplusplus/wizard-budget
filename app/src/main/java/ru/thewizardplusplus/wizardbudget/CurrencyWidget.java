@@ -1,10 +1,14 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import java.text.*;
+import java.util.*;
+
 import android.appwidget.*;
 import android.content.*;
 import android.widget.*;
 import android.app.*;
 import android.net.*;
+import android.view.*;
 
 public class CurrencyWidget extends AppWidgetProvider {
 	public static RemoteViews getUpdatedViews(Context context) {
@@ -33,6 +37,20 @@ public class CurrencyWidget extends AppWidgetProvider {
 		views.setPendingIntentTemplate(R.id.currency_list, click_pending_intent);
 		views.setEmptyView(R.id.currency_list, R.id.currency_empty_list_stub);
 
+		CurrencyManager currency_manager = new CurrencyManager(context);
+		List<CurrencyData> currencies = currency_manager.getAllCurrenciesForWidget();
+		if (!currencies.isEmpty()) {
+			views.setViewVisibility(R.id.currency_main_timestamp_container, View.VISIBLE);
+
+			long main_timestamp = CurrencyManager.getMainTimestamp(currencies);
+			views.setTextViewText(
+				R.id.currency_main_timestamp,
+				formatDateTime(main_timestamp)
+			);
+		} else {
+			views.setViewVisibility(R.id.currency_main_timestamp_container, View.GONE);
+		}
+
 		return views;
 	}
 
@@ -50,5 +68,15 @@ public class CurrencyWidget extends AppWidgetProvider {
 			widget_ids,
 			R.id.currency_list
 		);
+	}
+
+	private static String formatDateTime(long timestamp) {
+		Date date = new Date(timestamp * 1000L);
+		DateFormat date_format = DateFormat.getDateTimeInstance(
+			DateFormat.DEFAULT,
+			DateFormat.DEFAULT,
+			Locale.US
+		);
+		return date_format.format(date);
 	}
 }

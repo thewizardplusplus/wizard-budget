@@ -22,5 +22,14 @@
 		android:scrollHorizontally = "true"
 		android:ellipsize = "end"
 		android:maxLines = "1"
-		android:layout_weight = "5" />
+		android:layout_weight = "3" />
+	<TextView
+		android:id = "@+id/currency_widget_list_item_actual_flag"
+		style = "@style/widget_label_style"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:scrollHorizontally = "true"
+		android:ellipsize = "end"
+		android:maxLines = "1"
+		android:layout_weight = "2" />
 </LinearLayout>

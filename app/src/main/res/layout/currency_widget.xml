@@ -6,6 +6,20 @@
 	android:layout_height = "fill_parent"
 	android:orientation = "vertical"
 	android:background = "@drawable/widget_background">
+	<LinearLayout
+		android:id = "@+id/currency_main_timestamp_container"
+		android:layout_width = "fill_parent"
+		android:layout_height = "wrap_content"
+		android:orientation = "vertical"
+		android:gravity = "center"
+		android:background = "@drawable/bottom_divider">
+		<TextView
+			android:id = "@+id/currency_main_timestamp"
+			style = "@style/widget_label_style"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:textStyle = "bold" />
+	</LinearLayout>
 	<ListView
 		android:id = "@+id/currency_list"
 		android:layout_width = "fill_parent"
