@@ -12,7 +12,7 @@ public class CurrencyWidgetFactory implements RemoteViewsService.RemoteViewsFact
 
 	@Override
 	public void onCreate() {
-		items = new ArrayList<String>();
+		items = new ArrayList<CurrencyData>();
 	}
 
 	@Override
@@ -55,13 +55,19 @@ public class CurrencyWidgetFactory implements RemoteViewsService.RemoteViewsFact
 			context.getPackageName(),
 			R.layout.currency_widget_list_item
 		);
+		view.setOnClickFillInIntent(
+			R.id.currency_widget_list_item_container,
+			click_intent
+		);
+
+		CurrencyData item = items.get(position);
 		view.setTextViewText(
 			R.id.currency_widget_list_item_title,
-			items.get(position)
+			item.getTitle()
 		);
-		view.setOnClickFillInIntent(
-			R.id.currency_widget_list_item_title,
-			click_intent
+		view.setTextViewText(
+			R.id.currency_widget_list_item_description,
+			item.getDescription()
 		);
 
 		return view;
@@ -73,11 +79,11 @@ public class CurrencyWidgetFactory implements RemoteViewsService.RemoteViewsFact
 			context.getPackageName(),
 			R.layout.currency_widget_list_item
 		);
-		view.setTextViewText(R.id.currency_widget_list_item_title, "Loading...");
+		view.setTextViewText(R.id.currency_widget_list_item_description, "Loading...");
 
 		return view;
 	}
 
 	private Context context;
-	private List<String> items;
+	private List<CurrencyData> items;
 }
