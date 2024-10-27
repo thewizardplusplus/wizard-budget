@@ -1,5 +1,9 @@
 package ru.thewizardplusplus.wizardbudget;
 
+import android.text.*;
+import android.text.style.*;
+import android.graphics.*;
+
 public class CurrencyData {
 	public CurrencyData(long timestamp, String code, double rate) {
 		this.timestamp = timestamp;
@@ -11,12 +15,13 @@ public class CurrencyData {
 		return timestamp;
 	}
 
-	public String getTitle() {
+	public CharSequence getTitle(long actual_timestamp) {
 		String title = String.format("%s:", code);
-		return replaceCurrencies(title);
+		title = replaceCurrencies(title);
+		return applyActualFlag(title, actual_timestamp);
 	}
 
-	public String getDescription() {
+	public CharSequence getDescription(long actual_timestamp) {
 		double inverted_rate = 1 / rate;
 		String description = rate >= inverted_rate
 			? String.format(
@@ -29,15 +34,17 @@ public class CurrencyData {
 				code,
 				inverted_rate
 			);
-		return replaceCurrencies(description);
+		description = replaceCurrencies(description);
+		return applyActualFlag(description, actual_timestamp);
 	}
 
-	public String getActualFlag(long actual_timestamp) {
-		return timestamp < actual_timestamp
+	public CharSequence getActualFlag(long actual_timestamp) {
+		String actual_flag = timestamp < actual_timestamp
 			? "[OLDER]"
 			: timestamp > actual_timestamp
 				? "[NEWER]"
 				: "";
+		return applyActualFlag(actual_flag, actual_timestamp);
 	}
 
 	private long timestamp;
@@ -83,5 +90,16 @@ public class CurrencyData {
 			.replace("RUB", "\u20bd")
 			.replace("TRY", "\u20ba")
 			.replace("KZT", "\u20b8");
+	}
+
+	private CharSequence applyActualFlag(String text, long actual_timestamp) {
+		if (timestamp == actual_timestamp) {
+			return text;
+		}
+
+		SpannableString formatted_text = new SpannableString(text);
+		formatted_text.setSpan(new StyleSpan(Typeface.ITALIC), 0, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		return formatted_text;
 	}
 }
