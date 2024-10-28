@@ -12,7 +12,7 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
 	@Override
 	public void onCreate() {
-		items = new ArrayList<String>();
+		items = new ArrayList<BuyData>();
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
 		BuyManager buy_manager = new BuyManager(context);
 		boolean only_monthly = Settings.getCurrent(context).isOnlyMonthly();
-		items = buy_manager.getBuyNamesForWidget(only_monthly);
+		items = buy_manager.getBuysForWidget(only_monthly);
 	}
 
 	@Override
@@ -57,13 +57,19 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 			context.getPackageName(),
 			R.layout.buy_widget_list_item
 		);
-		view.setTextViewText(
-			R.id.buy_widget_list_item_title,
-			items.get(position)
-		);
 		view.setOnClickFillInIntent(
-			R.id.buy_widget_list_item_title,
+			R.id.buy_widget_list_item_container,
 			click_intent
+		);
+
+		BuyData item = items.get(position);
+		view.setTextViewText(
+			R.id.buy_widget_list_item_name,
+			item.getName()
+		);
+		view.setTextViewText(
+			R.id.buy_widget_list_item_cost,
+			String.format("%.2f \u20bd", item.getCost())
 		);
 
 		return view;
@@ -75,11 +81,11 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 			context.getPackageName(),
 			R.layout.buy_widget_list_item
 		);
-		view.setTextViewText(R.id.buy_widget_list_item_title, "Loading...");
+		view.setTextViewText(R.id.buy_widget_list_item_name, "Loading...");
 
 		return view;
 	}
 
 	private Context context;
-	private List<String> items;
+	private List<BuyData> items;
 }

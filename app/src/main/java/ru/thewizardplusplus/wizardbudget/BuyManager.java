@@ -92,11 +92,11 @@ public class BuyManager {
 		return names.toString();
 	}
 
-	public List<String> getBuyNamesForWidget(boolean only_monthly) {
+	public List<BuyData> getBuysForWidget(boolean only_monthly) {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor buys_cursor = database.query(
 			"buys",
-			new String[]{"name"},
+			new String[]{"name", "cost"},
 			"status = 0"
 				+ (only_monthly
 					? " AND monthly = 1"
@@ -107,20 +107,23 @@ public class BuyManager {
 			"monthly DESC, priority DESC"
 		);
 
-		List<String> names = new ArrayList<String>();
+		List<BuyData> buys = new ArrayList<BuyData>();
 		boolean moved = buys_cursor.moveToFirst();
 		while (moved) {
 			String name = buys_cursor.getString(0);
+			double cost = buys_cursor.getDouble(1);
+
 			name = name.trim();
 			if (!name.isEmpty()) {
-				names.add(name);
+				BuyData buy = new BuyData(name, cost);
+				buys.add(buy);
 			}
 
 			moved = buys_cursor.moveToNext();
 		}
 
 		database.close();
-		return names;
+		return buys;
 	}
 
 	@JavascriptInterface
