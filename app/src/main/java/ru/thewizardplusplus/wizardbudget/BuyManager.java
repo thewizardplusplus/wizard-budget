@@ -96,7 +96,7 @@ public class BuyManager {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor buys_cursor = database.query(
 			"buys",
-			new String[]{"name", "cost"},
+			new String[]{"name", "cost", "monthly"},
 			"status = 0"
 				+ (only_monthly
 					? " AND monthly = 1"
@@ -112,10 +112,11 @@ public class BuyManager {
 		while (moved) {
 			String name = buys_cursor.getString(0);
 			double cost = buys_cursor.getDouble(1);
+			long monthly = buys_cursor.getLong(2);
 
 			name = name.trim();
 			if (!name.isEmpty()) {
-				BuyData buy = new BuyData(name, cost);
+				BuyData buy = new BuyData(name, cost, monthly == 1);
 				buys.add(buy);
 			}
 

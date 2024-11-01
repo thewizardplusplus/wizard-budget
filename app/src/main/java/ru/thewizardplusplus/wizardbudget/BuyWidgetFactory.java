@@ -4,6 +4,7 @@ import java.util.*;
 
 import android.content.*;
 import android.widget.*;
+import android.view.*;
 
 public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 	public BuyWidgetFactory(Context context) {
@@ -70,6 +71,16 @@ public class BuyWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 		view.setTextViewText(
 			R.id.buy_widget_list_item_cost,
 			String.format("%.2f \u20bd", item.getCost())
+		);
+		view.setTextViewText(
+			R.id.buy_widget_list_item_monthly_flag,
+			item.getMonthlyFlag()
+		);
+
+		boolean only_monthly = Settings.getCurrent(context).isOnlyMonthly();
+		view.setViewVisibility(
+			R.id.buy_widget_list_item_monthly_flag,
+			!only_monthly ? View.VISIBLE : View.GONE
 		);
 
 		return view;
