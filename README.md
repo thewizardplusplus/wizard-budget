@@ -30,8 +30,15 @@
 ![](docs/screenshots/stats.png)
 ![](docs/screenshots/hours.png)
 ![](docs/screenshots/currencies.jpg)
-![](docs/screenshots/spendings_widget.png)
-![](docs/screenshots/buys_widget.png)
+
+![](docs/screenshots/spendings_widget.jpg)
+![](docs/screenshots/spendings_widget_small.jpg)
+
+![](docs/screenshots/buys_widget.jpg)
+![](docs/screenshots/buys_widget_only_monthly.jpg)
+
+![](docs/screenshots/currencies_widget_top.jpg)
+![](docs/screenshots/currencies_widget_bottom.jpg)
 
 ## Лицензия
 
