@@ -125,13 +125,6 @@ public class Widget extends AppWidgetProvider {
 				);
 			} catch(JSONException exception) {}
 
-			// TODO: remove after debugging
-			int month_working_days = 21;
-			int expected_working_hours = 8 * month_working_days;
-			hours_difference = (new Random()).nextInt(expected_working_hours / 2) + expected_working_hours / 4;
-			hours_working_off = hours_difference / ((new Random()).nextInt(month_working_days / 2) + month_working_days / 4);
-			hours_working_off_mode = "normal";
-
 			DecimalFormat format = new DecimalFormat(
 				"#0.0#",
 				new DecimalFormatSymbols(Locale.US)
