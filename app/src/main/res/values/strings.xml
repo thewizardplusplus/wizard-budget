@@ -91,4 +91,11 @@
 	<string name = "backup_notification_action_share">Share</string>
 	<string name = "preference_used_currencies_title">Used currencies</string>
 	<string name = "preference_used_currencies_summary">Currencies whose rates should be monitored.</string>
+	<string name = "limits_preferences">Limits</string>
+	<string name = "preference_consider_limits_title">Consider limits</string>
+	<string name = "preference_consider_limits_summary">Calculate the spending limit for the day.</string>
+	<string name = "preference_limit_days_title">Limit days</string>
+	<string name = "preference_limit_days_summary">Limit reset days.</string>
+	<string name = "preference_limit_amount_title">Limit amount</string>
+	<string name = "preference_limit_amount_summary">Maximal spending amount.</string>
 </resources>

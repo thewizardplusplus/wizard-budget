@@ -15,6 +15,23 @@
 		android:title = "@string/preference_only_monthly_title"
 		android:summary = "@string/preference_only_monthly_summary"
 		android:defaultValue = "false" />
+	<PreferenceCategory android:title = "@string/limits_preferences">
+		<CheckBoxPreference
+			android:key = "preference_consider_limits"
+			android:title = "@string/preference_consider_limits_title"
+			android:summary = "@string/preference_consider_limits_summary"
+			android:defaultValue = "true" />
+		<EditTextPreference
+			android:key = "preference_limit_days"
+			android:dependency = "preference_consider_limits"
+			android:title = "@string/preference_limit_days_title"
+			android:summary = "@string/preference_limit_days_summary" />
+		<EditTextPreference
+			android:key = "preference_limit_amount"
+			android:dependency = "preference_consider_limits"
+			android:title = "@string/preference_limit_amount_title"
+			android:summary = "@string/preference_limit_amount_summary" />
+	</PreferenceCategory>
 	<PreferenceCategory android:title = "@string/currency_preferences">
 		<EditTextPreference
 			android:key = "preference_used_currencies"
