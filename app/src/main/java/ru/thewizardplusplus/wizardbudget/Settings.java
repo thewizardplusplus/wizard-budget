@@ -82,6 +82,9 @@ public class Settings {
 		"preference_currency_update_notification";
 	public static final String SETTING_NAME_USED_CURRENCIES =
 		"preference_used_currencies";
+	public static final String SETTING_NAME_CONSIDER_LIMITS = "preference_consider_limits";
+	public static final String SETTING_NAME_LIMIT_DAYS = "preference_limit_days";
+	public static final String SETTING_NAME_LIMIT_AMOUNT = "preference_limit_amount";
 
 	public static Settings getCurrent(Context context) {
 		Settings settings = new Settings(context);
@@ -322,6 +325,25 @@ public class Settings {
 			SETTING_NAME_USED_CURRENCIES,
 			DEFAULT_USED_CURRENCIES
 		);
+
+		settings.consider_limits = preferences.getBoolean(
+			SETTING_NAME_CONSIDER_LIMITS,
+			true
+		);
+		settings.limit_days = preferences.getString(
+			SETTING_NAME_LIMIT_DAYS,
+			DEFAULT_LIMIT_DAYS
+		);
+		try {
+			settings.limit_amount = Double.valueOf(
+				preferences.getString(
+					SETTING_NAME_LIMIT_AMOUNT,
+					String.valueOf(DEFAULT_LIMIT_AMOUNT)
+				)
+			);
+		} catch (NumberFormatException exception) {
+			settings.limit_amount = DEFAULT_LIMIT_AMOUNT;
+		}
 
 		return settings;
 	}
@@ -693,6 +715,47 @@ public class Settings {
 		this.used_currencies = used_currencies;
 	}
 
+	public boolean isConsiderLimits() {
+		return consider_limits;
+	}
+
+	public void setConsiderLimits(boolean consider_limits) {
+		this.consider_limits = consider_limits;
+	}
+
+	public List<Integer> getLimitDays() {
+		return parseLimitDays(limit_days);
+	}
+
+	public String getLimitDaysAsString() {
+		List<Integer> parsed_limit_days = parseLimitDays(limit_days);
+
+		StringBuilder builder = new StringBuilder();
+		boolean is_first = true;
+		for (Integer parsed_limit_day: parsed_limit_days) {
+			if (!is_first) {
+				builder.append(",");
+			}
+			builder.append(parsed_limit_day);
+
+			is_first = false;
+		}
+
+		return builder.toString();
+	}
+
+	public void setLimitDays(String limit_days) {
+		this.limit_days = limit_days;
+	}
+
+	public double getLimitAmount() {
+		return limit_amount;
+	}
+
+	public void setLimitAmount(double limit_amount) {
+		this.limit_amount = limit_amount;
+	}
+
 	public void save() {
 		SharedPreferences preferences =
 			PreferenceManager
@@ -787,6 +850,9 @@ public class Settings {
 			currency_update_notification
 		);
 		editor.putString(SETTING_NAME_USED_CURRENCIES, used_currencies);
+		editor.putBoolean(SETTING_NAME_CONSIDER_LIMITS, consider_limits);
+		editor.putString(SETTING_NAME_LIMIT_DAYS, limit_days);
+		editor.putString(SETTING_NAME_LIMIT_AMOUNT, String.valueOf(limit_amount));
 		editor.commit();
 	}
 
@@ -802,7 +868,11 @@ public class Settings {
 	private static final String DEFAULT_CURRENCY_LIST_MODE = "all";
 	private static final double DEFAULT_WORKING_OFF_LIMIT = 4.0;
 	private static final String DEFAULT_USED_CURRENCIES = "USD,EUR";
+	private static final String DEFAULT_LIMIT_DAYS = "1,15";
+	private static final double DEFAULT_LIMIT_AMOUNT = 0;
 	private static final String HOURS_DATE_FORMAT = "yyyy-MM-dd";
+	private static final int MINIMAL_LIMIT_DAY = 1;
+	private static final int MAXIMAL_LIMIT_DAY = 31;
 
 	private Context context;
 	private String current_page = DEFAULT_PAGE;
@@ -852,6 +922,39 @@ public class Settings {
 	private boolean monthly_reset_notification = true;
 	private boolean currency_update_notification = true;
 	private String used_currencies = DEFAULT_USED_CURRENCIES;
+	private boolean consider_limits = true;
+	private String limit_days = DEFAULT_LIMIT_DAYS;
+	private double limit_amount = DEFAULT_LIMIT_AMOUNT;
+
+	private static List<Integer> parseLimitDays(String raw_limit_days) {
+		List<Integer> parsed_limit_days = new ArrayList<>();
+
+		String cleaned_raw_limit_days = raw_limit_days.replaceAll("[^\\d,]", "");
+		for (String raw_limit_day: cleaned_raw_limit_days.split(",")) {
+			int parsed_limit_day;
+			try {
+				parsed_limit_day = Integer.parseInt(raw_limit_day);
+			} catch (NumberFormatException exception) {
+				continue;
+			}
+
+			if (parsed_limit_day < MINIMAL_LIMIT_DAY) {
+				parsed_limit_day = MINIMAL_LIMIT_DAY;
+			}
+			if (parsed_limit_day > MAXIMAL_LIMIT_DAY) {
+				parsed_limit_day = MAXIMAL_LIMIT_DAY;
+			}
+
+			parsed_limit_days.add(parsed_limit_day);
+		}
+
+		if (parsed_limit_days.isEmpty()) {
+			return parseLimitDays(DEFAULT_LIMIT_DAYS);
+		}
+
+		Collections.sort(parsed_limit_days);
+		return parsed_limit_days;
+	}
 
 	private Settings(Context context) {
 		this.context = context;
