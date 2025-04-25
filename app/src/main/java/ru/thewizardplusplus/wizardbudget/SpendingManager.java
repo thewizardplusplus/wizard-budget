@@ -26,6 +26,18 @@ public class SpendingManager {
 	}
 
 	@JavascriptInterface
+	public String getPositiveSpendingsSum(String start, String end) {
+		SQLiteDatabase database = Utils.getDatabase(context);
+		double positive_spendings_sum = calculatePositiveSpendingsSum(
+			database,
+			new DateRange<>(start, end)
+		);
+		database.close();
+
+		return String.valueOf(positive_spendings_sum);
+	}
+
+	@JavascriptInterface
 	public String getAllSpendings() {
 		SQLiteDatabase database = Utils.getDatabase(context);
 		Cursor spendings_cursor = database.query(
@@ -590,5 +602,34 @@ public class SpendingManager {
 		}
 
 		return spendings_sum;
+	}
+
+	private double calculatePositiveSpendingsSum(
+		SQLiteDatabase database,
+		DateRange<String> range
+	) {
+		Cursor cursor = database.query(
+			"spendings",
+			new String[]{"ROUND(SUM(amount), 2)"},
+			String.format(
+				"amount > 0 "
+					+ "AND date(timestamp, 'unixepoch') >= \"%s\" "
+					+ "AND date(timestamp, 'unixepoch') <= \"%s\"",
+				range.getStart(),
+				range.getEnd()
+			),
+			null,
+			null,
+			null,
+			null
+		);
+
+		double positive_spendings_sum = 0.0;
+		boolean moved = cursor.moveToFirst();
+		if (moved) {
+			positive_spendings_sum = cursor.getDouble(0);
+		}
+
+		return positive_spendings_sum;
 	}
 }
