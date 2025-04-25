@@ -272,6 +272,8 @@ public class MainActivity extends Activity {
 		web_view.addJavascriptInterface(backup_manager, "backup_manager");
 		CurrencyManager currency_manager = new CurrencyManager(this);
 		web_view.addJavascriptInterface(currency_manager, "currency_manager");
+		LimitManager limit_manager = new LimitManager(this);
+		web_view.addJavascriptInterface(limit_manager, "limit_manager");
 
 		web_view.loadUrl("file:///android_asset/web/index.html");
 	}
