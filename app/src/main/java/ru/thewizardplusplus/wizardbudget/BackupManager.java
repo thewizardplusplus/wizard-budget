@@ -457,6 +457,33 @@ public class BackupManager {
 				);
 				serializer.attribute("", "value", settings.getUsedCurrencies());
 				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute(
+					"",
+					"name",
+					Settings.SETTING_NAME_CONSIDER_LIMITS
+				);
+				serializer.attribute(
+					"",
+					"value",
+					settings.isConsiderLimits() ? "true" : "false"
+				);
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", Settings.SETTING_NAME_LIMIT_DAYS);
+				serializer.attribute("", "value", settings.getLimitDaysAsString());
+				serializer.endTag("", "preference");
+
+				serializer.startTag("", "preference");
+				serializer.attribute("", "name", Settings.SETTING_NAME_LIMIT_AMOUNT);
+				serializer.attribute(
+					"",
+					"value",
+					String.valueOf(settings.getLimitAmount())
+				);
+				serializer.endTag("", "preference");
 				serializer.endTag("", "preferences");
 
 				SQLiteDatabase database = Utils.getDatabase(context);
@@ -769,6 +796,12 @@ public class BackupManager {
 						settings.setCurrencyUpdateNotification(boolean_value);
 					} else if (name.equals(Settings.SETTING_NAME_USED_CURRENCIES)) {
 						settings.setUsedCurrencies(value);
+					} else if (name.equals(Settings.SETTING_NAME_CONSIDER_LIMITS)) {
+						settings.setConsiderLimits(boolean_value);
+					} else if (name.equals(Settings.SETTING_NAME_LIMIT_DAYS)) {
+						settings.setLimitDays(value);
+					} else if (name.equals(Settings.SETTING_NAME_LIMIT_AMOUNT)) {
+						settings.setLimitAmount(Double.valueOf(value));
 					}
 				}
 			}
@@ -950,7 +983,7 @@ public class BackupManager {
 	}
 
 	private static final String BACKUPS_DIRECTORY = ".wizard-budget";
-	private static final long BACKUP_VERSION = 6;
+	private static final long BACKUP_VERSION = 7;
 	private static final SimpleDateFormat XML_DATE_FORMAT =
 		new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss",
