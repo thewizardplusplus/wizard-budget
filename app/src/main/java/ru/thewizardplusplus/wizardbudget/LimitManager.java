@@ -42,31 +42,29 @@ public class LimitManager {
 			limit_days.get(0)
 		));
 
-		LocalDate start = null;
-		LocalDate end = null;
-		boolean is_found = false;
+		DateRange<LocalDate> range = null;
 		for (int index = 1; index < limit_dates.size(); index++) {
-			start = limit_dates.get(index - 1);
-			end = limit_dates.get(index);
+			LocalDate start = limit_dates.get(index - 1);
+			LocalDate end = limit_dates.get(index);
 
 			if (!today.isAfter(end)) {
-				is_found = true;
+				range = new DateRange<>(start, end);
 				break;
 			}
 		}
-		if (!is_found) {
+		if (range == null) {
 			throw new IllegalStateException(
 				"unable to find the current limit day range"
 			);
 		}
 
-		JSONObject range = new JSONObject();
+		JSONObject range_as_json = new JSONObject();
 		try {
-			range.put("start", formatDate(start));
-			range.put("end", formatDate(end));
+			range_as_json.put("start", formatDate(range.getStart()));
+			range_as_json.put("end", formatDate(range.getEnd()));
 		} catch (JSONException exception) {}
 
-		return range.toString();
+		return range_as_json.toString();
 	}
 
 	private Context context;
