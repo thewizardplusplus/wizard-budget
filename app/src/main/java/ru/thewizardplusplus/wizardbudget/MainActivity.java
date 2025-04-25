@@ -104,6 +104,12 @@ public class MainActivity extends Activity {
 			return settings.getExchangeRateApiKey();
 		} else if (name.equals(Settings.SETTING_NAME_USED_CURRENCIES)) {
 			return settings.getUsedCurrencies();
+		} else if (name.equals("consider_limits")) {
+			return settings.isConsiderLimits() ? "true" : "false";
+		} else if (name.equals(Settings.SETTING_NAME_LIMIT_DAYS)) {
+			return settings.getLimitDaysAsString();
+		} else if (name.equals(Settings.SETTING_NAME_LIMIT_AMOUNT)) {
+			return String.valueOf(settings.getLimitAmount());
 		} else {
 			return "";
 		}
