@@ -5,11 +5,15 @@
 }
 
 .spendings-sum-view.excess,
+.current-range-spendings-sum-view.excess,
+.current-day-spendings-sum-view.excess,
 .hours-view .excess {
 	color: #2baa2b;
 }
 
 .spendings-sum-view.lack,
+.current-range-spendings-sum-view.lack,
+.current-day-spendings-sum-view.lack,
 .hours-view .lack {
 	color: #f44;
 }

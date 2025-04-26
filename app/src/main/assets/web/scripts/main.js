@@ -1332,6 +1332,67 @@ $(document).ready(
 
 			DrawStatsView(integral_range, comment_prefix);
 		}
+		function UpdateLimits() {
+			var SPENDING_SUM_PRECISION = 2;
+
+			var range = JSON.parse(limit_manager.findCurrentLimitDayRange());
+			$('.limits-range-start').text(moment(range.start).format('ll'));
+			$('.limits-range-end').text(moment(range.end).format('ll'));
+
+			var remaining_days =
+				moment(range.end).diff(moment().startOf('day'), 'days') + 1;
+			$('.remaining-days-view').text(remaining_days.toFixed(0));
+			$('.remaining-days-units').text(remaining_days === 1 ? 'day' : 'days');
+
+			var maximal_range_sum = parseFloat(activity.getSetting(
+				'preference_limit_amount'
+			));
+			$('.maximal-range-spendings-sum-view')
+				.text(maximal_range_sum.toFixed(SPENDING_SUM_PRECISION));
+
+			var current_range_sum =
+				parseFloat(spending_manager.getPositiveSpendingsSum(
+					range.start,
+					range.end
+				));
+			$('.current-range-spendings-sum-view')
+				.text(current_range_sum.toFixed(SPENDING_SUM_PRECISION));
+			if (current_range_sum <= maximal_range_sum) {
+				$('.current-range-spendings-sum-view')
+					.addClass('excess')
+					.removeClass('lack');
+			} else {
+				$('.current-range-spendings-sum-view')
+					.addClass('lack')
+					.removeClass('excess');
+			}
+
+			var remaining_amount = maximal_range_sum - current_range_sum;
+			$('.remaining-amount-view')
+				.text(remaining_amount.toFixed(SPENDING_SUM_PRECISION));
+
+			var maximal_day_sum = remaining_amount / remaining_days;
+			$('.maximal-day-spendings-sum-view')
+				.text(maximal_day_sum.toFixed(SPENDING_SUM_PRECISION));
+
+			var current_day = moment().format('YYYY-MM-DD');
+			var current_day_sum =
+				parseFloat(spending_manager.getPositiveSpendingsSum(
+					current_day,
+					current_day
+				));
+			$('.current-day-spendings-sum-view')
+				.text(current_day_sum.toFixed(SPENDING_SUM_PRECISION));
+			if (current_day_sum <= maximal_day_sum) {
+				$('.current-day-spendings-sum-view')
+					.addClass('excess')
+					.removeClass('lack');
+			} else {
+				$('.current-day-spendings-sum-view')
+					.addClass('lack')
+					.removeClass('excess');
+			}
+		}
 		function UpdateHours() {
 			$('.hours-range-form').on(
 				'submit',
@@ -1445,6 +1506,7 @@ $(document).ready(
 			UpdateSpendingList();
 			UpdateBuyList();
 			UpdateStats();
+			UpdateLimits();
 			UpdateHours();
 			UpdateHoursDataIfNeed();
 		}
