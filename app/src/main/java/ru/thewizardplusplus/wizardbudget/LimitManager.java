@@ -14,8 +14,7 @@ public class LimitManager {
 		this.context = context;
 	}
 
-	@JavascriptInterface
-	public String findCurrentLimitDayRange() {
+	public DateRange<LocalDate> findCurrentLimitDayRange() {
 		LocalDate today = LocalDate.now();
 		List<Integer> limit_days = Settings.getCurrent(context).getLimitDays();
 
@@ -57,6 +56,13 @@ public class LimitManager {
 				"unable to find the current limit day range"
 			);
 		}
+
+		return range;
+	}
+
+	@JavascriptInterface
+	public String findCurrentLimitDayRangeAsJson() {
+		DateRange<LocalDate> range = findCurrentLimitDayRange();
 
 		JSONObject range_as_json = new JSONObject();
 		try {

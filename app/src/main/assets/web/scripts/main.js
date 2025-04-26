@@ -1339,7 +1339,7 @@ $(document).ready(
 		function UpdateLimits() {
 			var SPENDING_SUM_PRECISION = 2;
 
-			var range = JSON.parse(limit_manager.findCurrentLimitDayRange());
+			var range = JSON.parse(limit_manager.findCurrentLimitDayRangeAsJson());
 			$('.limits-range-start').text(moment(range.start).format('ll'));
 			$('.limits-range-end').text(moment(range.end).format('ll'));
 
