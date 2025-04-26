@@ -57,6 +57,7 @@ public class SmsReceiver extends BroadcastReceiver {
 						spending_manager.createCorrection(residue);
 
 						Utils.updateWidget(context_copy);
+						Utils.updateLimitWidget(context_copy);
 						if (
 							Settings
 							.getCurrent(context_copy)

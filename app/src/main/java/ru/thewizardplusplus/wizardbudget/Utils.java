@@ -194,6 +194,12 @@ public class Utils {
 		);
 	}
 
+	public static void updateLimitWidget(Context context) {
+		RemoteViews views = LimitWidget.getUpdatedViews(context);
+		ComponentName widget = new ComponentName(context, LimitWidget.class);
+		AppWidgetManager.getInstance(context).updateAppWidget(widget, views);
+	}
+
 	public static SQLiteDatabase getDatabase(Context context) {
 		DatabaseHelper database_helper = new DatabaseHelper(context);
 		return database_helper.getWritableDatabase();

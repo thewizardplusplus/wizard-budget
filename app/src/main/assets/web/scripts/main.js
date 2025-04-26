@@ -119,6 +119,7 @@ function ProcessHours() {
 
 	ShowHours(hours_data);
 	activity.updateWidget();
+	activity.updateLimitWidget();
 }
 function ShowHours(hours_data) {
 	var hours_range_start = moment().date(hours_data.start_day).format('ll');
@@ -524,6 +525,7 @@ var GUI = {
 	refresh: function() {
 		activity.updateWidget();
 		activity.updateBuyWidget();
+		activity.updateLimitWidget();
 		PUSH({url: 'history.html'});
 	},
 	back: function() {
@@ -700,6 +702,7 @@ $(document).ready(
 					if ($.type(active_spending) !== "null") {
 						spending_manager.deleteSpending(active_spending.id);
 						activity.updateWidget();
+						activity.updateLimitWidget();
 
 						PUSH({url: 'history.html'});
 					}
@@ -863,6 +866,7 @@ $(document).ready(
 						buy_manager.deleteBuy(active_buy.id);
 						activity.updateWidget();
 						activity.updateBuyWidget();
+						activity.updateLimitWidget();
 
 						PUSH({url: 'history.html'});
 					}
@@ -1633,6 +1637,7 @@ $(document).ready(
 
 					activity.updateWidget();
 					activity.updateBuyWidget();
+					activity.updateLimitWidget();
 					PUSH({url: 'history.html'});
 
 					return false;
@@ -1705,6 +1710,7 @@ $(document).ready(
 
 					activity.updateWidget();
 					activity.updateBuyWidget();
+					activity.updateLimitWidget();
 					PUSH({url: 'history.html'});
 
 					return false;
@@ -1786,6 +1792,7 @@ $(document).ready(
 					spending_manager.importSms(sms_data_in_string);
 
 					activity.updateWidget();
+					activity.updateLimitWidget();
 
 					activity.setSetting('current_segment', 'history');
 					PUSH({url: 'history.html'});

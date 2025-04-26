@@ -83,7 +83,9 @@
 	<string name = "preference_currency_update_notification_title">Currency update notification</string>
 	<string name = "preference_currency_update_notification_summary">Notify about update of currencies.</string>
 	<string name = "zero">0.0</string>
-	<string name = "hours_separator">/</string>
+	<string name = "ratio_separator">/</string>
+	<string name = "range_separator">—</string>
+	<string name = "per_unit_separator">for</string>
 	<string name = "widget_spending_units">\u00a0RUB.</string>
 	<string name = "widget_none_buys_message">None buys.</string>
 	<string name = "widget_none_currencies_message">None currencies.</string>
@@ -98,4 +100,9 @@
 	<string name = "preference_limit_days_summary">Limit reset days.</string>
 	<string name = "preference_limit_amount_title">Limit amount</string>
 	<string name = "preference_limit_amount_summary">Maximal spending amount.</string>
+	<string name = "range_label"><u>Range:</u></string>
+	<string name = "remainder_label"><u>Remainder:</u></string>
+	<string name = "remaining_days_view_placeholder">0 days</string>
+	<string name = "range_spendings_sum_label"><u>Spendings per range:</u></string>
+	<string name = "day_spendings_sum_label"><u>Spendings per day:</u></string>
 </resources>
