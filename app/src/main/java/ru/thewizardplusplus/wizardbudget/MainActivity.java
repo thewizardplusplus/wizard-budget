@@ -204,6 +204,11 @@ public class MainActivity extends Activity {
 	}
 
 	@JavascriptInterface
+	public void notify(String message) {
+		Utils.showNotification(this, "Web", message, null);
+	}
+
+	@JavascriptInterface
 	public void quit() {
 		finish();
 	}
