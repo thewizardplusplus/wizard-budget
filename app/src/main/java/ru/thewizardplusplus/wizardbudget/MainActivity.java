@@ -273,6 +273,26 @@ public class MainActivity extends Activity {
 			}
 		);
 
+		final MainActivity self = this;
+		web_view.setWebChromeClient(
+			new WebChromeClient() {
+				@Override
+				public boolean onConsoleMessage(ConsoleMessage message) {
+					String message_as_string = String.format(
+						"%s:%d [%s] %s",
+						message.sourceId(),
+						message.lineNumber(),
+						message.messageLevel().toString(),
+						message.message()
+					);
+
+					self.log(message_as_string);
+
+					return super.onConsoleMessage(message);
+				}
+			}
+		);
+
 		web_view.addJavascriptInterface(this, "activity");
 		SpendingManager spending_manager = new SpendingManager(this);
 		web_view.addJavascriptInterface(spending_manager, "spending_manager");
