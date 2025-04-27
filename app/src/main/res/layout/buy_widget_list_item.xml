@@ -5,30 +5,35 @@
 	android:layout_width = "fill_parent"
 	android:layout_height = "fill_parent"
 	android:orientation = "horizontal">
+	<ImageView
+		android:id = "@+id/buy_widget_list_item_monthly_flag"
+		android:layout_width = "16dp"
+		android:layout_height = "wrap_content"
+		android:layout_gravity = "center_vertical"
+		android:scaleType="fitStart"
+		android:src = "@drawable/calendar_widget_icon" />
+	<ImageView
+		android:layout_width = "18dp"
+		android:layout_height = "wrap_content"
+		android:layout_gravity = "center_vertical"
+		android:scaleType="fitStart"
+		android:src = "@drawable/shopping_cart_widget_icon" />
 	<TextView
 		android:id = "@+id/buy_widget_list_item_name"
 		style = "@style/widget_label_style"
 		android:layout_width = "0dp"
 		android:layout_height = "wrap_content"
+		android:layout_gravity = "center_vertical"
 		android:scrollHorizontally = "true"
 		android:ellipsize = "end"
 		android:maxLines = "1"
-		android:drawableLeft = "@drawable/shopping_cart_widget_icon"
 		android:layout_weight = "1" />
 	<TextView
 		android:id = "@+id/buy_widget_list_item_cost"
 		style = "@style/widget_label_style"
 		android:layout_width = "0dp"
 		android:layout_height = "wrap_content"
-		android:scrollHorizontally = "true"
-		android:ellipsize = "end"
-		android:maxLines = "1"
-		android:layout_weight = "1" />
-	<TextView
-		android:id = "@+id/buy_widget_list_item_monthly_flag"
-		style = "@style/widget_label_style"
-		android:layout_width = "0dp"
-		android:layout_height = "wrap_content"
+		android:layout_gravity = "center_vertical"
 		android:scrollHorizontally = "true"
 		android:ellipsize = "end"
 		android:maxLines = "1"
