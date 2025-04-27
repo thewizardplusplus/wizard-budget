@@ -24,7 +24,8 @@
 				style = "@style/widget_label_style"
 				android:id = "@+id/limits_range_start"
 				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content" />
+				android:layout_height = "wrap_content"
+				android:drawableRight = "@drawable/calendar_widget_icon" />
 			<TextView
 				style = "@style/widget_label_style"
 				android:layout_width = "wrap_content"
@@ -36,7 +37,8 @@
 				style = "@style/widget_label_style"
 				android:id = "@+id/limits_range_end"
 				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content" />
+				android:layout_height = "wrap_content"
+				android:drawableRight = "@drawable/calendar_widget_icon" />
 		</LinearLayout>
 
 		<TextView
