@@ -80,11 +80,11 @@ public class BuyWidget extends AppWidgetProvider {
 
 	private static CharSequence formatBuySum(String kind, double sum, double total_sum) {
 		String text = !Double.isNaN(total_sum)
-			? String.format("%s sum: %.2f/%.2f \u20bd", kind, sum, total_sum)
+			? String.format("%s sum: %.2f / %.2f \u20bd", kind, sum, total_sum)
 			: String.format("%s sum: %.2f \u20bd", kind, sum);
 		int title_end_index = text.indexOf(':');
 
-		SpannableString formatted_text = new SpannableString(text); 
+		SpannableString formatted_text = new SpannableString(text);
 		formatted_text.setSpan(new StyleSpan(Typeface.BOLD), 0, title_end_index + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 		return formatted_text;
