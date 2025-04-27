@@ -45,4 +45,4 @@
 
 The MIT License (MIT)
 
-Copyright &copy; 2015, 2023-2024 thewizardplusplus <thewizardplusplus@yandex.ru>
+Copyright &copy; 2015, 2023-2025 thewizardplusplus <thewizardplusplus@yandex.ru>
