@@ -89,6 +89,7 @@
 	<string name = "widget_spending_units">\u00a0RUB.</string>
 	<string name = "widget_none_buys_message">None buys.</string>
 	<string name = "widget_none_currencies_message">None currencies.</string>
+	<string name = "widget_limits_are_disabled_message">Limits are disabled.</string>
 	<string name = "backup_notification_action_view">View</string>
 	<string name = "backup_notification_action_share">Share</string>
 	<string name = "preference_used_currencies_title">Used currencies</string>
