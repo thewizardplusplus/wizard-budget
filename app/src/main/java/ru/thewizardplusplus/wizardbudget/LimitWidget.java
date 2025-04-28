@@ -20,6 +20,9 @@ public class LimitWidget extends AppWidgetProvider {
 		);
 
 		Intent widget_intent = new Intent(context, MainActivity.class);
+		widget_intent.putExtra(Settings.SETTING_NAME_CURRENT_PAGE, "history");
+		widget_intent.putExtra(Settings.SETTING_NAME_CURRENT_SEGMENT, "limits");
+
 		PendingIntent widget_pending_intent = PendingIntent.getActivity(
 			context,
 			CURRENT_PAGE_REQUEST_CODE,
