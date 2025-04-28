@@ -49,9 +49,9 @@ public class Utils {
 
 			PendingIntent view_pending_intent = PendingIntent.getActivity(
 				context,
-				0,
+				notification_id,
 				view_intent,
-				0
+				PendingIntent.FLAG_UPDATE_CURRENT
 			);
 			notification_builder.addAction(
 				android.R.drawable.ic_menu_view,
@@ -68,9 +68,9 @@ public class Utils {
 
 			PendingIntent share_pending_intent = PendingIntent.getActivity(
 				context,
-				0,
+				notification_id,
 				chooser_intent,
-				0
+				PendingIntent.FLAG_UPDATE_CURRENT
 			);
 			notification_builder.addAction(
 				android.R.drawable.ic_menu_share,
@@ -82,10 +82,10 @@ public class Utils {
 		Notification notification = notification_builder.getNotification();
 
 		NotificationManager notifications = (NotificationManager)context
-			.getSystemService(
-			Context.NOTIFICATION_SERVICE
-		);
-		notifications.notify(notification_id++, notification);
+			.getSystemService(Context.NOTIFICATION_SERVICE);
+		notifications.notify(notification_id, notification);
+
+		notification_id++;
 	}
 
 	public static SmsData getSpendingFromSms(
