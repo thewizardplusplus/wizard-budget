@@ -106,4 +106,7 @@
 	<string name = "remaining_days_view_placeholder">0 days</string>
 	<string name = "range_spendings_sum_label"><u>Spendings per range:</u></string>
 	<string name = "day_spendings_sum_label"><u>Spendings per day:</u></string>
+	<string name = "left_parenthesis">(</string>
+	<string name = "right_parenthesis">)</string>
+	<string name = "maximal_tomorrow_spendings_sum_label">next:</string>
 </resources>

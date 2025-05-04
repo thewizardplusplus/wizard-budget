@@ -70,11 +70,18 @@ public class LimitWidget extends AppWidgetProvider {
 			);
 
 			SpendingManager spending_manager = new SpendingManager(context);
+			String current_day_as_string = formatDateForSearch(LocalDate.now());
+			double current_day_sum =
+				Double.valueOf(spending_manager.getPositiveSpendingsSum(
+					current_day_as_string,
+					current_day_as_string
+				));
 			double current_range_sum =
 				Double.valueOf(spending_manager.getPositiveSpendingsSum(
 					formatDateForSearch(range.getStart()),
 					formatDateForSearch(range.getEnd())
-				));
+				))
+				- current_day_sum;
 			views.setTextViewText(
 				R.id.current_range_spendings_sum_view,
 				formatDouble(current_range_sum)
@@ -98,12 +105,17 @@ public class LimitWidget extends AppWidgetProvider {
 				formatDouble(maximal_day_sum)
 			);
 
-			String current_day_as_string = formatDateForSearch(LocalDate.now());
-			double current_day_sum =
-				Double.valueOf(spending_manager.getPositiveSpendingsSum(
-					current_day_as_string,
-					current_day_as_string
-				));
+			if (remaining_days > 1) {
+				double maximal_tomorrow_sum =
+					(remaining_amount - current_day_sum) / (remaining_days - 1);
+				views.setTextViewText(
+					R.id.maximal_tomorrow_spendings_sum_view,
+					formatDouble(maximal_tomorrow_sum)
+				);
+			} else {
+				views.setTextViewText(R.id.maximal_tomorrow_spendings_sum_view, "—");
+			}
+
 			views.setTextViewText(
 				R.id.current_day_spendings_sum_view,
 				formatDouble(current_day_sum)

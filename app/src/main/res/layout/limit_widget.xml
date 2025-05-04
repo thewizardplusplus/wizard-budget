@@ -142,6 +142,31 @@
 				android:textStyle = "bold"
 				android:text = "@string/zero"
 				android:drawableRight = "@drawable/ruble_widget_icon" />
+			<TextView
+				style = "@style/widget_label_style"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginLeft = "2.5dp"
+				android:text = "@string/left_parenthesis" />
+			<TextView
+				style = "@style/widget_label_style"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginRight = "2.5dp"
+				android:text = "@string/maximal_tomorrow_spendings_sum_label" />
+			<TextView
+				style = "@style/widget_label_style"
+				android:id = "@+id/maximal_tomorrow_spendings_sum_view"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:textStyle = "bold"
+				android:text = "@string/zero"
+				android:drawableRight = "@drawable/ruble_widget_icon" />
+			<TextView
+				style = "@style/widget_label_style"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:text = "@string/right_parenthesis" />
 		</LinearLayout>
 	</LinearLayout>
 	<LinearLayout
