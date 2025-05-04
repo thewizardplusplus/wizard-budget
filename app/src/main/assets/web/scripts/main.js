@@ -1354,11 +1354,18 @@ $(document).ready(
 			$('.maximal-range-spendings-sum-view')
 				.text(maximal_range_sum.toFixed(SPENDING_SUM_PRECISION));
 
+			var current_day = moment().format('YYYY-MM-DD');
+			var current_day_sum =
+				parseFloat(spending_manager.getPositiveSpendingsSum(
+					current_day,
+					current_day
+				));
 			var current_range_sum =
 				parseFloat(spending_manager.getPositiveSpendingsSum(
 					range.start,
 					range.end
-				));
+				))
+				- current_day_sum;
 			$('.current-range-spendings-sum-view')
 				.text(current_range_sum.toFixed(SPENDING_SUM_PRECISION));
 			if (current_range_sum <= maximal_range_sum) {
@@ -1379,12 +1386,15 @@ $(document).ready(
 			$('.maximal-day-spendings-sum-view')
 				.text(maximal_day_sum.toFixed(SPENDING_SUM_PRECISION));
 
-			var current_day = moment().format('YYYY-MM-DD');
-			var current_day_sum =
-				parseFloat(spending_manager.getPositiveSpendingsSum(
-					current_day,
-					current_day
-				));
+			if (remaining_days > 1) {
+				var maximal_tomorrow_sum =
+					(remaining_amount - current_day_sum) / (remaining_days - 1);
+				$('.maximal-tomorrow-spendings-sum-view')
+					.text(maximal_tomorrow_sum.toFixed(SPENDING_SUM_PRECISION));
+			} else {
+				$('.maximal-tomorrow-spendings-sum-view').text('—');
+			}
+
 			$('.current-day-spendings-sum-view')
 				.text(current_day_sum.toFixed(SPENDING_SUM_PRECISION));
 			if (current_day_sum <= maximal_day_sum) {
