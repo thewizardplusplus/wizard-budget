@@ -1,6 +1,7 @@
 package ru.thewizardplusplus.wizardbudget;
 
 import java.text.*;
+import java.time.*;
 import java.util.*;
 
 import org.json.*;
@@ -608,15 +609,18 @@ public class SpendingManager {
 		SQLiteDatabase database,
 		DateRange<String> range
 	) {
+		long start_utc_timestamp =
+			toUtcTimestamp(range.getStart(), false); // at the start of the day
+		long end_utc_timestamp =
+			toUtcTimestamp(range.getEnd(), true); // at the end of the day
+
 		Cursor cursor = database.query(
 			"spendings",
 			new String[]{"ROUND(SUM(amount), 2)"},
 			String.format(
-				"amount > 0 "
-					+ "AND date(timestamp, 'unixepoch') >= \"%s\" "
-					+ "AND date(timestamp, 'unixepoch') <= \"%s\"",
-				range.getStart(),
-				range.getEnd()
+				"amount > 0 AND timestamp >= \"%s\" AND timestamp <= \"%s\"",
+				start_utc_timestamp,
+				end_utc_timestamp
 			),
 			null,
 			null,
@@ -631,5 +635,14 @@ public class SpendingManager {
 		}
 
 		return positive_spendings_sum;
+	}
+
+	private long toUtcTimestamp(String raw_date, boolean at_end_of_day) {
+		LocalDate date = LocalDate.parse(raw_date);
+		LocalDateTime timestamp = at_end_of_day
+			? date.plusDays(1).atStartOfDay().minusSeconds(1) // ...23:59:59
+			: date.atStartOfDay(); // ...00:00:00
+		ZonedDateTime zoned_timestamp = timestamp.atZone(ZoneId.systemDefault());
+		return zoned_timestamp.withZoneSameInstant(ZoneOffset.UTC).toEpochSecond();
 	}
 }
