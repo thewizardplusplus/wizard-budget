@@ -43,7 +43,9 @@ public class LimitManager {
 
 		DateRange<LocalDate> range = null;
 		for (int index = 1; index < limit_dates.size(); index++) {
-			LocalDate start = limit_dates.get(index - 1);
+			// the start is an exclusive boundary
+			LocalDate start = limit_dates.get(index - 1).plusDays(1);
+			// the end is an inclusive boundary
 			LocalDate end = limit_dates.get(index);
 
 			if (!today.isAfter(end)) {
