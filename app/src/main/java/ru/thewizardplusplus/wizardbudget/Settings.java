@@ -927,7 +927,7 @@ public class Settings {
 	private double limit_amount = DEFAULT_LIMIT_AMOUNT;
 
 	private static List<Integer> parseLimitDays(String raw_limit_days) {
-		List<Integer> parsed_limit_days = new ArrayList<>();
+		Set<Integer> parsed_limit_day_set = new HashSet<>();
 
 		String cleaned_raw_limit_days = raw_limit_days.replaceAll("[^\\d,]", "");
 		for (String raw_limit_day: cleaned_raw_limit_days.split(",")) {
@@ -945,14 +945,16 @@ public class Settings {
 				parsed_limit_day = MAXIMAL_LIMIT_DAY;
 			}
 
-			parsed_limit_days.add(parsed_limit_day);
+			parsed_limit_day_set.add(parsed_limit_day);
 		}
 
-		if (parsed_limit_days.isEmpty()) {
+		if (parsed_limit_day_set.isEmpty()) {
 			return parseLimitDays(DEFAULT_LIMIT_DAYS);
 		}
 
+		List<Integer> parsed_limit_days = new ArrayList<>(parsed_limit_day_set);
 		Collections.sort(parsed_limit_days);
+
 		return parsed_limit_days;
 	}
 
