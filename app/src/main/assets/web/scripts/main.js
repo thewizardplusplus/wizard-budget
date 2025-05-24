@@ -1118,12 +1118,17 @@ $(document).ready(
 			);
 		}
 		function DrawStatsView(number_of_last_days, comment_prefix) {
-			var spendings_sum_view = $('.stats-sum-view');
+			var SPENDING_SUM_PRECISION = 2;
+
 			var spendings_sum = spending_manager.getStatsSum(
 				number_of_last_days,
 				comment_prefix
 			);
-			spendings_sum_view.text(spendings_sum);
+			$('.stats-sum-view').text(spendings_sum);
+
+			var spendings_sum_per_day = spendings_sum / number_of_last_days;
+			$('.stats-sum-per-day-view')
+				.text(spendings_sum_per_day.toFixed(SPENDING_SUM_PRECISION));
 
 			var selected_tag_list = $('.selected-tag-list');
 			selected_tag_list.empty();
