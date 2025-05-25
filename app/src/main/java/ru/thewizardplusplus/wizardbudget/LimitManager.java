@@ -121,8 +121,16 @@ public class LimitManager {
 				limit_data.getRemainingDaysWithUnits()
 			);
 			limit_data_as_json.put(
+				"days_without_spendings_with_units",
+				limit_data.getDaysWithoutSpendingsWithUnits()
+			);
+			limit_data_as_json.put(
 				"remaining_amount",
 				limit_data.getRemainingAmount()
+			);
+			limit_data_as_json.put(
+				"maximal_first_day_spendings_sum",
+				limit_data.getMaximalFirstDaySpendingsSum()
 			);
 			limit_data_as_json.put(
 				"maximal_day_spendings_sum",
