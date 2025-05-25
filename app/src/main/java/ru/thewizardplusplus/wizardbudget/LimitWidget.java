@@ -9,6 +9,7 @@ import android.app.*;
 import android.appwidget.*;
 import android.content.*;
 import android.graphics.*;
+import android.view.*;
 import android.widget.*;
 
 public class LimitWidget extends AppWidgetProvider {
@@ -95,13 +96,41 @@ public class LimitWidget extends AppWidgetProvider {
 				formatDouble(maximal_day_sum)
 			);
 
-			if (limit_data.getRemainingDays() > 1) {
+			if (limit_data.getRemainingDays() == 1) {
+				views.setTextViewText(R.id.maximal_tomorrow_spendings_sum_view, "—");
+			} else {
+				double maximal_tomorrow_sum =
+					limit_data.getMaximalTomorrowSpendingsSum();
 				views.setTextViewText(
 					R.id.maximal_tomorrow_spendings_sum_view,
-					formatDouble(limit_data.getMaximalTomorrowSpendingsSum())
+					formatDouble(maximal_tomorrow_sum)
 				);
-			} else {
-				views.setTextViewText(R.id.maximal_tomorrow_spendings_sum_view, "—");
+
+				double maximal_first_day_sum =
+					limit_data.getMaximalFirstDaySpendingsSum();
+				if (
+					maximal_tomorrow_sum > maximal_first_day_sum
+					|| Math.abs(maximal_tomorrow_sum - maximal_first_day_sum) <= 1e-6
+				) {
+					views.setViewVisibility(
+						R.id.day_without_spendings_container,
+						View.GONE
+					);
+				} else {
+					views.setViewVisibility(
+						R.id.day_without_spendings_container,
+						View.VISIBLE
+					);
+
+					views.setTextViewText(
+						R.id.day_without_spendings_view,
+						limit_data.getDaysWithoutSpendingsWithUnits()
+					);
+					views.setTextViewText(
+						R.id.maximal_first_day_spendings_sum_view,
+						formatDouble(maximal_first_day_sum)
+					);
+				}
 			}
 		}
 

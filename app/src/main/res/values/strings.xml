@@ -103,10 +103,12 @@
 	<string name = "preference_limit_amount_summary">Maximal spending amount.</string>
 	<string name = "range_label"><u>Range:</u></string>
 	<string name = "remainder_label"><u>Remainder:</u></string>
-	<string name = "remaining_days_view_placeholder">0 days</string>
+	<string name = "days_view_placeholder">0 days</string>
 	<string name = "range_spendings_sum_label"><u>Spendings per range:</u></string>
 	<string name = "day_spendings_sum_label"><u>Spendings per day:</u></string>
+	<string name = "day_without_spendings_label"><u>Day without spendings:</u></string>
 	<string name = "left_parenthesis">(</string>
 	<string name = "right_parenthesis">)</string>
 	<string name = "maximal_tomorrow_spendings_sum_label">next:</string>
+	<string name = "maximal_first_day_spendings_sum_suffix">per day</string>
 </resources>

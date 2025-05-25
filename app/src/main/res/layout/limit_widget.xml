@@ -106,7 +106,7 @@
 				android:id = "@+id/remaining_days_view"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
-				android:text = "@string/remaining_days_view_placeholder" />
+				android:text = "@string/days_view_placeholder" />
 		</LinearLayout>
 
 		<TextView
@@ -167,6 +167,51 @@
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:text = "@string/right_parenthesis" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id = "@+id/day_without_spendings_container"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:orientation = "vertical">
+			<TextView
+				style = "@style/widget_label_style"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginRight = "2.5dp"
+				android:text = "@string/day_without_spendings_label" />
+			<LinearLayout
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:orientation = "horizontal">
+				<TextView
+					style = "@style/widget_label_style"
+					android:id = "@+id/day_without_spendings_view"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:text = "@string/days_view_placeholder" />
+				<TextView
+					style = "@style/widget_label_style"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_marginLeft = "2.5dp"
+					android:layout_marginRight = "2.5dp"
+					android:text = "@string/per_unit_separator" />
+				<TextView
+					style = "@style/widget_label_style"
+					android:id = "@+id/maximal_first_day_spendings_sum_view"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:textStyle = "bold"
+					android:text = "@string/zero"
+					android:drawableRight = "@drawable/ruble_widget_icon" />
+				<TextView
+					style = "@style/widget_label_style"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_marginLeft = "2.5dp"
+					android:text = "@string/maximal_first_day_spendings_sum_suffix" />
+			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
 	<LinearLayout
