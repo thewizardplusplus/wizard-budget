@@ -62,19 +62,6 @@ public class LimitManager {
 		return range;
 	}
 
-	@JavascriptInterface
-	public String findCurrentLimitDayRangeAsJson() {
-		DateRange<LocalDate> range = findCurrentLimitDayRange();
-
-		JSONObject range_as_json = new JSONObject();
-		try {
-			range_as_json.put("start", formatDate(range.getStart()));
-			range_as_json.put("end", formatDate(range.getEnd()));
-		} catch (JSONException exception) {}
-
-		return range_as_json.toString();
-	}
-
 	public LimitData getLimitData() {
 		DateRange<LocalDate> range = findCurrentLimitDayRange();
 
@@ -101,6 +88,57 @@ public class LimitManager {
 			current_range_spendings_sum,
 			current_day_spendings_sum
 		);
+	}
+
+	@JavascriptInterface
+	public String getLimitDataAsJson() {
+		LimitData limit_data = getLimitData();
+
+		JSONObject limit_data_as_json = new JSONObject();
+		try {
+			limit_data_as_json.put(
+				"range_start",
+				formatDate(limit_data.getRange().getStart())
+			);
+			limit_data_as_json.put(
+				"range_end",
+				formatDate(limit_data.getRange().getEnd())
+			);
+			limit_data_as_json.put(
+				"maximal_range_spendings_sum",
+				limit_data.getMaximalRangeSpendingsSum()
+			);
+			limit_data_as_json.put(
+				"current_range_spendings_sum",
+				limit_data.getCurrentRangeSpendingsSum()
+			);
+			limit_data_as_json.put(
+				"remaining_days",
+				limit_data.getRemainingDays()
+			);
+			limit_data_as_json.put(
+				"remaining_days_with_units",
+				limit_data.getRemainingDaysWithUnits()
+			);
+			limit_data_as_json.put(
+				"remaining_amount",
+				limit_data.getRemainingAmount()
+			);
+			limit_data_as_json.put(
+				"maximal_day_spendings_sum",
+				limit_data.getMaximalDaySpendingsSum()
+			);
+			limit_data_as_json.put(
+				"maximal_tomorrow_spendings_sum",
+				limit_data.getMaximalTomorrowSpendingsSum()
+			);
+			limit_data_as_json.put(
+				"current_day_spendings_sum",
+				limit_data.getCurrentDaySpendingsSum()
+			);
+		} catch (JSONException exception) {}
+
+		return limit_data_as_json.toString();
 	}
 
 	private Context context;
