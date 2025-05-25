@@ -1388,13 +1388,28 @@ $(document).ready(
 			$('.maximal-day-spendings-sum-view')
 				.text(maximal_day_sum.toFixed(SPENDING_SUM_PRECISION));
 
-			if (limit_data.remaining_days > 1) {
+			if (limit_data.remaining_days == 1) {
+				$('.maximal-tomorrow-spendings-sum-view')
+					.text('—');
+			} else {
 				var maximal_tomorrow_sum = limit_data.maximal_tomorrow_spendings_sum;
 				$('.maximal-tomorrow-spendings-sum-view')
 					.text(maximal_tomorrow_sum.toFixed(SPENDING_SUM_PRECISION));
-			} else {
-				$('.maximal-tomorrow-spendings-sum-view')
-					.text('—');
+
+				var maximal_first_day_sum = limit_data.maximal_first_day_spendings_sum;
+				if (
+					maximal_tomorrow_sum > maximal_first_day_sum
+					|| Math.abs(maximal_tomorrow_sum - maximal_first_day_sum) <= 1e-6
+				) {
+					$('.day-without-spendings-container').hide();
+				} else {
+					$('.day-without-spendings-container').show();
+
+					$('.day-without-spendings-view')
+						.text(limit_data.days_without_spendings_with_units);
+					$('.maximal-first-day-spendings-sum-view')
+						.text(maximal_first_day_sum.toFixed(SPENDING_SUM_PRECISION));
+				}
 			}
 		}
 		function UpdateHours() {
