@@ -75,6 +75,34 @@ public class LimitManager {
 		return range_as_json.toString();
 	}
 
+	public LimitData getLimitData() {
+		DateRange<LocalDate> range = findCurrentLimitDayRange();
+
+		Settings settings = Settings.getCurrent(context);
+		double maximal_range_spendings_sum = settings.getLimitAmount();
+
+		SpendingManager spending_manager = new SpendingManager(context);
+		String current_day_as_string = formatDate(LocalDate.now());
+		double current_day_spendings_sum =
+			Double.valueOf(spending_manager.getPositiveSpendingsSum(
+				current_day_as_string,
+				current_day_as_string
+			));
+		double current_range_spendings_sum =
+			Double.valueOf(spending_manager.getPositiveSpendingsSum(
+				formatDate(range.getStart()),
+				formatDate(range.getEnd())
+			))
+			- current_day_spendings_sum;
+
+		return new LimitData(
+			range,
+			maximal_range_spendings_sum,
+			current_range_spendings_sum,
+			current_day_spendings_sum
+		);
+	}
+
 	private Context context;
 
 	private LocalDate toSafeDate(int year, int month, int day) {
